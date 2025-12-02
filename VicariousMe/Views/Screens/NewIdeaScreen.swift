@@ -49,6 +49,7 @@ struct NewIdeaScreen: View {
                     // Description field
                     TextEditor(text: $description)
                         .focused($focusedField, equals: .description)
+                        .scrollContentBackground(.hidden)
                         .frame(minHeight: 150)
                         .padding()
                         .background(Color.vm.surface)
