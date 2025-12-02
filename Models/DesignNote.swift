@@ -1,100 +1,106 @@
+//
+//  DesignNote.swift
+//  VicariousMe
+//
+//  Design Notes are brief, contextual explanations of WHY features work the way they do.
+//  They appear at key moments, are dismissable, and collected in Settings.
+//
+
 import Foundation
 
-/// A design note explaining app philosophy or guiding user understanding
-struct DesignNote: Identifiable, Codable {
+// MARK: - DesignNote Model
+
+/// A design note that explains the philosophy behind a feature
+struct DesignNote: Identifiable, Hashable {
     let id: String
     let title: String
-    let content: String
+    let brief: String      // 2-4 sentences, always visible
+    let expanded: String   // Full explanation
+    let category: NoteCategory
     let trigger: NoteTrigger
 
-    /// Creates a design note
-    init(id: String, title: String, content: String, trigger: NoteTrigger) {
-        self.id = id
-        self.title = title
-        self.content = content
-        self.trigger = trigger
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (lhs: DesignNote, rhs: DesignNote) -> Bool {
+        lhs.id == rhs.id
     }
 }
 
-// MARK: - Predefined Design Notes
+// MARK: - NoteCategory
 
-extension DesignNote {
-    static let allNotes: [DesignNote] = [
-        DesignNote(
-            id: "first_daily",
-            title: "Welcome to Reflection",
-            content: """
-            This app is designed around a simple insight: we often jump to conclusions before \
-            really seeing what happened.
+/// Categories for organizing design notes
+enum NoteCategory: String, CaseIterable, Identifiable {
+    case foundation
+    case dailyPractice
+    case synthesis
+    case patterns
+    case perspective
+    case practice
 
-            That's why we start with Capture Mode. Before asking "what does it mean?", \
-            we first ask "what did you notice?"
+    var id: String { rawValue }
 
-            Take your time. The meaning will emerge.
-            """,
-            trigger: .firstDailyEntry
-        ),
-        DesignNote(
-            id: "first_pure_capture",
-            title: "The Power of Pure Capture",
-            content: """
-            You just saved a pure capture—an observation without interpretation.
+    var displayName: String {
+        switch self {
+        case .foundation: return "Foundation"
+        case .dailyPractice: return "Daily Practice"
+        case .synthesis: return "Synthesis"
+        case .patterns: return "Patterns"
+        case .perspective: return "Perspective"
+        case .practice: return "Practice"
+        }
+    }
 
-            This is valuable. Sometimes the most important thing is to record what happened \
-            without rushing to make sense of it.
+    var description: String {
+        switch self {
+        case .foundation:
+            return "Core philosophy and principles"
+        case .dailyPractice:
+            return "The daily reflection workflow"
+        case .synthesis:
+            return "How meaning emerges over time"
+        case .patterns:
+            return "Recognizing themes and connections"
+        case .perspective:
+            return "Temporal views and time-based insights"
+        case .practice:
+            return "Building the reflection habit"
+        }
+    }
+}
 
-            You can always return to add meaning later, or let patterns reveal themselves \
-            over time through your weekly reviews.
-            """,
-            trigger: .firstPureCapture
-        ),
-        DesignNote(
-            id: "first_synthesis",
-            title: "Grounded Meaning",
-            content: """
-            When you add synthesis to a capture, you're creating what we call a \
-            "grounded reflection"—meaning that's anchored in specific observation.
+// MARK: - NoteTrigger
 
-            This is different from abstract interpretation. Your insights are rooted \
-            in something concrete you witnessed.
-            """,
-            trigger: .firstSynthesis
-        ),
-        DesignNote(
-            id: "mode_switch",
-            title: "Switching Modes",
-            content: """
-            Notice the shift from 📷 Capture Mode to 🔮 Synthesis Mode.
+/// Triggers that determine when a design note should be shown
+enum NoteTrigger: String, CaseIterable, Identifiable {
+    case onboarding
+    case firstDailyEntry
+    case firstPureCapture
+    case firstSynthesisOffer
+    case firstWeeklyReflection
+    case firstTimeSinceIndicator
+    case firstQuestionExtraction
+    case firstConnectionSurface
+    case returnAfterGap
+    case interpretationDriftDetected
+    case captureQualityFeedback
 
-            These are different mental states. Capture is about being present \
-            and recording. Synthesis is about stepping back and finding meaning.
+    var id: String { rawValue }
 
-            The separation helps ensure your interpretations are grounded in \
-            what actually happened.
-            """,
-            trigger: .modeSwitch
-        ),
-        DesignNote(
-            id: "weekly_review",
-            title: "Patterns Emerge",
-            content: """
-            You have enough daily reflections to do a weekly review.
-
-            This is where the magic happens—themes and patterns that weren't \
-            visible in individual moments become clear when you see them together.
-            """,
-            trigger: .weeklyReviewAvailable
-        ),
-        DesignNote(
-            id: "theme_emergence",
-            title: "A Theme is Emerging",
-            content: """
-            We've noticed a recurring theme in your reflections.
-
-            Themes aren't assigned by us—they emerge from your observations. \
-            Pay attention to what keeps showing up. There's wisdom in repetition.
-            """,
-            trigger: .themeEmergence
-        )
-    ]
+    var displayName: String {
+        switch self {
+        case .onboarding: return "Onboarding"
+        case .firstDailyEntry: return "First Daily Entry"
+        case .firstPureCapture: return "First Pure Capture"
+        case .firstSynthesisOffer: return "First Synthesis Offer"
+        case .firstWeeklyReflection: return "First Weekly Reflection"
+        case .firstTimeSinceIndicator: return "First Time-Since Indicator"
+        case .firstQuestionExtraction: return "First Question Extraction"
+        case .firstConnectionSurface: return "First Connection Surface"
+        case .returnAfterGap: return "Return After Gap"
+        case .interpretationDriftDetected: return "Interpretation Drift Detected"
+        case .captureQualityFeedback: return "Capture Quality Feedback"
+        }
+    }
 }
