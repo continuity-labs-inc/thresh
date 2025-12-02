@@ -125,18 +125,6 @@ struct HomeScreen: View {
 
             if isEmpty(selectedTab) {
                 EmptyStateView(tab: selectedTab)
-
-                if selectedTab == .reflections {
-                    NavigationLink(destination: NewReflectionScreen()) {
-                        Label("Start your first capture", systemImage: "plus.circle.fill")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.vm.capture)
-                            .foregroundStyle(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                    }
-                }
             }
         }
     }
