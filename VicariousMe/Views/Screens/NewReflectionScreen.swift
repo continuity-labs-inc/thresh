@@ -26,8 +26,12 @@ struct NewReflectionScreen: View {
             ScrollView {
                 TextEditor(text: $captureContent)
                     .focused($isFocused)
+                    .scrollContentBackground(.hidden)
                     .frame(minHeight: 200)
                     .padding()
+                    .background(Color.vm.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(.horizontal)
             }
 
             Spacer()
