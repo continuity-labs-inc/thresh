@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2024-01-01",
+  "prompts": {
+    "capture": {
+      "story": [
+        {
+          "id": "story-1",
+          "text": "Tell me about a moment today that stood out to you.",
+          "stage": ["emerging", "developing", "established", "fluent"]
+        },
+        {
+          "id": "story-2",
+          "text": "What's something that happened recently that you're still thinking about?",
+          "stage": ["emerging", "developing"]
+        }
+      ],
+      "idea": [
+        {
+          "id": "idea-1",
+          "text": "What's been on your mind lately?",
+          "stage": ["emerging", "developing", "established", "fluent"]
+        },
+        {
+          "id": "idea-2",
+          "text": "Is there something you've been wanting to explore or understand better?",
+          "stage": ["developing", "established", "fluent"]
+        }
+      ],
+      "question": [
+        {
+          "id": "question-1",
+          "text": "What are you curious about right now?",
+          "stage": ["emerging", "developing", "established", "fluent"]
+        },
+        {
+          "id": "question-2",
+          "text": "What question has been nagging at you?",
+          "stage": ["established", "fluent"]
+        }
+      ]
+    },
+    "synthesis": {
+      "reflection": [
+        {
+          "id": "reflection-1",
+          "text": "Looking at your recent entries, what themes do you notice?",
+          "stage": ["developing", "established", "fluent"]
+        },
+        {
+          "id": "reflection-2",
+          "text": "How do your recent thoughts connect to each other?",
+          "stage": ["established", "fluent"]
+        }
+      ],
+      "insight": [
+        {
+          "id": "insight-1",
+          "text": "What have you learned about yourself from these reflections?",
+          "stage": ["developing", "established", "fluent"]
+        }
+      ]
+    }
+  }
+}
