@@ -366,11 +366,11 @@ struct WeeklyReflectionScreen: View {
 
         // Create weekly synthesis
         let synthesis = Reflection(
-            tier: .weekly,
-            focusType: nil, // No focus type for synthesis entries
             captureContent: "", // No capture for synthesis entries
             synthesisContent: synthesisText,
             entryType: .synthesis,
+            tier: .weekly,
+            focusType: nil, // No focus type for synthesis entries
             modeBalance: .synthesisOnly,
             themes: [], // Could be extracted by AI in future
             marinating: false

@@ -8,11 +8,47 @@ enum EntryType: String, Codable, CaseIterable {
     case synthesis = "synthesis"
 }
 
+// MARK: - Focus Type
+enum FocusType: String, Codable, CaseIterable, Identifiable {
+    case story = "story"
+    case idea = "idea"
+    case question = "question"
+    
+    var id: String { rawValue }
+    
+    var displayName: String {
+        switch self {
+        case .story: return "Story"
+        case .idea: return "Idea"
+        case .question: return "Question"
+        }
+    }
+    
+    var systemImage: String {
+        switch self {
+        case .story: return "book"
+        case .idea: return "lightbulb"
+        case .question: return "questionmark.circle"
+        }
+    }
+}
+
 // MARK: - Tier
 enum ReflectionTier: String, Codable, CaseIterable {
     case core = "Core"
     case active = "Active"
     case archive = "Archive"
+    case daily = "Daily"
+    case weekly = "Weekly"
+    case monthly = "Monthly"
+    case yearly = "Yearly"
+}
+
+// MARK: - Mode Balance
+enum ModeBalance: String, Codable, CaseIterable {
+    case captureOnly = "capture_only"
+    case captureWithReflection = "capture_with_reflection"
+    case synthesisOnly = "synthesis_only"
 }
 
 // MARK: - Reflection Model
@@ -24,10 +60,20 @@ final class Reflection {
     var synthesisContent: String?
     var entryType: EntryType
     var tier: ReflectionTier
+    var focusType: FocusType?
+    var modeBalance: ModeBalance
     var createdAt: Date
     var updatedAt: Date
     var tags: [String]
+    var themes: [String]
     var isArchived: Bool
+    var marinating: Bool
+    
+    // Revision layers for adding new perspective with temporal distance
+    var revisionLayers: [RevisionLayer]
+    
+    // Linked reflections for synthesis entries
+    var linkedReflections: [Reflection]
 
     init(
         id: UUID = UUID(),
@@ -36,10 +82,16 @@ final class Reflection {
         synthesisContent: String? = nil,
         entryType: EntryType = .pureCapture,
         tier: ReflectionTier = .active,
+        focusType: FocusType? = nil,
+        modeBalance: ModeBalance = .captureOnly,
         createdAt: Date = Date(),
         updatedAt: Date = Date(),
         tags: [String] = [],
-        isArchived: Bool = false
+        themes: [String] = [],
+        isArchived: Bool = false,
+        marinating: Bool = false,
+        revisionLayers: [RevisionLayer] = [],
+        linkedReflections: [Reflection] = []
     ) {
         self.id = id
         self.captureContent = captureContent
@@ -47,10 +99,16 @@ final class Reflection {
         self.synthesisContent = synthesisContent
         self.entryType = entryType
         self.tier = tier
+        self.focusType = focusType
+        self.modeBalance = modeBalance
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.tags = tags
+        self.themes = themes
         self.isArchived = isArchived
+        self.marinating = marinating
+        self.revisionLayers = revisionLayers
+        self.linkedReflections = linkedReflections
     }
 }
 

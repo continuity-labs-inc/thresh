@@ -26,6 +26,9 @@ struct VMColors: Sendable {
 
     /// Adaptive white/gray-900 — Surface color for cards and containers
     let surface = Color("SurfaceColor")
+    
+    /// Adaptive gray-100/gray-800 — Secondary surface color
+    let surfaceSecondary = Color("SurfaceSecondaryColor")
 
     /// Adaptive gray-50/black — Background color for the app
     let background = Color("BackgroundColor")
