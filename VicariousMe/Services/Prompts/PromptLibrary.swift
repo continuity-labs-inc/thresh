@@ -2,6 +2,7 @@ import Foundation
 
 /// The PromptLibrary provides contextual prompts for reflection activities.
 /// It manages prompts for different tiers, modes, and user development stages.
+@MainActor
 @Observable
 final class PromptLibrary {
     /// Shared instance for app-wide access
