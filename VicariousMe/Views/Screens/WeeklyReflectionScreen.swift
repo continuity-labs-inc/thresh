@@ -345,8 +345,9 @@ struct WeeklyReflectionScreen: View {
 
     /// Load AI-detected connections between reflections
     private func loadConnections() {
+        let reflectionsToAnalyze = dailyReflections
         Task {
-            detectedConnections = await AIService.shared.detectConnections(in: dailyReflections)
+            detectedConnections = await AIService.shared.detectConnections(in: reflectionsToAnalyze)
         }
     }
 

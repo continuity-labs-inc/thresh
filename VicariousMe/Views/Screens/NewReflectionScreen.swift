@@ -43,7 +43,7 @@ struct NewReflectionScreen: View {
                             ? Color.vm.surfaceSecondary
                             : Color.vm.capture
                     )
-                    .foregroundStyle(captureContent.isEmpty ? .secondary : .white)
+                    .foregroundStyle(captureContent.isEmpty ? Color.secondary : Color.white)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .disabled(captureContent.isEmpty)
