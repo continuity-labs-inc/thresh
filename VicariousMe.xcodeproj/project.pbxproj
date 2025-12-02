@@ -12,6 +12,18 @@
 		A1000005238F5E0000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000006238F5E0000000001 /* Assets.xcassets */; };
 		A1000007238F5E0000000001 /* VMColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000008238F5E0000000001 /* VMColors.swift */; };
 		A1000009238F5E0000000001 /* PromptLibrary.json in Resources */ = {isa = PBXBuildFile; fileRef = A100000A238F5E0000000001 /* PromptLibrary.json */; };
+		A2000001238F5E0000000001 /* Reflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000002238F5E0000000001 /* Reflection.swift */; };
+		A2000003238F5E0000000001 /* RevisionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000004238F5E0000000001 /* RevisionLayer.swift */; };
+		A2000005238F5E0000000001 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000006238F5E0000000001 /* Connection.swift */; };
+		A2000007238F5E0000000001 /* PromptLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000008238F5E0000000001 /* PromptLibrary.swift */; };
+		A2000009238F5E0000000001 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000A238F5E0000000001 /* AIService.swift */; };
+		A200000B238F5E0000000001 /* ModeIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000C238F5E0000000001 /* ModeIndicator.swift */; };
+		A200000D238F5E0000000001 /* StepIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000E238F5E0000000001 /* StepIndicator.swift */; };
+		A200000F238F5E0000000001 /* PromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010238F5E0000000001 /* PromptView.swift */; };
+		A2000011238F5E0000000001 /* ConnectionSurfacerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000012238F5E0000000001 /* ConnectionSurfacerView.swift */; };
+		A2000013238F5E0000000001 /* SynthesisGuideItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014238F5E0000000001 /* SynthesisGuideItem.swift */; };
+		A2000015238F5E0000000001 /* WeeklyReflectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000016238F5E0000000001 /* WeeklyReflectionScreen.swift */; };
+		A2000017238F5E0000000001 /* NewReflectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000018238F5E0000000001 /* NewReflectionScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +35,18 @@
 		A100000B238F5E0000000001 /* VicariousMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VicariousMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A100000C238F5E0000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A100000D238F5E0000000001 /* VicariousMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VicariousMe.entitlements; sourceTree = "<group>"; };
+		A2000002238F5E0000000001 /* Reflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reflection.swift; sourceTree = "<group>"; };
+		A2000004238F5E0000000001 /* RevisionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionLayer.swift; sourceTree = "<group>"; };
+		A2000006238F5E0000000001 /* Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
+		A2000008238F5E0000000001 /* PromptLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptLibrary.swift; sourceTree = "<group>"; };
+		A200000A238F5E0000000001 /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
+		A200000C238F5E0000000001 /* ModeIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeIndicator.swift; sourceTree = "<group>"; };
+		A200000E238F5E0000000001 /* StepIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepIndicator.swift; sourceTree = "<group>"; };
+		A2000010238F5E0000000001 /* PromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptView.swift; sourceTree = "<group>"; };
+		A2000012238F5E0000000001 /* ConnectionSurfacerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionSurfacerView.swift; sourceTree = "<group>"; };
+		A2000014238F5E0000000001 /* SynthesisGuideItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynthesisGuideItem.swift; sourceTree = "<group>"; };
+		A2000016238F5E0000000001 /* WeeklyReflectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReflectionScreen.swift; sourceTree = "<group>"; };
+		A2000018238F5E0000000001 /* NewReflectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReflectionScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +104,9 @@
 		A1000024238F5E0000000001 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A2000002238F5E0000000001 /* Reflection.swift */,
+				A2000004238F5E0000000001 /* RevisionLayer.swift */,
+				A2000006238F5E0000000001 /* Connection.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -132,6 +159,8 @@
 		A100002A238F5E0000000001 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				A2000016238F5E0000000001 /* WeeklyReflectionScreen.swift */,
+				A2000018238F5E0000000001 /* NewReflectionScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -139,6 +168,11 @@
 		A100002B238F5E0000000001 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A200000C238F5E0000000001 /* ModeIndicator.swift */,
+				A200000E238F5E0000000001 /* StepIndicator.swift */,
+				A2000010238F5E0000000001 /* PromptView.swift */,
+				A2000012238F5E0000000001 /* ConnectionSurfacerView.swift */,
+				A2000014238F5E0000000001 /* SynthesisGuideItem.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -160,6 +194,7 @@
 		A100002E238F5E0000000001 /* AI */ = {
 			isa = PBXGroup;
 			children = (
+				A200000A238F5E0000000001 /* AIService.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -167,6 +202,7 @@
 		A100002F238F5E0000000001 /* Prompts */ = {
 			isa = PBXGroup;
 			children = (
+				A2000008238F5E0000000001 /* PromptLibrary.swift */,
 			);
 			path = Prompts;
 			sourceTree = "<group>";
@@ -251,6 +287,18 @@
 				A1000001238F5E0000000001 /* VicariousMeApp.swift in Sources */,
 				A1000003238F5E0000000001 /* AppState.swift in Sources */,
 				A1000007238F5E0000000001 /* VMColors.swift in Sources */,
+				A2000001238F5E0000000001 /* Reflection.swift in Sources */,
+				A2000003238F5E0000000001 /* RevisionLayer.swift in Sources */,
+				A2000005238F5E0000000001 /* Connection.swift in Sources */,
+				A2000007238F5E0000000001 /* PromptLibrary.swift in Sources */,
+				A2000009238F5E0000000001 /* AIService.swift in Sources */,
+				A200000B238F5E0000000001 /* ModeIndicator.swift in Sources */,
+				A200000D238F5E0000000001 /* StepIndicator.swift in Sources */,
+				A200000F238F5E0000000001 /* PromptView.swift in Sources */,
+				A2000011238F5E0000000001 /* ConnectionSurfacerView.swift in Sources */,
+				A2000013238F5E0000000001 /* SynthesisGuideItem.swift in Sources */,
+				A2000015238F5E0000000001 /* WeeklyReflectionScreen.swift in Sources */,
+				A2000017238F5E0000000001 /* NewReflectionScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

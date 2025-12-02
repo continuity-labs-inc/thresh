@@ -7,7 +7,7 @@ struct VicariousMeApp: App {
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            // SwiftData models will be added here
+            Reflection.self
         ])
         let modelConfiguration = ModelConfiguration(
             schema: schema,
@@ -126,10 +126,48 @@ struct CaptureView: View {
 struct SynthesisView: View {
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 24) {
+                Spacer()
+
+                Image(systemName: "sparkles")
+                    .font(.system(size: 48))
+                    .foregroundStyle(Color.vm.synthesis)
+
                 Text("Review and synthesize")
                     .font(.title2)
                     .foregroundStyle(.secondary)
+
+                Text("Choose a reflection period to begin synthesis")
+                    .font(.subheadline)
+                    .foregroundStyle(.tertiary)
+
+                // Weekly Reflection entry point
+                NavigationLink(destination: WeeklyReflectionScreen()) {
+                    HStack {
+                        Image(systemName: "calendar.badge.clock")
+                            .font(.title2)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Weekly Reflection")
+                                .font(.headline)
+                            Text("Review and synthesize the past 7 days")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "chevron.right")
+                            .foregroundStyle(.tertiary)
+                    }
+                    .padding()
+                    .background(Color.vm.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal)
+
+                Spacer()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.vm.background)
