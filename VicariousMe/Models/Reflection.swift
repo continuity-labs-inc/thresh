@@ -1,129 +1,84 @@
 import Foundation
 import SwiftData
 
-// MARK: - Reflection Tier
-
-enum ReflectionTier: String, Codable, CaseIterable {
-    case daily
-    case weekly
-    case monthly
-    case yearly
-
-    var displayName: String {
-        switch self {
-        case .daily: return "Daily"
-        case .weekly: return "Weekly"
-        case .monthly: return "Monthly"
-        case .yearly: return "Yearly"
-        }
-    }
-}
-
-// MARK: - Focus Type
-
-enum FocusType: String, Codable, CaseIterable {
-    case work
-    case personal
-    case health
-    case relationships
-    case creativity
-    case learning
-    case general
-
-    var displayName: String {
-        rawValue.capitalized
-    }
-
-    var iconName: String {
-        switch self {
-        case .work: return "briefcase.fill"
-        case .personal: return "person.fill"
-        case .health: return "heart.fill"
-        case .relationships: return "person.2.fill"
-        case .creativity: return "paintbrush.fill"
-        case .learning: return "book.fill"
-        case .general: return "circle.fill"
-        }
-    }
-}
-
 // MARK: - Entry Type
-
 enum EntryType: String, Codable, CaseIterable {
-    case pureCapture      // Quick capture, no processing
-    case guided           // Full guided reflection flow
-    case freeform         // User-initiated freeform entry
-    case synthesized      // AI-synthesized reflection
-
-    var displayName: String {
-        switch self {
-        case .pureCapture: return "Quick Capture"
-        case .guided: return "Guided"
-        case .freeform: return "Freeform"
-        case .synthesized: return "Synthesized"
-        }
-    }
+    case pureCapture = "pure_capture"
+    case groundedReflection = "grounded_reflection"
+    case synthesis = "synthesis"
 }
 
-// MARK: - Mode Balance
-
-enum ModeBalance: String, Codable, CaseIterable {
-    case captureOnly      // Pure capture, no synthesis
-    case captureHeavy     // Mostly capture, light synthesis
-    case balanced         // Equal capture and synthesis
-    case synthesisHeavy   // Light capture, deep synthesis
-    case synthesisOnly    // Pure synthesis/reflection
-
-    var displayName: String {
-        switch self {
-        case .captureOnly: return "Capture Only"
-        case .captureHeavy: return "Capture Heavy"
-        case .balanced: return "Balanced"
-        case .synthesisHeavy: return "Synthesis Heavy"
-        case .synthesisOnly: return "Synthesis Only"
-        }
-    }
+// MARK: - Tier
+enum ReflectionTier: String, Codable, CaseIterable {
+    case core = "Core"
+    case active = "Active"
+    case archive = "Archive"
 }
 
 // MARK: - Reflection Model
-
 @Model
 final class Reflection {
     var id: UUID
-    var createdAt: Date
-    var updatedAt: Date
-    var tier: ReflectionTier
-    var focusType: FocusType?
     var captureContent: String
+    var reflectionContent: String?
     var synthesisContent: String?
     var entryType: EntryType
-    var modeBalance: ModeBalance
-    var themes: [String]
-    var marinating: Bool
+    var tier: ReflectionTier
+    var createdAt: Date
+    var updatedAt: Date
+    var tags: [String]
+    var isArchived: Bool
 
     init(
         id: UUID = UUID(),
+        captureContent: String,
+        reflectionContent: String? = nil,
+        synthesisContent: String? = nil,
+        entryType: EntryType = .pureCapture,
+        tier: ReflectionTier = .active,
         createdAt: Date = Date(),
         updatedAt: Date = Date(),
-        tier: ReflectionTier = .daily,
-        focusType: FocusType? = nil,
-        captureContent: String,
-        synthesisContent: String? = nil,
-        entryType: EntryType = .freeform,
-        modeBalance: ModeBalance = .balanced,
-        themes: [String] = [],
-        marinating: Bool = false
+        tags: [String] = [],
+        isArchived: Bool = false
     ) {
         self.id = id
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-        self.tier = tier
-        self.focusType = focusType
         self.captureContent = captureContent
+        self.reflectionContent = reflectionContent
         self.synthesisContent = synthesisContent
         self.entryType = entryType
-        self.modeBalance = modeBalance
-        self.themes = themes
-        self.marinating = marinating
+        self.tier = tier
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+        self.tags = tags
+        self.isArchived = isArchived
+    }
+}
+
+// MARK: - Mock Data
+extension Reflection {
+    static var mockData: [Reflection] {
+        [
+            Reflection(
+                captureContent: "Today I noticed how the morning light changes everything. The way it filters through the window creates patterns I never paid attention to before.",
+                entryType: .pureCapture,
+                tier: .active,
+                createdAt: Date().addingTimeInterval(-3600)
+            ),
+            Reflection(
+                captureContent: "Feeling overwhelmed with work deadlines.",
+                reflectionContent: "When I dig deeper, I realize the overwhelm isn't about the work itself but about my fear of not meeting expectations.",
+                entryType: .groundedReflection,
+                tier: .core,
+                createdAt: Date().addingTimeInterval(-86400)
+            ),
+            Reflection(
+                captureContent: "Had an interesting conversation with a stranger at the coffee shop.",
+                reflectionContent: "These random connections remind me how much we all share similar struggles.",
+                synthesisContent: "Pattern: I find meaning in unexpected human connections. This links to my value of authentic relationships.",
+                entryType: .synthesis,
+                tier: .core,
+                createdAt: Date().addingTimeInterval(-172800)
+            )
+        ]
     }
 }
