@@ -41,6 +41,7 @@ struct NewStoryScreen: View {
                     // Content field
                     TextEditor(text: $content)
                         .focused($focusedField, equals: .content)
+                        .scrollContentBackground(.hidden)
                         .frame(minHeight: 200)
                         .padding()
                         .background(Color.vm.surface)

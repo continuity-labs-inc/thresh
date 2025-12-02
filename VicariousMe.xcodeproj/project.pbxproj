@@ -24,6 +24,26 @@
 		A2000013238F5E0000000001 /* SynthesisGuideItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014238F5E0000000001 /* SynthesisGuideItem.swift */; };
 		A2000015238F5E0000000001 /* WeeklyReflectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000016238F5E0000000001 /* WeeklyReflectionScreen.swift */; };
 		A2000017238F5E0000000001 /* NewReflectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000018238F5E0000000001 /* NewReflectionScreen.swift */; };
+		B3000001238F5E0000000001 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000002238F5E0000000001 /* Question.swift */; };
+		B3000003238F5E0000000001 /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000004238F5E0000000001 /* Story.swift */; };
+		B3000005238F5E0000000001 /* Idea.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000006238F5E0000000001 /* Idea.swift */; };
+		B3000007238F5E0000000001 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000008238F5E0000000001 /* HomeScreen.swift */; };
+		B3000009238F5E0000000001 /* NewQuestionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300000A238F5E0000000001 /* NewQuestionScreen.swift */; };
+		B300000B238F5E0000000001 /* NewIdeaScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300000C238F5E0000000001 /* NewIdeaScreen.swift */; };
+		B300000D238F5E0000000001 /* NewStoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300000E238F5E0000000001 /* NewStoryScreen.swift */; };
+		B300000F238F5E0000000001 /* QuickCaptureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000010238F5E0000000001 /* QuickCaptureScreen.swift */; };
+		B3000011238F5E0000000001 /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000012238F5E0000000001 /* OnboardingScreen.swift */; };
+		B3000013238F5E0000000001 /* ArchiveScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000014238F5E0000000001 /* ArchiveScreen.swift */; };
+		B3000015238F5E0000000001 /* ReflectionDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000016238F5E0000000001 /* ReflectionDetailScreen.swift */; };
+		B3000017238F5E0000000001 /* QuestionDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000018238F5E0000000001 /* QuestionDetailScreen.swift */; };
+		B3000019238F5E0000000001 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300001A238F5E0000000001 /* QuickActionButton.swift */; };
+		B300001B238F5E0000000001 /* ReflectionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300001C238F5E0000000001 /* ReflectionRow.swift */; };
+		B300001D238F5E0000000001 /* QuestionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300001E238F5E0000000001 /* QuestionRow.swift */; };
+		B300001F238F5E0000000001 /* IdeaRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000020238F5E0000000001 /* IdeaRow.swift */; };
+		B3000021238F5E0000000001 /* StoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000022238F5E0000000001 /* StoryRow.swift */; };
+		B3000023238F5E0000000001 /* TabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000024238F5E0000000001 /* TabButton.swift */; };
+		B3000025238F5E0000000001 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000026238F5E0000000001 /* EmptyStateView.swift */; };
+		B3000027238F5E0000000001 /* DesignNotesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000028238F5E0000000001 /* DesignNotesService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +67,26 @@
 		A2000014238F5E0000000001 /* SynthesisGuideItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynthesisGuideItem.swift; sourceTree = "<group>"; };
 		A2000016238F5E0000000001 /* WeeklyReflectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReflectionScreen.swift; sourceTree = "<group>"; };
 		A2000018238F5E0000000001 /* NewReflectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReflectionScreen.swift; sourceTree = "<group>"; };
+		B3000002238F5E0000000001 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
+		B3000004238F5E0000000001 /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
+		B3000006238F5E0000000001 /* Idea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Idea.swift; sourceTree = "<group>"; };
+		B3000008238F5E0000000001 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		B300000A238F5E0000000001 /* NewQuestionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestionScreen.swift; sourceTree = "<group>"; };
+		B300000C238F5E0000000001 /* NewIdeaScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewIdeaScreen.swift; sourceTree = "<group>"; };
+		B300000E238F5E0000000001 /* NewStoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStoryScreen.swift; sourceTree = "<group>"; };
+		B3000010238F5E0000000001 /* QuickCaptureScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCaptureScreen.swift; sourceTree = "<group>"; };
+		B3000012238F5E0000000001 /* OnboardingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
+		B3000014238F5E0000000001 /* ArchiveScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveScreen.swift; sourceTree = "<group>"; };
+		B3000016238F5E0000000001 /* ReflectionDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionDetailScreen.swift; sourceTree = "<group>"; };
+		B3000018238F5E0000000001 /* QuestionDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionDetailScreen.swift; sourceTree = "<group>"; };
+		B300001A238F5E0000000001 /* QuickActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionButton.swift; sourceTree = "<group>"; };
+		B300001C238F5E0000000001 /* ReflectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionRow.swift; sourceTree = "<group>"; };
+		B300001E238F5E0000000001 /* QuestionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionRow.swift; sourceTree = "<group>"; };
+		B3000020238F5E0000000001 /* IdeaRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaRow.swift; sourceTree = "<group>"; };
+		B3000022238F5E0000000001 /* StoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRow.swift; sourceTree = "<group>"; };
+		B3000024238F5E0000000001 /* TabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabButton.swift; sourceTree = "<group>"; };
+		B3000026238F5E0000000001 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		B3000028238F5E0000000001 /* DesignNotesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignNotesService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +147,9 @@
 				A2000002238F5E0000000001 /* Reflection.swift */,
 				A2000004238F5E0000000001 /* RevisionLayer.swift */,
 				A2000006238F5E0000000001 /* Connection.swift */,
+				B3000002238F5E0000000001 /* Question.swift */,
+				B3000004238F5E0000000001 /* Story.swift */,
+				B3000006238F5E0000000001 /* Idea.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -159,8 +202,17 @@
 		A100002A238F5E0000000001 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				B3000008238F5E0000000001 /* HomeScreen.swift */,
 				A2000016238F5E0000000001 /* WeeklyReflectionScreen.swift */,
 				A2000018238F5E0000000001 /* NewReflectionScreen.swift */,
+				B300000A238F5E0000000001 /* NewQuestionScreen.swift */,
+				B300000C238F5E0000000001 /* NewIdeaScreen.swift */,
+				B300000E238F5E0000000001 /* NewStoryScreen.swift */,
+				B3000010238F5E0000000001 /* QuickCaptureScreen.swift */,
+				B3000012238F5E0000000001 /* OnboardingScreen.swift */,
+				B3000014238F5E0000000001 /* ArchiveScreen.swift */,
+				B3000016238F5E0000000001 /* ReflectionDetailScreen.swift */,
+				B3000018238F5E0000000001 /* QuestionDetailScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -173,6 +225,13 @@
 				A2000010238F5E0000000001 /* PromptView.swift */,
 				A2000012238F5E0000000001 /* ConnectionSurfacerView.swift */,
 				A2000014238F5E0000000001 /* SynthesisGuideItem.swift */,
+				B300001A238F5E0000000001 /* QuickActionButton.swift */,
+				B300001C238F5E0000000001 /* ReflectionRow.swift */,
+				B300001E238F5E0000000001 /* QuestionRow.swift */,
+				B3000020238F5E0000000001 /* IdeaRow.swift */,
+				B3000022238F5E0000000001 /* StoryRow.swift */,
+				B3000024238F5E0000000001 /* TabButton.swift */,
+				B3000026238F5E0000000001 /* EmptyStateView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -210,6 +269,7 @@
 		A1000030238F5E0000000001 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
+				B3000028238F5E0000000001 /* DesignNotesService.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -290,15 +350,35 @@
 				A2000001238F5E0000000001 /* Reflection.swift in Sources */,
 				A2000003238F5E0000000001 /* RevisionLayer.swift in Sources */,
 				A2000005238F5E0000000001 /* Connection.swift in Sources */,
+				B3000001238F5E0000000001 /* Question.swift in Sources */,
+				B3000003238F5E0000000001 /* Story.swift in Sources */,
+				B3000005238F5E0000000001 /* Idea.swift in Sources */,
 				A2000007238F5E0000000001 /* PromptLibrary.swift in Sources */,
 				A2000009238F5E0000000001 /* AIService.swift in Sources */,
+				B3000027238F5E0000000001 /* DesignNotesService.swift in Sources */,
 				A200000B238F5E0000000001 /* ModeIndicator.swift in Sources */,
 				A200000D238F5E0000000001 /* StepIndicator.swift in Sources */,
 				A200000F238F5E0000000001 /* PromptView.swift in Sources */,
 				A2000011238F5E0000000001 /* ConnectionSurfacerView.swift in Sources */,
 				A2000013238F5E0000000001 /* SynthesisGuideItem.swift in Sources */,
+				B3000019238F5E0000000001 /* QuickActionButton.swift in Sources */,
+				B300001B238F5E0000000001 /* ReflectionRow.swift in Sources */,
+				B300001D238F5E0000000001 /* QuestionRow.swift in Sources */,
+				B300001F238F5E0000000001 /* IdeaRow.swift in Sources */,
+				B3000021238F5E0000000001 /* StoryRow.swift in Sources */,
+				B3000023238F5E0000000001 /* TabButton.swift in Sources */,
+				B3000025238F5E0000000001 /* EmptyStateView.swift in Sources */,
+				B3000007238F5E0000000001 /* HomeScreen.swift in Sources */,
 				A2000015238F5E0000000001 /* WeeklyReflectionScreen.swift in Sources */,
 				A2000017238F5E0000000001 /* NewReflectionScreen.swift in Sources */,
+				B3000009238F5E0000000001 /* NewQuestionScreen.swift in Sources */,
+				B300000B238F5E0000000001 /* NewIdeaScreen.swift in Sources */,
+				B300000D238F5E0000000001 /* NewStoryScreen.swift in Sources */,
+				B300000F238F5E0000000001 /* QuickCaptureScreen.swift in Sources */,
+				B3000011238F5E0000000001 /* OnboardingScreen.swift in Sources */,
+				B3000013238F5E0000000001 /* ArchiveScreen.swift in Sources */,
+				B3000015238F5E0000000001 /* ReflectionDetailScreen.swift in Sources */,
+				B3000017238F5E0000000001 /* QuestionDetailScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

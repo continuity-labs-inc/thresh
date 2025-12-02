@@ -46,6 +46,7 @@ struct NewQuestionScreen: View {
 
                         TextEditor(text: $context)
                             .focused($focusedField, equals: .context)
+                            .scrollContentBackground(.hidden)
                             .frame(minHeight: 100)
                             .padding()
                             .background(Color.vm.surface)
