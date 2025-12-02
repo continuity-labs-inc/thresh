@@ -7,7 +7,10 @@ struct VicariousMeApp: App {
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Reflection.self
+            Reflection.self,
+            Story.self,
+            Idea.self,
+            Question.self
         ])
         let modelConfiguration = ModelConfiguration(
             schema: schema,
@@ -110,16 +113,7 @@ struct OnboardingView: View {
 
 struct CaptureView: View {
     var body: some View {
-        NavigationStack {
-            VStack {
-                Text("Capture your thoughts")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.vm.background)
-            .navigationTitle("Capture")
-        }
+        HomeScreen()
     }
 }
 
