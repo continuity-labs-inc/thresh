@@ -40,7 +40,7 @@ enum RevisionType: String, Codable, CaseIterable, Identifiable, Sendable {
     case correction
 
     /// Extension with additional context
-    case extension
+    case `extension`
 
     /// Connection to other reflections or insights
     case connection
