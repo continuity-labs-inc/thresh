@@ -74,14 +74,9 @@ struct QuickCaptureScreen: View {
 
     private func saveAndDismiss() {
         let reflection = Reflection(
-            id: UUID(),
-            createdAt: Date(),
-            updatedAt: Date(),
-            tier: .daily,
-            focusType: nil,
             captureContent: captureText,
-            synthesisContent: nil,
             entryType: .pureCapture,
+            tier: .daily,
             modeBalance: .captureOnly,
             themes: [],
             marinating: false

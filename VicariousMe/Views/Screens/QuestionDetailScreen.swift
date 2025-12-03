@@ -82,7 +82,7 @@ struct QuestionDetailScreen: View {
                                         ? Color.vm.surfaceSecondary
                                         : Color.vm.question
                                 )
-                                .foregroundStyle(answerText.isEmpty ? .secondary : .white)
+                                .foregroundStyle(answerText.isEmpty ? Color.secondary : Color.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         .disabled(answerText.isEmpty)

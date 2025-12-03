@@ -110,6 +110,10 @@ struct TierBadge: View {
         case .core: return Color.vm.tierCore
         case .active: return Color.vm.tierActive
         case .archive: return Color.vm.tierArchive
+        case .daily: return Color.vm.capture
+        case .weekly: return Color.vm.synthesis
+        case .monthly: return Color.vm.story
+        case .yearly: return Color.vm.question
         }
     }
 }

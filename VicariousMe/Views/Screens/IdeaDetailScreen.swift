@@ -36,7 +36,7 @@ struct IdeaDetailScreen: View {
                     .fontWeight(.bold)
 
                 // Description
-                Text(idea.description)
+                Text(idea.details)
                     .font(.body)
                     .lineSpacing(4)
 
@@ -81,7 +81,7 @@ struct IdeaDetailScreen: View {
     NavigationStack {
         IdeaDetailScreen(idea: Idea(
             title: "Morning Journaling Routine",
-            description: "Start each day with 10 minutes of free writing before checking any devices. This helps clear the mind and set intentions for the day.\n\nThe key is consistency over perfection. Even a few sentences count.",
+            details: "Start each day with 10 minutes of free writing before checking any devices. This helps clear the mind and set intentions for the day.\n\nThe key is consistency over perfection. Even a few sentences count.",
             category: "Habits"
         ))
     }

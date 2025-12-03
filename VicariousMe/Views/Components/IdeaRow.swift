@@ -52,7 +52,7 @@ struct IdeaRow: View {
     }
 
     private var previewText: String {
-        let content = idea.description
+        let content = idea.details
         if content.count > 80 {
             return String(content.prefix(80)) + "..."
         }
@@ -64,7 +64,7 @@ struct IdeaRow: View {
     NavigationStack {
         IdeaRow(idea: Idea(
             title: "Morning Journaling Routine",
-            description: "Start each day with 10 minutes of free writing before checking any devices.",
+            details: "Start each day with 10 minutes of free writing before checking any devices.",
             category: "Habits"
         ))
         .padding()

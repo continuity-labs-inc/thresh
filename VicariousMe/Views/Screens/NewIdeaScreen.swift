@@ -99,7 +99,7 @@ struct NewIdeaScreen: View {
     private func saveIdea() {
         let idea = Idea(
             title: title,
-            description: description,
+            details: description,
             category: category.isEmpty ? nil : category
         )
         modelContext.insert(idea)

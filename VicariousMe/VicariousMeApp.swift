@@ -3,7 +3,6 @@ import SwiftData
 
 @main
 struct VicariousMeApp: App {
-    private let designNotesService = DesignNotesService()
     private let promptLibrary = PromptLibrary()
 
     var sharedModelContainer: ModelContainer = {
@@ -24,8 +23,7 @@ struct VicariousMeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeScreen()
-                .environment(designNotesService)
+            ContentView()
                 .environment(promptLibrary)
         }
         .modelContainer(sharedModelContainer)

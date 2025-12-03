@@ -23,6 +23,11 @@ struct VMColors: Sendable {
 
     /// Amber (#F59E0B) — Accent color for questions
     let question = Color("QuestionColor")
+        
+    /// Tier colors for Archive, Core, Active
+    let tierArchive = Color.gray
+    let tierCore = Color("SynthesisColor")
+    let tierActive = Color("CaptureColor")
 
     /// Adaptive white/gray-900 — Surface color for cards and containers
     let surface = Color("SurfaceColor")
