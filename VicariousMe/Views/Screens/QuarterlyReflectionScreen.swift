@@ -1,28 +1,28 @@
 import SwiftUI
 import SwiftData
 
-struct WeeklyReflectionScreen: View {
+struct QuarterlyReflectionScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     
     @Query(
         filter: #Predicate<Reflection> { reflection in
-            reflection.tier == .daily || reflection.tier == .active
+            reflection.tier == .weekly
         },
         sort: \Reflection.createdAt,
         order: .reverse
-    ) private var allReflections: [Reflection]
+    ) private var allWeeklies: [Reflection]
     
     @State private var currentStep = 1
-    @State private var selectedReflections: Set<UUID> = []
+    @State private var selectedWeeklies: Set<UUID> = []
     @State private var synthesisText = ""
-    @State private var bakhtinianText = ""
-    @State private var showBakhtinianPrompt = false
+    @State private var culturalFramingText = ""
+    @State private var showCulturalPrompt = false
     
-    // Get reflections from last 7 days
-    private var recentReflections: [Reflection] {
-        let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
-        return allReflections.filter { $0.createdAt >= sevenDaysAgo }
+    // Get weekly syntheses from last 90 days
+    private var recentWeeklies: [Reflection] {
+        let ninetyDaysAgo = Calendar.current.date(byAdding: .day, value: -90, to: Date()) ?? Date()
+        return allWeeklies.filter { $0.createdAt >= ninetyDaysAgo }
     }
     
     var body: some View {
@@ -39,7 +39,7 @@ struct WeeklyReflectionScreen: View {
                 
                 Spacer()
                 
-                Text("Weekly Reflection")
+                Text("Quarterly Reflection")
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(Color.vm.textSecondary)
                 
@@ -53,17 +53,17 @@ struct WeeklyReflectionScreen: View {
             
             // Synthesis Mode Badge
             HStack {
-                Image(systemName: "sparkles")
+                Image(systemName: "calendar")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.vm.synthesis)
+                    .foregroundColor(Color.vm.idea)
                 
-                Text("SYNTHESIS MODE")
+                Text("SEASONAL SYNTHESIS")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.vm.synthesis)
+                    .foregroundColor(Color.vm.idea)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            .background(Capsule().fill(Color.vm.synthesis.opacity(0.1)))
+            .background(Capsule().fill(Color.vm.idea.opacity(0.1)))
             .padding(.bottom, 24)
             
             // Step Indicators
@@ -87,9 +87,9 @@ struct WeeklyReflectionScreen: View {
         HStack(spacing: 12) {
             stepDot(number: 1, label: "Review", isActive: currentStep >= 1)
             Spacer()
-            stepDot(number: 2, label: "Write", isActive: currentStep >= 2)
+            stepDot(number: 2, label: "Synthesize", isActive: currentStep >= 2)
             Spacer()
-            stepDot(number: 3, label: "Refine", isActive: currentStep >= 3)
+            stepDot(number: 3, label: "Frame", isActive: currentStep >= 3)
         }
         .padding(.horizontal, 40)
         .padding(.bottom, 32)
@@ -98,7 +98,7 @@ struct WeeklyReflectionScreen: View {
     private func stepDot(number: Int, label: String, isActive: Bool) -> some View {
         HStack(spacing: 8) {
             Circle()
-                .fill(isActive ? Color.vm.synthesis : Color.vm.surfaceSecondary)
+                .fill(isActive ? Color.vm.idea : Color.vm.surfaceSecondary)
                 .frame(width: 40, height: 40)
                 .overlay(
                     Text("\(number)")
@@ -109,7 +109,7 @@ struct WeeklyReflectionScreen: View {
             if currentStep == number {
                 Text(label)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.vm.synthesis)
+                    .foregroundColor(Color.vm.idea)
             }
         }
     }
@@ -118,18 +118,18 @@ struct WeeklyReflectionScreen: View {
     
     private var reviewStep: some View {
         VStack(spacing: 16) {
-            if recentReflections.isEmpty {
+            if recentWeeklies.isEmpty {
                 emptyState
             } else {
                 ScrollView {
                     VStack(spacing: 16) {
                         // Instructions
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Select captures to include")
+                            Text("Select weekly syntheses to include")
                                 .font(.system(size: 18, weight: .semibold))
                                 .foregroundColor(Color.vm.textPrimary)
                             
-                            Text("Choose the moments from this week that feel connected or worth synthesizing.")
+                            Text("A season has passed. Choose the weeks that feel significant or connected.")
                                 .font(.system(size: 14))
                                 .foregroundColor(Color.vm.textSecondary)
                         }
@@ -137,12 +137,12 @@ struct WeeklyReflectionScreen: View {
                         .padding(.horizontal, 20)
                         .padding(.top, 8)
                         
-                        // Reflection List
-                        ForEach(recentReflections) { reflection in
-                            CaptureRow(
-                                reflection: reflection,
-                                isSelected: selectedReflections.contains(reflection.id),
-                                onToggle: { toggleSelection(reflection.id) }
+                        // Weekly Synthesis List
+                        ForEach(recentWeeklies) { weekly in
+                            WeeklySynthesisRow(
+                                reflection: weekly,
+                                isSelected: selectedWeeklies.contains(weekly.id),
+                                onToggle: { toggleSelection(weekly.id) }
                             )
                         }
                         
@@ -155,8 +155,8 @@ struct WeeklyReflectionScreen: View {
             
             // Next Button
             SaveButton(
-                title: "Continue to Write (\(selectedReflections.count))",
-                isEnabled: !selectedReflections.isEmpty,
+                title: "Continue to Synthesize (\(selectedWeeklies.count))",
+                isEnabled: !selectedWeeklies.isEmpty,
                 action: { withAnimation { currentStep = 2 } },
                 theme: .orange
             )
@@ -167,16 +167,16 @@ struct WeeklyReflectionScreen: View {
         VStack(spacing: 20) {
             Spacer()
             
-            Image(systemName: "camera")
+            Image(systemName: "calendar")
                 .font(.system(size: 60))
                 .foregroundColor(Color.vm.textTertiary)
                 .padding(.vertical, 20)
             
-            Text("No captures this week")
+            Text("No weekly syntheses yet")
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundColor(Color.vm.textPrimary)
             
-            Text("Weekly synthesis works best with daily captures to draw from. Start capturing your moments to build material for reflection.")
+            Text("Quarterly reflection builds on weekly syntheses. Create weekly reflections first to have material for deeper seasonal patterns.")
                 .font(.system(size: 16))
                 .foregroundColor(Color.vm.textSecondary)
                 .multilineTextAlignment(.center)
@@ -185,7 +185,7 @@ struct WeeklyReflectionScreen: View {
             Spacer()
             
             Button(action: { dismiss() }) {
-                Text("Create a Capture")
+                Text("Back to Home")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
@@ -197,7 +197,7 @@ struct WeeklyReflectionScreen: View {
         }
     }
     
-    // MARK: - Step 2: Write
+    // MARK: - Step 2: Synthesize
     
     private var writeStep: some View {
         VStack(spacing: 16) {
@@ -206,16 +206,16 @@ struct WeeklyReflectionScreen: View {
                     // Synthesis Prompt
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Image(systemName: "sparkles")
+                            Image(systemName: "calendar")
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(Color.vm.synthesis)
+                                .foregroundColor(Color.vm.idea)
                             
-                            Text("SYNTHESIS PROMPT")
+                            Text("SEASONAL SYNTHESIS PROMPT")
                                 .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(Color.vm.synthesis)
+                                .foregroundColor(Color.vm.idea)
                         }
                         
-                        Text("What thread runs through these moments? Don't just summarize—what do you understand now that you didn't understand before?")
+                        Text("If this season were a chapter in your life, what would it be called? What question or tension does it contain?")
                             .font(.system(size: 16))
                             .foregroundColor(Color.vm.textSecondary)
                             .italic()
@@ -224,10 +224,10 @@ struct WeeklyReflectionScreen: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.vm.synthesis.opacity(0.1))
+                            .fill(Color.vm.idea.opacity(0.1))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .strokeBorder(Color.vm.synthesis.opacity(0.3), lineWidth: 1)
+                                    .strokeBorder(Color.vm.idea.opacity(0.3), lineWidth: 1)
                             )
                     )
                     .padding(.horizontal, 20)
@@ -237,11 +237,11 @@ struct WeeklyReflectionScreen: View {
                     ZStack(alignment: .topLeading) {
                         if synthesisText.isEmpty {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Write your weekly synthesis...")
+                                Text("Write your quarterly synthesis...")
                                     .foregroundColor(Color.vm.textTertiary)
                                     .font(.system(size: 16))
                                 
-                                Text("Connect the patterns, name the threads.")
+                                Text("What's the arc of this season? What's shifting?")
                                     .foregroundColor(Color.vm.textTertiary.opacity(0.7))
                                     .font(.system(size: 14))
                             }
@@ -280,7 +280,7 @@ struct WeeklyReflectionScreen: View {
                 }
                 
                 SaveButton(
-                    title: "Continue to Refine",
+                    title: "Continue to Frame",
                     isEnabled: !synthesisText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                     action: { withAnimation { currentStep = 3 } },
                     theme: .orange
@@ -290,7 +290,7 @@ struct WeeklyReflectionScreen: View {
         }
     }
     
-    // MARK: - Step 3: Refine (Bakhtinian)
+    // MARK: - Step 3: Cultural Framing (Autoethnographic)
     
     private var refineStep: some View {
         VStack(spacing: 16) {
@@ -298,11 +298,11 @@ struct WeeklyReflectionScreen: View {
                 VStack(spacing: 16) {
                     // Instructions
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Optional: Add perspective")
+                        Text("Optional: Cultural framing")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(Color.vm.textPrimary)
                         
-                        Text("You can save now, or add another layer by exploring how someone else experienced this week.")
+                        Text("You can save now, or add an autoethnographic layer by exploring how larger cultural patterns shaped this season.")
                             .font(.system(size: 14))
                             .foregroundColor(Color.vm.textSecondary)
                     }
@@ -310,14 +310,14 @@ struct WeeklyReflectionScreen: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 8)
                     
-                    // Reveal Bakhtinian Prompt Button
-                    if !showBakhtinianPrompt {
-                        Button(action: { withAnimation { showBakhtinianPrompt = true } }) {
+                    // Reveal Cultural Framing Button
+                    if !showCulturalPrompt {
+                        Button(action: { withAnimation { showCulturalPrompt = true } }) {
                             HStack {
-                                Image(systemName: "person.2.fill")
+                                Image(systemName: "globe")
                                     .font(.system(size: 16, weight: .semibold))
                                 
-                                Text("Reveal Refinement Prompt")
+                                Text("Reveal Cultural Framing Prompt")
                                     .font(.system(size: 16, weight: .semibold))
                             }
                             .foregroundColor(.white)
@@ -328,20 +328,20 @@ struct WeeklyReflectionScreen: View {
                         .padding(.horizontal, 20)
                     }
                     
-                    // Bakhtinian Prompt (when revealed)
-                    if showBakhtinianPrompt {
+                    // Cultural Framing Prompt (when revealed)
+                    if showCulturalPrompt {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
-                                Image(systemName: "person.2.fill")
+                                Image(systemName: "globe")
                                     .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(Color.vm.reflect)
                                 
-                                Text("PERSPECTIVE PROMPT")
+                                Text("AUTOETHNOGRAPHIC PROMPT")
                                     .font(.system(size: 12, weight: .bold))
                                     .foregroundColor(Color.vm.reflect)
                             }
                             
-                            Text("Retell this week from someone else's perspective—a person who appears in your reflections. How might they describe these same days?")
+                            Text("What larger patterns—cultural, professional, generational—does this quarter illuminate? How is your experience shaped by forces beyond yourself?")
                                 .font(.system(size: 16))
                                 .foregroundColor(Color.vm.textSecondary)
                                 .italic()
@@ -358,17 +358,17 @@ struct WeeklyReflectionScreen: View {
                         )
                         .padding(.horizontal, 20)
                         
-                        // Bakhtinian Text Editor
+                        // Cultural Framing Text Editor
                         ZStack(alignment: .topLeading) {
-                            if bakhtinianText.isEmpty {
-                                Text("Write from another perspective...")
+                            if culturalFramingText.isEmpty {
+                                Text("Explore the cultural context...")
                                     .foregroundColor(Color.vm.textTertiary)
                                     .font(.system(size: 16))
                                     .padding(.top, 8)
                                     .padding(.leading, 5)
                             }
                             
-                            TextEditor(text: $bakhtinianText)
+                            TextEditor(text: $culturalFramingText)
                                 .foregroundColor(Color.vm.textPrimary)
                                 .font(.system(size: 16))
                                 .scrollContentBackground(.hidden)
@@ -400,9 +400,9 @@ struct WeeklyReflectionScreen: View {
                 }
                 
                 SaveButton(
-                    title: "Save Weekly Synthesis",
+                    title: "Save Quarterly Synthesis",
                     isEnabled: true,
-                    action: saveWeeklySynthesis,
+                    action: saveQuarterlySynthesis,
                     theme: .orange
                 )
             }
@@ -410,52 +410,52 @@ struct WeeklyReflectionScreen: View {
         }
     }
     
-    // MARK: - Helper Views
+    // MARK: - Helper Functions
     
     private func toggleSelection(_ id: UUID) {
-        if selectedReflections.contains(id) {
-            selectedReflections.remove(id)
+        if selectedWeeklies.contains(id) {
+            selectedWeeklies.remove(id)
         } else {
-            selectedReflections.insert(id)
+            selectedWeeklies.insert(id)
         }
     }
     
     // MARK: - Save Function
     
-    private func saveWeeklySynthesis() {
+    private func saveQuarterlySynthesis() {
         let trimmedSynthesis = synthesisText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedSynthesis.isEmpty else { return }
         
-        // Get selected reflections
-        let selected = recentReflections.filter { selectedReflections.contains($0.id) }
+        // Get selected weeklies
+        let selected = recentWeeklies.filter { selectedWeeklies.contains($0.id) }
         
-        // Combine captures for context
-        let combinedCaptures = selected
-            .map { $0.captureContent }
+        // Combine weekly syntheses for context
+        let combinedSyntheses = selected
+            .map { $0.synthesisContent ?? $0.captureContent }
             .joined(separator: "\n\n---\n\n")
         
-        // Add Bakhtinian content if present
-        let finalSynthesis = if !bakhtinianText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            trimmedSynthesis + "\n\n[Alternative Perspective]\n" + bakhtinianText
+        // Add cultural framing if present
+        let finalSynthesis = if !culturalFramingText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            trimmedSynthesis + "\n\n[Cultural Context]\n" + culturalFramingText
         } else {
             trimmedSynthesis
         }
         
-        // Create weekly synthesis
-        let weeklySynthesis = Reflection(
-            captureContent: combinedCaptures,
+        // Create quarterly synthesis
+        let quarterlySynthesis = Reflection(
+            captureContent: combinedSyntheses,
             synthesisContent: finalSynthesis,
             entryType: .synthesis,
-            tier: .weekly,
+            tier: .yearly,  // Using .yearly for quarterly (or add .quarterly to enum)
             modeBalance: .synthesisOnly,
             linkedReflections: selected
         )
         
-        modelContext.insert(weeklySynthesis)
+        modelContext.insert(quarterlySynthesis)
         
         do {
             try modelContext.save()
-            print("✅ Weekly synthesis saved!")
+            print("✅ Quarterly synthesis saved!")
             dismiss()
         } catch {
             print("❌ Error saving: \(error)")
@@ -463,25 +463,22 @@ struct WeeklyReflectionScreen: View {
     }
 }
 
-// MARK: - Capture Row Component
+// MARK: - Weekly Synthesis Row Component
 
-struct CaptureRow: View {
+struct WeeklySynthesisRow: View {
     let reflection: Reflection
     let isSelected: Bool
     let onToggle: () -> Void
     
-    private var timeSince: String {
+    private var weekRange: String {
         let calendar = Calendar.current
-        let now = Date()
-        let components = calendar.dateComponents([.day, .hour], from: reflection.createdAt, to: now)
+        let endDate = reflection.createdAt
+        let startDate = calendar.date(byAdding: .day, value: -7, to: endDate) ?? endDate
         
-        if let days = components.day, days > 0 {
-            return "\(days)d ago"
-        } else if let hours = components.hour, hours > 0 {
-            return "\(hours)h ago"
-        } else {
-            return "Just now"
-        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d"
+        
+        return "\(formatter.string(from: startDate)) - \(formatter.string(from: endDate))"
     }
     
     var body: some View {
@@ -489,8 +486,8 @@ struct CaptureRow: View {
             HStack(spacing: 12) {
                 // Checkbox
                 Circle()
-                    .strokeBorder(isSelected ? Color.vm.synthesis : Color.vm.textTertiary, lineWidth: 2)
-                    .background(Circle().fill(isSelected ? Color.vm.synthesis : Color.clear))
+                    .strokeBorder(isSelected ? Color.vm.idea : Color.vm.textTertiary, lineWidth: 2)
+                    .background(Circle().fill(isSelected ? Color.vm.idea : Color.clear))
                     .frame(width: 24, height: 24)
                     .overlay(
                         Image(systemName: "checkmark")
@@ -501,22 +498,28 @@ struct CaptureRow: View {
                 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text(reflection.createdAt.formatted(date: .abbreviated, time: .omitted))
+                        Text(weekRange)
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(Color.vm.textPrimary)
                         
-                        Text("·")
-                            .foregroundColor(Color.vm.textTertiary)
+                        Spacer()
                         
-                        Text(timeSince)
-                            .font(.system(size: 14))
-                            .foregroundColor(Color.vm.textSecondary)
+                        Text("WEEKLY")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(Color.vm.synthesis)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                Capsule().fill(Color.vm.synthesis.opacity(0.1))
+                            )
                     }
                     
-                    Text(reflection.captureContent)
-                        .font(.system(size: 14))
-                        .foregroundColor(Color.vm.textSecondary)
-                        .lineLimit(2)
+                    if let synthesis = reflection.synthesisContent {
+                        Text(synthesis)
+                            .font(.system(size: 14))
+                            .foregroundColor(Color.vm.textSecondary)
+                            .lineLimit(2)
+                    }
                 }
                 
                 Spacer()
@@ -528,7 +531,7 @@ struct CaptureRow: View {
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .strokeBorder(
-                                isSelected ? Color.vm.synthesis.opacity(0.4) : Color.clear,
+                                isSelected ? Color.vm.idea.opacity(0.4) : Color.clear,
                                 lineWidth: 2
                             )
                     )
@@ -540,6 +543,6 @@ struct CaptureRow: View {
 }
 
 #Preview {
-    WeeklyReflectionScreen()
+    QuarterlyReflectionScreen()
         .modelContainer(for: [Reflection.self], inMemory: true)
 }

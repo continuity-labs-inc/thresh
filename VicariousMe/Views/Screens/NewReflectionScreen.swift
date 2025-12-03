@@ -1,7 +1,10 @@
 import SwiftUI
+import SwiftData
 
 struct NewReflectionScreen: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext  // ← ADD THIS LINE
+    
     @State private var captureText = ""
     @State private var showingCamera = false
     
@@ -59,38 +62,46 @@ struct NewReflectionScreen: View {
             )
             .padding(.bottom, 24)
             
-            // Text Input
-            ZStack(alignment: .topLeading) {
-                if captureText.isEmpty {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Describe what happened in complete sentences...")
-                            .foregroundColor(Color.vm.textTertiary)
-                            .font(.system(size: 16))
+            // WRAP CONTENT IN SCROLLVIEW TO FIX KEYBOARD BLOCKING
+            ScrollView {
+                VStack(spacing: 16) {
+                    // Text Input
+                    ZStack(alignment: .topLeading) {
+                        if captureText.isEmpty {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Describe what happened in complete sentences...")
+                                    .foregroundColor(Color.vm.textTertiary)
+                                    .font(.system(size: 16))
+                                
+                                Text("Write as if telling a friend about this moment.")
+                                    .foregroundColor(Color.vm.textTertiary.opacity(0.7))
+                                    .font(.system(size: 14))
+                            }
+                            .padding(.top, 8)
+                            .padding(.leading, 5)
+                        }
                         
-                        Text("Write as if telling a friend about this moment.")
-                            .foregroundColor(Color.vm.textTertiary.opacity(0.7))
-                            .font(.system(size: 14))
+                        TextEditor(text: $captureText)
+                            .foregroundColor(Color.vm.textPrimary)
+                            .font(.system(size: 16))
+                            .scrollContentBackground(.hidden)
+                            .frame(minHeight: 300)
                     }
-                    .padding(.top, 8)
-                    .padding(.leading, 5)
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.vm.surface)
+                    )
+                    .padding(.horizontal, 20)
+                    
+                    // Padding for keyboard
+                    Color.clear.frame(height: 100)
                 }
-                
-                TextEditor(text: $captureText)
-                    .foregroundColor(Color.vm.textPrimary)
-                    .font(.system(size: 16))
-                    .scrollContentBackground(.hidden)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .padding(16)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.vm.surface)
-            )
-            .padding(.horizontal, 20)
             
             Spacer()
             
-            // Save Button
+            // Save Button - STAYS VISIBLE WHEN KEYBOARD IS OPEN
             SaveButton(
                 title: "Save Capture",
                 isEnabled: !captureText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
@@ -102,12 +113,43 @@ struct NewReflectionScreen: View {
     }
     
     private func saveCapture() {
-        // TODO: Save capture logic
-        print("Saving capture: \(captureText)")
+        print("🔴 DEBUG: Save button pressed")
+        
+        let trimmedText = captureText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !trimmedText.isEmpty else {
+            print("🔴 DEBUG: Text is empty, not saving")
+            return
+        }
+        
+        // CREATE NEW REFLECTION
+        let newReflection = Reflection(
+            captureContent: trimmedText,
+            entryType: .pureCapture,
+            tier: .active,
+            modeBalance: .captureOnly
+        )
+        
+        print("🔴 DEBUG: Created reflection with ID: \(newReflection.id)")
+        
+        // INSERT INTO SWIFTDATA
+        modelContext.insert(newReflection)
+        
+        print("🔴 DEBUG: Inserted into modelContext")
+        
+        // SAVE TO DATABASE
+        do {
+            try modelContext.save()
+            print("✅ SUCCESS: Reflection saved to database!")
+        } catch {
+            print("❌ ERROR: Failed to save - \(error.localizedDescription)")
+        }
+        
         dismiss()
     }
 }
 
 #Preview {
     NewReflectionScreen()
+        .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self])
 }

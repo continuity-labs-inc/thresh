@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E1CD0F12EE048EE003B470E /* QuarterlyReflectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */; };
 		2E5A01552EE02C6B00E5A8CB /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5A01532EE02C6B00E5A8CB /* Colors.swift */; };
 		2E5A01572EE0396800E5A8CB /* SaveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5A01562EE0395D00E5A8CB /* SaveButton.swift */; };
 		2EAD3D462EDFE92F004929DF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D452EDFE92F004929DF /* AppState.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarterlyReflectionScreen.swift; sourceTree = "<group>"; };
 		2E5A01532EE02C6B00E5A8CB /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		2E5A01562EE0395D00E5A8CB /* SaveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButton.swift; sourceTree = "<group>"; };
 		2EAD3D452EDFE92F004929DF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = VicariousMe/Models/AppState.swift; sourceTree = SOURCE_ROOT; };
@@ -238,6 +240,7 @@
 		A100002A238F5E0000000001 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */,
 				B3000008238F5E0000000001 /* HomeScreen.swift */,
 				A2000016238F5E0000000001 /* WeeklyReflectionScreen.swift */,
 				A2000018238F5E0000000001 /* NewReflectionScreen.swift */,
@@ -422,6 +425,7 @@
 				B300000B238F5E0000000001 /* NewIdeaScreen.swift in Sources */,
 				B300000D238F5E0000000001 /* NewStoryScreen.swift in Sources */,
 				B300000F238F5E0000000001 /* QuickCaptureScreen.swift in Sources */,
+				2E1CD0F12EE048EE003B470E /* QuarterlyReflectionScreen.swift in Sources */,
 				B3000011238F5E0000000001 /* OnboardingScreen.swift in Sources */,
 				2E5A01572EE0396800E5A8CB /* SaveButton.swift in Sources */,
 				B3000013238F5E0000000001 /* ArchiveScreen.swift in Sources */,

@@ -1,9 +1,12 @@
 import SwiftUI
+import SwiftData
 
 struct NewStoryScreen: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    
     @State private var storyTitle = ""
-    @State private var storyText = ""
+    @State private var storyContent = ""
     
     var body: some View {
         VStack(spacing: 0) {
@@ -59,55 +62,59 @@ struct NewStoryScreen: View {
             )
             .padding(.bottom, 24)
             
-            // Title Field
-            TextField("", text: $storyTitle, prompt: Text("Title (optional)")
-                .foregroundColor(Color.vm.textTertiary)
-            )
-            .foregroundColor(Color.vm.textPrimary)
-            .font(.system(size: 16))
-            .padding(16)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.vm.surface)
-            )
-            .padding(.horizontal, 20)
-            .padding(.bottom, 12)
-            
-            // Story Text Input
-            ZStack(alignment: .topLeading) {
-                if storyText.isEmpty {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Tell your story in complete sentences...")
-                            .foregroundColor(Color.vm.textTertiary)
-                            .font(.system(size: 16))
-                        
-                        Text("Capture a scene, memory, or moment worth keeping.")
-                            .foregroundColor(Color.vm.textTertiary.opacity(0.7))
-                            .font(.system(size: 14))
-                    }
-                    .padding(.top, 8)
-                    .padding(.leading, 5)
-                }
-                
-                TextEditor(text: $storyText)
+            ScrollView {
+                VStack(spacing: 12) {
+                    // Title Field
+                    TextField("", text: $storyTitle, prompt: Text("Story title")
+                        .foregroundColor(Color.vm.textTertiary)
+                    )
                     .foregroundColor(Color.vm.textPrimary)
                     .font(.system(size: 16))
-                    .scrollContentBackground(.hidden)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.vm.surface)
+                    )
+                    .padding(.horizontal, 20)
+                    
+                    // Story Content
+                    ZStack(alignment: .topLeading) {
+                        if storyContent.isEmpty {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Tell your story in complete sentences...")
+                                    .foregroundColor(Color.vm.textTertiary)
+                                    .font(.system(size: 16))
+                                
+                                Text("Capture a scene, memory, or moment worth keeping.")
+                                    .foregroundColor(Color.vm.textTertiary.opacity(0.7))
+                                    .font(.system(size: 14))
+                            }
+                            .padding(.top, 8)
+                            .padding(.leading, 5)
+                        }
+                        
+                        TextEditor(text: $storyContent)
+                            .foregroundColor(Color.vm.textPrimary)
+                            .font(.system(size: 16))
+                            .scrollContentBackground(.hidden)
+                            .frame(minHeight: 300)
+                    }
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.vm.surface)
+                    )
+                    .padding(.horizontal, 20)
+                    
+                    Color.clear.frame(height: 100)
+                }
             }
-            .padding(16)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.vm.surface)
-            )
-            .padding(.horizontal, 20)
             
             Spacer()
             
-            // Save Button
             SaveButton(
                 title: "Save Story",
-                isEnabled: !storyText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                isEnabled: !storyContent.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                 action: saveStory,
                 theme: .green
             )
@@ -116,12 +123,30 @@ struct NewStoryScreen: View {
     }
     
     private func saveStory() {
-        // TODO: Save story logic
-        print("Saving story: \(storyText)")
+        let trimmedContent = storyContent.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedTitle = storyTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !trimmedContent.isEmpty else { return }
+        
+        let newStory = Story(
+            title: trimmedTitle.isEmpty ? "Untitled Story" : trimmedTitle,
+            content: trimmedContent
+        )
+        
+        modelContext.insert(newStory)
+        
+        do {
+            try modelContext.save()
+            print("Story saved successfully")
+        } catch {
+            print("Error saving story: \(error)")
+        }
+        
         dismiss()
     }
 }
 
 #Preview {
     NewStoryScreen()
+        .modelContainer(for: [Story.self])
 }
