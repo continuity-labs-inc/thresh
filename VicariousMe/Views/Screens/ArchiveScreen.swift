@@ -3,11 +3,12 @@ import SwiftData
 
 struct ArchiveScreen: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(
-        filter: #Predicate<Reflection> { $0.isArchived == true },
-        sort: \Reflection.createdAt,
-        order: .reverse
-    ) private var archivedReflections: [Reflection]
+    @Query(sort: \Reflection.createdAt, order: .reverse)
+    private var allReflections: [Reflection]
+
+    private var archivedReflections: [Reflection] {
+        allReflections.filter { $0.isArchived }
+    }
 
     var body: some View {
         Group {
