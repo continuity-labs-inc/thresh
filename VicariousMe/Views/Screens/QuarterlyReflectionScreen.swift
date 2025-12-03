@@ -5,13 +5,12 @@ struct QuarterlyReflectionScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     
-    @Query(
-        filter: #Predicate<Reflection> { reflection in
-            reflection.tier == .weekly
-        },
-        sort: \Reflection.createdAt,
-        order: .reverse
-    ) private var allWeeklies: [Reflection]
+    @Query(sort: \Reflection.createdAt, order: .reverse)
+    private var allReflections: [Reflection]
+
+    private var allWeeklies: [Reflection] {
+        allReflections.filter { $0.tier == .weekly }
+    }
     
     @State private var currentStep = 1
     @State private var selectedWeeklies: Set<UUID> = []

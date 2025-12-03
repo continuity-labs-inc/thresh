@@ -23,6 +23,7 @@ struct ReflectionDetailScreen: View {
 
                     Text(reflection.captureContent)
                         .font(.body)
+                        .foregroundStyle(Color.vm.textPrimary)
                 }
 
                 // Reflection content (if present)
@@ -30,10 +31,11 @@ struct ReflectionDetailScreen: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Reflection", systemImage: "arrow.right")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.vm.reflect)
 
                         Text(reflectionContent)
                             .font(.body)
+                            .foregroundStyle(Color.vm.textPrimary)
                     }
                 }
 
@@ -46,6 +48,7 @@ struct ReflectionDetailScreen: View {
 
                         Text(synthesisContent)
                             .font(.body)
+                            .foregroundStyle(Color.vm.textPrimary)
                     }
                 }
 

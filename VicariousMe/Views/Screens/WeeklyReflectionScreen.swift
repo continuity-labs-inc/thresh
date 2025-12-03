@@ -5,69 +5,50 @@ struct WeeklyReflectionScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     
-    @Query(
-        filter: #Predicate<Reflection> { reflection in
-            reflection.tier == .daily || reflection.tier == .active
-        },
-        sort: \Reflection.createdAt,
-        order: .reverse
-    ) private var allReflections: [Reflection]
+    @Query(sort: \Reflection.createdAt, order: .reverse)
+    private var allReflections: [Reflection]
+    
+    private var filteredReflections: [Reflection] {
+        allReflections.filter { $0.tier == .daily || $0.tier == .active }
+    }
     
     @State private var currentStep = 1
     @State private var selectedReflections: Set<UUID> = []
     @State private var synthesisText = ""
     @State private var bakhtinianText = ""
     @State private var showBakhtinianPrompt = false
+    @FocusState private var isTextEditorFocused: Bool
     
     // Get reflections from last 7 days
     private var recentReflections: [Reflection] {
         let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
-        return allReflections.filter { $0.createdAt >= sevenDaysAgo }
+        return filteredReflections.filter { $0.createdAt >= sevenDaysAgo }
     }
     
     var body: some View {
         VStack(spacing: 0) {
-            // Header
-            HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(Color.vm.textPrimary)
-                        .frame(width: 44, height: 44)
-                        .background(Circle().fill(Color.vm.surface))
-                }
-                
-                Spacer()
-                
-                Text("Weekly Reflection")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color.vm.textSecondary)
-                
-                Spacer()
-                
-                Color.clear.frame(width: 44, height: 44)
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 12)
-            .padding(.bottom, 16)
+            // Header - always visible
+            headerView
             
             // Synthesis Mode Badge
-            HStack {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.vm.synthesis)
+            if !isTextEditorFocused {
+                HStack {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(Color.vm.synthesis)
+                    
+                    Text("SYNTHESIS MODE")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(Color.vm.synthesis)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(Capsule().fill(Color.vm.synthesis.opacity(0.1)))
+                .padding(.bottom, 24)
                 
-                Text("SYNTHESIS MODE")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.vm.synthesis)
+                // Step Indicators
+                stepIndicator
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(Capsule().fill(Color.vm.synthesis.opacity(0.1)))
-            .padding(.bottom, 24)
-            
-            // Step Indicators
-            stepIndicator
             
             // Content based on step
             if currentStep == 1 {
@@ -79,6 +60,46 @@ struct WeeklyReflectionScreen: View {
             }
         }
         .background(Color.vm.background)
+        .onTapGesture {
+            isTextEditorFocused = false
+        }
+    }
+    
+    // MARK: - Header
+    
+    private var headerView: some View {
+        HStack {
+            Button(action: { dismiss() }) {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(Color.vm.textPrimary)
+                    .frame(width: 44, height: 44)
+                    .background(Circle().fill(Color.vm.surface))
+            }
+            
+            Spacer()
+            
+            Text("Weekly Reflection")
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundColor(Color.vm.textPrimary)
+            
+            Spacer()
+            
+            // Done button when keyboard is up
+            if isTextEditorFocused {
+                Button(action: { isTextEditorFocused = false }) {
+                    Text("Done")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(Color.vm.synthesis)
+                }
+                .frame(width: 44, height: 44)
+            } else {
+                Color.clear.frame(width: 44, height: 44)
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
+        .padding(.bottom, isTextEditorFocused ? 8 : 16)
     }
     
     // MARK: - Step Indicator
@@ -160,6 +181,8 @@ struct WeeklyReflectionScreen: View {
                 action: { withAnimation { currentStep = 2 } },
                 theme: .orange
             )
+            .padding(.horizontal, 24)
+            .padding(.bottom, 20)
         }
     }
     
@@ -200,74 +223,115 @@ struct WeeklyReflectionScreen: View {
     // MARK: - Step 2: Write
     
     private var writeStep: some View {
-        VStack(spacing: 16) {
-            ScrollView {
-                VStack(spacing: 16) {
-                    // Synthesis Prompt
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: "sparkles")
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(Color.vm.synthesis)
-                            
-                            Text("SYNTHESIS PROMPT")
-                                .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(Color.vm.synthesis)
+        VStack(spacing: 0) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: 16) {
+                        // Synthesis Prompt - only show when keyboard not focused
+                        if !isTextEditorFocused {
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Image(systemName: "sparkles")
+                                        .font(.system(size: 14, weight: .semibold))
+                                        .foregroundColor(Color.vm.synthesis)
+                                    
+                                    Text("SYNTHESIS PROMPT")
+                                        .font(.system(size: 12, weight: .bold))
+                                        .foregroundColor(Color.vm.synthesis)
+                                }
+                                
+                                Text("What thread connects these moments? What patterns or meaning emerge when you see them together?")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(Color.vm.textSecondary)
+                                    .italic()
+                            }
+                            .padding(16)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.vm.synthesis.opacity(0.1))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .strokeBorder(Color.vm.synthesis.opacity(0.3), lineWidth: 1)
+                                    )
+                            )
+                            .padding(.horizontal, 20)
                         }
                         
-                        Text("What thread runs through these moments? Don't just summarize—what do you understand now that you didn't understand before?")
-                            .font(.system(size: 16))
-                            .foregroundColor(Color.vm.textSecondary)
-                            .italic()
-                    }
-                    .padding(16)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.vm.synthesis.opacity(0.1))
+                        // Synthesis Text Editor
+                        VStack(alignment: .leading, spacing: 8) {
+                            if isTextEditorFocused {
+                                Text("Write your synthesis:")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(Color.vm.textSecondary)
+                                    .padding(.horizontal, 20)
+                            }
+                            
+                            ZStack(alignment: .topLeading) {
+                                if synthesisText.isEmpty {
+                                    Text("Write your synthesis in complete sentences...")
+                                        .foregroundColor(Color.vm.textTertiary)
+                                        .font(.system(size: 16))
+                                        .padding(.top, 12)
+                                        .padding(.leading, 16)
+                                }
+                                
+                                TextEditor(text: $synthesisText)
+                                    .foregroundColor(Color.vm.textPrimary)
+                                    .font(.system(size: 16))
+                                    .scrollContentBackground(.hidden)
+                                    .focused($isTextEditorFocused)
+                                    .frame(minHeight: isTextEditorFocused ? 250 : 200)
+                                    .padding(12)
+                            }
+                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surface))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .strokeBorder(Color.vm.synthesis.opacity(0.3), lineWidth: 1)
+                                    .strokeBorder(isTextEditorFocused ? Color.vm.synthesis : Color.clear, lineWidth: 2)
                             )
-                    )
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
-                    
-                    // Text Editor
-                    ZStack(alignment: .topLeading) {
-                        if synthesisText.isEmpty {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("Write your weekly synthesis...")
-                                    .foregroundColor(Color.vm.textTertiary)
-                                    .font(.system(size: 16))
-                                
-                                Text("Connect the patterns, name the threads.")
-                                    .foregroundColor(Color.vm.textTertiary.opacity(0.7))
-                                    .font(.system(size: 14))
-                            }
-                            .padding(.top, 8)
-                            .padding(.leading, 5)
+                            .padding(.horizontal, 20)
+                            .id("textEditor")
                         }
                         
-                        TextEditor(text: $synthesisText)
-                            .foregroundColor(Color.vm.textPrimary)
-                            .font(.system(size: 16))
-                            .scrollContentBackground(.hidden)
-                            .frame(minHeight: 300)
+                        // Selected Captures Preview - hide when keyboard up
+                        if !isTextEditorFocused {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Selected Captures (\(selectedReflections.count))")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(Color.vm.textSecondary)
+                                
+                                ForEach(recentReflections.filter { selectedReflections.contains($0.id) }) { reflection in
+                                    Text("• \(reflection.captureContent)")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(Color.vm.textTertiary)
+                                        .lineLimit(1)
+                                }
+                            }
+                            .padding(16)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surfaceSecondary))
+                            .padding(.horizontal, 20)
+                        }
+                        
+                        Color.clear.frame(height: isTextEditorFocused ? 20 : 100)
                     }
-                    .padding(16)
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surface))
-                    .padding(.horizontal, 20)
-                    
-                    Color.clear.frame(height: 100)
+                    .padding(.top, 8)
+                }
+                .onChange(of: isTextEditorFocused) { _, focused in
+                    if focused {
+                        withAnimation {
+                            proxy.scrollTo("textEditor", anchor: .top)
+                        }
+                    }
                 }
             }
             
-            Spacer()
-            
-            // Navigation Buttons
+            // Navigation Buttons - always visible
             HStack(spacing: 12) {
-                Button(action: { withAnimation { currentStep = 1 } }) {
+                Button(action: {
+                    isTextEditorFocused = false
+                    withAnimation { currentStep = 1 }
+                }) {
                     Text("Back")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(Color.vm.textPrimary)
@@ -280,114 +344,138 @@ struct WeeklyReflectionScreen: View {
                 }
                 
                 SaveButton(
-                    title: "Continue to Refine",
+                    title: "Continue",
                     isEnabled: !synthesisText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
-                    action: { withAnimation { currentStep = 3 } },
-                    theme: .orange
+                    action: {
+                        isTextEditorFocused = false
+                        withAnimation { currentStep = 3 }
+                    },
+                    theme: .blue
                 )
             }
             .padding(.horizontal, 24)
+            .padding(.bottom, 20)
+            .padding(.top, 12)
+            .background(Color.vm.background)
         }
     }
     
     // MARK: - Step 3: Refine (Bakhtinian)
     
     private var refineStep: some View {
-        VStack(spacing: 16) {
-            ScrollView {
-                VStack(spacing: 16) {
-                    // Instructions
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Optional: Add perspective")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(Color.vm.textPrimary)
-                        
-                        Text("You can save now, or add another layer by exploring how someone else experienced this week.")
-                            .font(.system(size: 14))
-                            .foregroundColor(Color.vm.textSecondary)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 8)
-                    
-                    // Reveal Bakhtinian Prompt Button
-                    if !showBakhtinianPrompt {
-                        Button(action: { withAnimation { showBakhtinianPrompt = true } }) {
-                            HStack {
-                                Image(systemName: "person.2.fill")
-                                    .font(.system(size: 16, weight: .semibold))
+        VStack(spacing: 0) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: 16) {
+                        // Optional Bakhtinian Prompt - hide when keyboard up
+                        if !isTextEditorFocused {
+                            VStack(alignment: .leading, spacing: 12) {
+                                HStack {
+                                    Image(systemName: "person.2")
+                                        .font(.system(size: 14, weight: .semibold))
+                                        .foregroundColor(Color.vm.reflect)
+                                    
+                                    Text("PERSPECTIVE PROMPT")
+                                        .font(.system(size: 12, weight: .bold))
+                                        .foregroundColor(Color.vm.reflect)
+                                    
+                                    Spacer()
+                                    
+                                    Text("Optional")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(Color.vm.textTertiary)
+                                }
                                 
-                                Text("Reveal Refinement Prompt")
-                                    .font(.system(size: 16, weight: .semibold))
+                                Text("Retell this week from someone else's perspective—a person who appears in your reflections. How might they describe these same days?")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(Color.vm.textSecondary)
+                                    .italic()
                             }
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 48)
-                            .background(RoundedRectangle(cornerRadius: 24).fill(Color.vm.reflect))
+                            .padding(16)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.vm.reflect.opacity(0.1))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .strokeBorder(Color.vm.reflect.opacity(0.3), lineWidth: 1)
+                                    )
+                            )
+                            .padding(.horizontal, 20)
                         }
-                        .padding(.horizontal, 20)
-                    }
-                    
-                    // Bakhtinian Prompt (when revealed)
-                    if showBakhtinianPrompt {
-                        VStack(alignment: .leading, spacing: 8) {
-                            HStack {
-                                Image(systemName: "person.2.fill")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(Color.vm.reflect)
-                                
-                                Text("PERSPECTIVE PROMPT")
-                                    .font(.system(size: 12, weight: .bold))
-                                    .foregroundColor(Color.vm.reflect)
-                            }
-                            
-                            Text("Retell this week from someone else's perspective—a person who appears in your reflections. How might they describe these same days?")
-                                .font(.system(size: 16))
-                                .foregroundColor(Color.vm.textSecondary)
-                                .italic()
-                        }
-                        .padding(16)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.vm.reflect.opacity(0.1))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .strokeBorder(Color.vm.reflect.opacity(0.3), lineWidth: 1)
-                                )
-                        )
-                        .padding(.horizontal, 20)
                         
                         // Bakhtinian Text Editor
-                        ZStack(alignment: .topLeading) {
-                            if bakhtinianText.isEmpty {
-                                Text("Write from another perspective...")
-                                    .foregroundColor(Color.vm.textTertiary)
-                                    .font(.system(size: 16))
-                                    .padding(.top, 8)
-                                    .padding(.leading, 5)
+                        VStack(alignment: .leading, spacing: 8) {
+                            if isTextEditorFocused {
+                                Text("Write from another perspective:")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(Color.vm.textSecondary)
+                                    .padding(.horizontal, 20)
                             }
                             
-                            TextEditor(text: $bakhtinianText)
-                                .foregroundColor(Color.vm.textPrimary)
-                                .font(.system(size: 16))
-                                .scrollContentBackground(.hidden)
-                                .frame(minHeight: 200)
+                            ZStack(alignment: .topLeading) {
+                                if bakhtinianText.isEmpty {
+                                    Text("Write from another perspective...")
+                                        .foregroundColor(Color.vm.textTertiary)
+                                        .font(.system(size: 16))
+                                        .padding(.top, 12)
+                                        .padding(.leading, 16)
+                                }
+                                
+                                TextEditor(text: $bakhtinianText)
+                                    .foregroundColor(Color.vm.textPrimary)
+                                    .font(.system(size: 16))
+                                    .scrollContentBackground(.hidden)
+                                    .focused($isTextEditorFocused)
+                                    .frame(minHeight: isTextEditorFocused ? 250 : 200)
+                                    .padding(12)
+                            }
+                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surface))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .strokeBorder(isTextEditorFocused ? Color.vm.reflect : Color.clear, lineWidth: 2)
+                            )
+                            .padding(.horizontal, 20)
+                            .id("bakhtinianEditor")
                         }
-                        .padding(16)
-                        .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surface))
-                        .padding(.horizontal, 20)
+                        
+                        // Your Synthesis Preview - hide when keyboard up
+                        if !isTextEditorFocused {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Your Synthesis")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(Color.vm.textSecondary)
+                                
+                                Text(synthesisText)
+                                    .font(.system(size: 14))
+                                    .foregroundColor(Color.vm.textTertiary)
+                                    .lineLimit(4)
+                            }
+                            .padding(16)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surfaceSecondary))
+                            .padding(.horizontal, 20)
+                        }
+                        
+                        Color.clear.frame(height: isTextEditorFocused ? 20 : 100)
                     }
-                    
-                    Color.clear.frame(height: 100)
+                    .padding(.top, 8)
+                }
+                .onChange(of: isTextEditorFocused) { _, focused in
+                    if focused {
+                        withAnimation {
+                            proxy.scrollTo("bakhtinianEditor", anchor: .top)
+                        }
+                    }
                 }
             }
             
-            Spacer()
-            
             // Navigation Buttons
             HStack(spacing: 12) {
-                Button(action: { withAnimation { currentStep = 2 } }) {
+                Button(action: {
+                    isTextEditorFocused = false
+                    withAnimation { currentStep = 2 }
+                }) {
                     Text("Back")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(Color.vm.textPrimary)
@@ -400,13 +488,19 @@ struct WeeklyReflectionScreen: View {
                 }
                 
                 SaveButton(
-                    title: "Save Weekly Synthesis",
+                    title: "Save Synthesis",
                     isEnabled: true,
-                    action: saveWeeklySynthesis,
+                    action: {
+                        isTextEditorFocused = false
+                        saveWeeklySynthesis()
+                    },
                     theme: .orange
                 )
             }
             .padding(.horizontal, 24)
+            .padding(.bottom, 20)
+            .padding(.top, 12)
+            .background(Color.vm.background)
         }
     }
     
