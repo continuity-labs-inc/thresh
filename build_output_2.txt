@@ -1,0 +1,364 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme VicariousMe -destination "platform=iOS Simulator,name=iPhone 17" build
+
+2025-12-02 19:23:07.492 xcodebuild[6203:14077637] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'VicariousMe' in project 'VicariousMe' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk /Users/drewnat/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.1-23B77-90cf18a4295e390e64c810bc6bd7acbc.sdkstatcache
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk -o /Users/drewnat/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.1-23B77-90cf18a4295e390e64c810bc6bd7acbc.sdkstatcache
+
+ProcessProductPackaging /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/VicariousMe.entitlements /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app-Simulated.xcent (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "Q5GHW4DYN9.continuitylabs.com.vicariousme.app";
+}
+    
+    builtin-productPackagingUtility /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/VicariousMe.entitlements -entitlements -format xml -o /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app-Simulated.xcent
+
+ProcessProductPackaging /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/VicariousMe.entitlements /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app.xcent (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+    Entitlements:
+    
+    {
+}
+    
+    builtin-productPackagingUtility /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/VicariousMe.entitlements -entitlements -format xml -o /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app.xcent
+
+ProcessProductPackagingDER /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app.xcent /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app.xcent.der (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    /usr/bin/derq query -f xml -i /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app.xcent -o /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app.xcent.der --raw
+
+ProcessProductPackagingDER /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app-Simulated.xcent /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app-Simulated.xcent.der (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    /usr/bin/derq query -f xml -i /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app-Simulated.xcent -o /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe.app-Simulated.xcent.der --raw
+
+CompileAssetCatalogVariant thinned /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Products/Debug-iphonesimulator/VicariousMe.app /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Resources/Assets.xcassets (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Resources/Assets.xcassets --compile /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/assetcatalog_dependencies_thinned --output-partial-info-plist /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --accent-color AccentColor --compress-pngs --enable-on-demand-resources YES --filter-for-thinning-device-configuration iPhone18,3 --filter-for-device-os-version 26.1 --development-region en --target-device iphone --target-device ipad --minimum-deployment-target 17.0 --platform iphonesimulator
+
+SwiftDriver VicariousMe normal arm64 com.apple.xcode.tools.swift.compiler (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name VicariousMe -Onone -enforce-exclusivity\=checked @/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/VicariousMe.SwiftFileList -DDEBUG -enable-upcoming-feature StrictConcurrency -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk -target arm64-apple-ios17.0-simulator -g -module-cache-path /Users/drewnat/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Products/Debug-iphonesimulator -F /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64 -c -j10 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/drewnat/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.1-23B77-90cf18a4295e390e64c810bc6bd7acbc.sdkstatcache -output-file-map /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/VicariousMe-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/drewnat/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/drewnat/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/VicariousMe.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/drewnat/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/VicariousMe_const_extract_protocols.json -Xcc -iquote -Xcc /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe-generated-files.hmap -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe-own-target-headers.hmap -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe-all-target-headers.hmap -Xcc -iquote -Xcc /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe-project-headers.hmap -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/DerivedSources-normal/arm64 -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/DerivedSources/arm64 -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/VicariousMe-Swift.h -working-directory /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ VicariousMeApp.swift,\ AppState.swift,\ VMColors.swift,\ Reflection.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/App/VicariousMeApp.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/App/AppState.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Utilities/VMColors.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift (in target 'VicariousMe' from project 'VicariousMe')
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/App/VicariousMeApp.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/App/AppState.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Utilities/VMColors.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 Compiling\ Idea.swift,\ PromptLibrary.swift,\ AIService.swift,\ DesignNotesService.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Prompts/PromptLibrary.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/AI/AIService.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift (in target 'VicariousMe' from project 'VicariousMe')
+Failed frontend command:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/App/VicariousMeApp.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/App/AppState.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Utilities/VMColors.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/RevisionLayer.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Connection.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Question.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Story.swift -primary-file /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift -primary-file /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Prompts/PromptLibrary.swift -primary-file /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/AI/AIService.swift -primary-file /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/ModeIndicator.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/StepIndicator.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/PromptView.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/ConnectionSurfacerView.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/SynthesisGuideItem.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/QuickActionButton.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/ReflectionRow.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/QuestionRow.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/IdeaRow.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/StoryRow.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/TabButton.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/EmptyStateView.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/HomeScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/WeeklyReflectionScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewReflectionScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewQuestionScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewIdeaScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewStoryScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/QuickCaptureScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/OnboardingScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/ArchiveScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/ReflectionDetailScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/QuestionDetailScreen.swift /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/DerivedSources/GeneratedAssetSymbols.swift -supplementary-output-file-map /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/supplementaryOutputs-3 -emit-localized-strings -emit-localized-strings-path /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64 -target arm64-apple-ios17.0-simulator -module-can-import-version DeveloperToolsSupport 23.0.4 23.0.4 -module-can-import-version SwiftUI 7.1.13.1 7.1.13 -module-can-import-version UIKit 9126.1.12.1 9126.1.12 -disable-cross-import-overlay-search -swift-module-cross-import SwiftData /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk/System/Library/Frameworks/SwiftData.framework/Modules/SwiftData.swiftcrossimport/CoreData.swiftoverlay -swift-module-cross-import SwiftData /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk/System/Library/Frameworks/SwiftData.framework/Modules/SwiftData.swiftcrossimport/SwiftUI.swiftoverlay -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libFoundationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#FoundationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libObservationMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#ObservationMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libPreviewsMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#PreviewsMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftDataMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftDataMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftMacros -load-resolved-plugin /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftUIMacros.dylib\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftUIMacros -disable-implicit-swift-modules -Xcc -fno-implicit-modules -Xcc -fno-implicit-module-maps -explicit-swift-module-map-file /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/VicariousMe-dependencies-1.json -Xllvm -aarch64-use-tbi -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.1.sdk -I /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Products/Debug-iphonesimulator -F /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Products/Debug-iphonesimulator -no-color-diagnostics -Xcc -fno-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=4 -module-cache-path /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -swift-version 5 -enforce-exclusivity\=checked -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/VicariousMe_const_extract_protocols.json -enable-upcoming-feature StrictConcurrency -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Users/drewnat/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift -enable-anonymous-context-mangled-names -file-compilation-dir /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -Xcc -ivfsstatcache -Xcc /Users/drewnat/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator26.1-23B77-90cf18a4295e390e64c810bc6bd7acbc.sdkstatcache -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe-generated-files.hmap -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe-own-target-headers.hmap -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe-all-target-headers.hmap -Xcc -iquote -Xcc /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/VicariousMe-project-headers.hmap -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/DerivedSources-normal/arm64 -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/DerivedSources/arm64 -Xcc -I/Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/DerivedSources -Xcc -DDEBUG\=1 -no-auto-bridging-header-chaining -module-name VicariousMe -frontend-parseable-output -disable-clang-spi -target-sdk-version 26.1 -target-sdk-name iphonesimulator26.1 -clang-target arm64-apple-ios26.1-simulator -in-process-plugin-server-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -o /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/Idea.o -o /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/PromptLibrary.o -o /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/AIService.o -o /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/DesignNotesService.o -index-unit-output-path /VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/Idea.o -index-unit-output-path /VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/PromptLibrary.o -index-unit-output-path /VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/AIService.o -index-unit-output-path /VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/Objects-normal/arm64/DesignNotesService.o -index-store-path /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Index.noindex/DataStore -index-system-modules
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:8:9: error: A stored property cannot be named 'description' (from macro 'Model')
+    var description: String
+        ^~~~~~~~~~~
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:60:6: error: invalid redeclaration of 'FocusType'
+enum FocusType: String, CaseIterable, Codable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:12:6: note: 'FocusType' previously declared here
+enum FocusType: String, Codable, CaseIterable, Identifiable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:12:6: note: 'FocusType' previously declared here
+enum FocusType: String, Codable, CaseIterable, Identifiable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:72:6: error: invalid redeclaration of 'EntryType'
+enum EntryType: String, Codable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:5:6: note: 'EntryType' previously declared here
+enum EntryType: String, Codable, CaseIterable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:5:6: note: 'EntryType' previously declared here
+enum EntryType: String, Codable, CaseIterable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:81:6: error: invalid redeclaration of 'ModeBalance'
+enum ModeBalance: String, Codable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:48:6: note: 'ModeBalance' previously declared here
+enum ModeBalance: String, Codable, CaseIterable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:48:6: note: 'ModeBalance' previously declared here
+enum ModeBalance: String, Codable, CaseIterable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:91:6: error: invalid redeclaration of 'ReflectionMode'
+enum ReflectionMode: String, Codable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/App/AppState.swift:29:6: note: 'ReflectionMode' previously declared here
+enum ReflectionMode: String, Codable, CaseIterable, Identifiable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/App/AppState.swift:29:6: note: 'ReflectionMode' previously declared here
+enum ReflectionMode: String, Codable, CaseIterable, Identifiable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:109:6: error: invalid redeclaration of 'ReflectionTier'
+enum ReflectionTier: String, Codable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:37:6: note: 'ReflectionTier' previously declared here
+enum ReflectionTier: String, Codable, CaseIterable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:37:6: note: 'ReflectionTier' previously declared here
+enum ReflectionTier: String, Codable, CaseIterable {
+     ^
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Prompts/PromptLibrary.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Prompts/PromptLibrary.swift:15:38: error: 'ReflectionTier' is ambiguous for type lookup in this context
+    private let aggregationPrompts: [ReflectionTier: [AggregationPrompt]] = [
+                                     ^~~~~~~~~~~~~~
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:37:6: note: found this candidate
+enum ReflectionTier: String, Codable, CaseIterable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:109:6: note: found this candidate
+enum ReflectionTier: String, Codable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Prompts/PromptLibrary.swift:74:37: error: 'ReflectionTier' is ambiguous for type lookup in this context
+    func getAggregationPrompt(tier: ReflectionTier, stage: DevelopmentStage? = nil) -> AggregationPrompt {
+                                    ^~~~~~~~~~~~~~
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:37:6: note: found this candidate
+enum ReflectionTier: String, Codable, CaseIterable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:109:6: note: found this candidate
+enum ReflectionTier: String, Codable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Prompts/PromptLibrary.swift:95:38: error: 'FocusType' is ambiguous for type lookup in this context
+    func getCapturePrompt(focusType: FocusType, stage: DevelopmentStage) -> String {
+                                     ^~~~~~~~~
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:12:6: note: found this candidate
+enum FocusType: String, Codable, CaseIterable, Identifiable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:60:6: note: found this candidate
+enum FocusType: String, CaseIterable, Codable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Prompts/PromptLibrary.swift:97:24: error: 'FocusType' is ambiguous for type lookup in this context
+        let defaults: [FocusType: String] = [
+                       ^~~~~~~~~
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:12:6: note: found this candidate
+enum FocusType: String, Codable, CaseIterable, Identifiable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:60:6: note: found this candidate
+enum FocusType: String, CaseIterable, Codable {
+     ^
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/AI/AIService.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:63:20: error: 'FocusType' is ambiguous for type lookup in this context
+    var focusType: FocusType?
+                   ^~~~~~~~~
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Reflection.swift:12:6: note: found this candidate
+enum FocusType: String, Codable, CaseIterable, Identifiable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift:60:6: note: found this candidate
+enum FocusType: String, CaseIterable, Codable {
+     ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/AI/AIService.swift:70:53: error: cannot infer contextual base in reference to member 'question'
+        let sourceIsQuestion = source.focusType == .question ||
+                                                   ~^~~~~~~~
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/AI/AIService.swift:72:53: error: cannot infer contextual base in reference to member 'question'
+        let targetIsQuestion = target.focusType == .question ||
+                                                   ~^~~~~~~~
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:355:23: error: ambiguous use of 'interpretationDriftDetected'
+            trigger: .interpretationDriftDetected
+                      ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:569:10: note: found this candidate 
+    case interpretationDriftDetected
+         ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:570:10: note: found this candidate 
+    case interpretationDriftDetected
+         ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:570:10: error: raw value for enum case is not unique
+    case interpretationDriftDetected
+         ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:569:10: note: raw value previously used here
+    case interpretationDriftDetected
+         ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:570:10: error: invalid redeclaration of 'interpretationDriftDetected'
+    case interpretationDriftDetected
+         ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:569:10: note: 'interpretationDriftDetected' previously declared here
+    case interpretationDriftDetected
+         ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:569:10: note: 'interpretationDriftDetected' previously declared here
+    case interpretationDriftDetected
+         ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:559:19: error: 'NoteTrigger' declares raw type 'String', but does not conform to RawRepresentable and conformance could not be synthesized
+enum NoteTrigger: String, CaseIterable, Identifiable {
+                  ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:559:6: note: add stubs for conformance
+enum NoteTrigger: String, CaseIterable, Identifiable {
+     ^
+Swift.RawRepresentable.RawValue:2:16: note: protocol requires nested type 'RawValue'
+associatedtype RawValue}
+               ^
+/Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift:576:22: error: cannot find 'rawValue' in scope
+    var id: String { rawValue }
+                     ^~~~~~~~
+
+SwiftCompile normal arm64 Compiling\ RevisionLayer.swift,\ Connection.swift,\ Question.swift,\ Story.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/RevisionLayer.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Connection.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Question.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Story.swift (in target 'VicariousMe' from project 'VicariousMe')
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/RevisionLayer.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Connection.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Question.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Story.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 Compiling\ HomeScreen.swift,\ WeeklyReflectionScreen.swift,\ NewReflectionScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/HomeScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/WeeklyReflectionScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewReflectionScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/HomeScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/WeeklyReflectionScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewReflectionScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 Compiling\ SynthesisGuideItem.swift,\ QuickActionButton.swift,\ ReflectionRow.swift,\ QuestionRow.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/SynthesisGuideItem.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/QuickActionButton.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/ReflectionRow.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/QuestionRow.swift (in target 'VicariousMe' from project 'VicariousMe')
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/SynthesisGuideItem.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/QuickActionButton.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/ReflectionRow.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/QuestionRow.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ VicariousMe (in target 'VicariousMe' from project 'VicariousMe')
+
+EmitSwiftModule normal arm64 (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 Compiling\ ReflectionDetailScreen.swift,\ QuestionDetailScreen.swift,\ GeneratedAssetSymbols.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/ReflectionDetailScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/QuestionDetailScreen.swift /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'VicariousMe' from project 'VicariousMe')
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/ReflectionDetailScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/QuestionDetailScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Library/Developer/Xcode/DerivedData/VicariousMe-guqhjehjhqprlkbbcuromjqdovbi/Build/Intermediates.noindex/VicariousMe.build/Debug-iphonesimulator/VicariousMe.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 Compiling\ IdeaRow.swift,\ StoryRow.swift,\ TabButton.swift,\ EmptyStateView.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/IdeaRow.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/StoryRow.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/TabButton.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/EmptyStateView.swift (in target 'VicariousMe' from project 'VicariousMe')
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/IdeaRow.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/StoryRow.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/TabButton.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Components/EmptyStateView.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 Compiling\ NewQuestionScreen.swift,\ NewIdeaScreen.swift,\ NewStoryScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewQuestionScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewIdeaScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewStoryScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewQuestionScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewIdeaScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/NewStoryScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 Compiling\ QuickCaptureScreen.swift,\ OnboardingScreen.swift,\ ArchiveScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/QuickCaptureScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/OnboardingScreen.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/ArchiveScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/QuickCaptureScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/OnboardingScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Views/Screens/ArchiveScreen.swift (in target 'VicariousMe' from project 'VicariousMe')
+    cd /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift
+    
+
+SwiftDriverJobDiscovery normal arm64 Compiling RevisionLayer.swift, Connection.swift, Question.swift, Story.swift (in target 'VicariousMe' from project 'VicariousMe')
+
+** BUILD FAILED **
+
+
+The following build commands failed:
+	SwiftCompile normal arm64 Compiling\ Idea.swift,\ PromptLibrary.swift,\ AIService.swift,\ DesignNotesService.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Prompts/PromptLibrary.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/AI/AIService.swift /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift (in target 'VicariousMe' from project 'VicariousMe')
+	SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Models/Idea.swift (in target 'VicariousMe' from project 'VicariousMe')
+	SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Prompts/PromptLibrary.swift (in target 'VicariousMe' from project 'VicariousMe')
+	SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/AI/AIService.swift (in target 'VicariousMe' from project 'VicariousMe')
+	SwiftCompile normal arm64 /Users/drewnat/Documents/ContinuityLabsGit/vicarious-me-swift/VicariousMe/Services/Storage/DesignNotesService.swift (in target 'VicariousMe' from project 'VicariousMe')
+	Building project VicariousMe with scheme VicariousMe
+(6 failures)

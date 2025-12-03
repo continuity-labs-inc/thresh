@@ -84,7 +84,11 @@ enum NoteTrigger: String, CaseIterable, Identifiable {
     case firstConnectionSurface
     case returnAfterGap
     case interpretationDriftDetected
+    case interpretationDriftDetected
     case captureQualityFeedback
+    case modeSwitch
+    case themeEmergence
+    case weeklyReviewAvailable
 
     var id: String { rawValue }
 
@@ -101,6 +105,9 @@ enum NoteTrigger: String, CaseIterable, Identifiable {
         case .returnAfterGap: return "Return After Gap"
         case .interpretationDriftDetected: return "Interpretation Drift Detected"
         case .captureQualityFeedback: return "Capture Quality Feedback"
+        case .modeSwitch: return "Mode Switch"
+        case .themeEmergence: return "Theme Emergence"
+        case .weeklyReviewAvailable: return "Weekly Review Available"
         }
     }
 }

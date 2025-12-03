@@ -63,7 +63,7 @@ enum ReflectionTier: String, Codable {
 // MARK: - Note Trigger
 
 /// Events that can trigger design notes to appear
-enum NoteTrigger: String, Codable {
+enum LegacyNoteTrigger: String, Codable {
     case firstDailyEntry
     case firstPureCapture
     case firstSynthesis

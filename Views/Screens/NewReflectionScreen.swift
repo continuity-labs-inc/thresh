@@ -399,7 +399,7 @@ struct NewReflectionScreen: View {
         modelContext.insert(reflection)
 
         if entryType == .groundedReflection {
-            checkForDesignNote(.firstSynthesis)
+            checkForDesignNote(.firstSynthesisOffer)
         }
 
         triggerQuestionExtraction(for: reflection)
