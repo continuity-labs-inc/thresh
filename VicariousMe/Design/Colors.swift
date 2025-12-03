@@ -7,26 +7,28 @@ extension Color {
 
 struct VMColors {
     // Mode Colors
-    let capture = Color(red: 0.2, green: 0.6, blue: 0.9)      // Blue - Capture mode
-    let reflect = Color(red: 0.6, green: 0.4, blue: 0.8)      // Purple - Reflect mode
-    let synthesis = Color(red: 0.9, green: 0.6, blue: 0.2)    // Orange - Synthesis mode
+    let capture = Color(red: 0.13, green: 0.47, blue: 0.87)    // Strong blue
+    let reflect = Color(red: 0.49, green: 0.28, blue: 0.73)    // Rich purple
+    let synthesis = Color(red: 0.90, green: 0.49, blue: 0.13)  // Vibrant orange
 
     // Entry Type Colors
-    let story = Color(red: 0.3, green: 0.7, blue: 0.5)        // Green - Stories
-    let idea = Color(red: 0.95, green: 0.75, blue: 0.2)       // Yellow/Gold - Ideas
-    let question = Color(red: 0.8, green: 0.4, blue: 0.6)     // Pink - Questions
+    let story = Color(red: 0.18, green: 0.55, blue: 0.42)      // Forest green
+    let idea = Color(red: 0.80, green: 0.55, blue: 0.08)       // Golden amber
+    let question = Color(red: 0.76, green: 0.27, blue: 0.46)   // Deep pink
 
     // UI Colors
-    let background = Color(red: 0.98, green: 0.98, blue: 1.0)
+    let background = Color(red: 0.95, green: 0.95, blue: 0.97) // Light cool gray
     let surface = Color.white
-    let surfaceSecondary = Color(red: 0.95, green: 0.95, blue: 0.97)
+    let surfaceSecondary = Color(red: 0.92, green: 0.92, blue: 0.94)
+    let cardBackground = Color.white
 
-    // Text Colors
-    let textPrimary = Color(red: 0.1, green: 0.1, blue: 0.15)
-    let textSecondary = Color(red: 0.5, green: 0.5, blue: 0.55)
+    // Text Colors - ACTUALLY DARK
+    let textPrimary = Color.black
+    let textSecondary = Color(red: 0.35, green: 0.35, blue: 0.40)
+    let textTertiary = Color(red: 0.55, green: 0.55, blue: 0.60)
 
     // Tier Colors
-    let tierCore = Color(red: 0.8, green: 0.5, blue: 0.2)     // Bronze/Core
-    let tierActive = Color(red: 0.6, green: 0.6, blue: 0.7)   // Silver/Active
-    let tierArchive = Color(red: 0.5, green: 0.5, blue: 0.55) // Gray/Archive
+    let tierCore = Color(red: 0.72, green: 0.45, blue: 0.20)
+    let tierActive = Color(red: 0.45, green: 0.45, blue: 0.50)
+    let tierArchive = Color(red: 0.55, green: 0.55, blue: 0.58)
 }

@@ -30,7 +30,7 @@ struct ReflectionDetailScreen: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Reflection", systemImage: "arrow.right")
                             .font(.caption)
-                            .foregroundStyle(.primary)
+                            .foregroundStyle(Color.vm.textPrimary)
 
                         Text(reflectionContent)
                             .font(.body)
@@ -53,12 +53,12 @@ struct ReflectionDetailScreen: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Created \(reflection.createdAt.relativeFormattedFull)")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
 
                     if reflection.updatedAt != reflection.createdAt {
                         Text("Updated \(reflection.updatedAt.relativeFormattedFull)")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.vm.textSecondary)
                     }
                 }
                 .padding(.top, 16)

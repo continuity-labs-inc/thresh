@@ -32,7 +32,7 @@ struct QuickCaptureScreen: View {
             // Prompt
             Text("What's on your mind? Just capture it.")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
 
             // Text input
             TextEditor(text: $captureText)
@@ -44,7 +44,7 @@ struct QuickCaptureScreen: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.vm.capture.opacity(0.3), lineWidth: 1)
+                        .stroke(Color.vm.capture.opacity(0.6), lineWidth: 1)
                 )
 
             Spacer()
@@ -58,7 +58,7 @@ struct QuickCaptureScreen: View {
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(captureText.isEmpty ? Color.gray : Color.vm.capture)
+                .background(captureText.isEmpty ? Color.vm.textSecondary : Color.vm.capture)
                 .foregroundStyle(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }

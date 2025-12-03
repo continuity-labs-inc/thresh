@@ -11,7 +11,7 @@ struct PromptView: View {
             Text(prompt.text)
                 .font(.title3)
                 .fontWeight(.medium)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color.vm.textPrimary)
 
             // Guidance text
             if !prompt.guidance.isEmpty {
@@ -22,7 +22,7 @@ struct PromptView: View {
 
                     Text(prompt.guidance)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
                         .italic()
                 }
             }

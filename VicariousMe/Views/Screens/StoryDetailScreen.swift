@@ -50,12 +50,12 @@ struct StoryDetailScreen: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Created \(story.createdAt.relativeFormattedFull)")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
 
                     if story.updatedAt != story.createdAt {
                         Text("Updated \(story.updatedAt.relativeFormattedFull)")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.vm.textSecondary)
                     }
                 }
                 .padding(.top, 16)

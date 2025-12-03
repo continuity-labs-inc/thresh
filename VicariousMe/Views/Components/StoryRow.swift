@@ -20,20 +20,20 @@ struct StoryRow: View {
 
                     Text(story.createdAt.relativeFormatted)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
                 }
 
                 // Title
                 Text(story.title)
                     .font(.headline)
                     .lineLimit(1)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.vm.textPrimary)
 
                 // Content preview
                 Text(previewText)
                     .font(.subheadline)
                     .lineLimit(2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.vm.textSecondary)
             }
             .padding()
             .background(Color.vm.surface)

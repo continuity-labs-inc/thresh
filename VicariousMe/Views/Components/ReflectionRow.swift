@@ -11,18 +11,18 @@ struct ReflectionRow: View {
                     EntryTypeBadge(type: reflection.entryType)
                     Text(reflection.tier.rawValue.uppercased())
                         .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
                     Spacer()
                     Text(reflection.createdAt.relativeFormatted)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
                 }
 
                 // Capture content preview
                 Text(previewText)
                     .font(.subheadline)
                     .lineLimit(2)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.vm.textPrimary)
             }
             .padding()
             .background(Color.vm.surface)

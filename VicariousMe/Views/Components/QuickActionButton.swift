@@ -12,14 +12,15 @@ struct QuickActionButton<Destination: View>: View {
                 Image(systemName: icon)
                     .font(.title2)
                 Text(title)
-                    .font(.caption)
-                    .fontWeight(.medium)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(color.opacity(0.15))
-            .foregroundStyle(color)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .padding(.vertical, 20)
+            .background(color)
+            .foregroundStyle(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: color.opacity(0.6), radius: 4, x: 0, y: 2)
         }
     }
 }

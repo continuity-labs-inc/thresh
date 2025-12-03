@@ -18,16 +18,10 @@ struct HomeScreen: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    // Header
                     header
-
-                    // Quick Actions
                     quickActionButtons
-
-                    // Content Tabs
+                    buildNarrativeSection
                     contentTabs
-
-                    // Entry List
                     entryList
                 }
                 .padding()
@@ -51,13 +45,14 @@ struct HomeScreen: View {
             Text("Vicarious Me")
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .foregroundStyle(Color.vm.textPrimary)
             Text("Capture moments, find patterns")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-
+    
     private var quickActionButtons: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
             QuickActionButton(
@@ -84,6 +79,72 @@ struct HomeScreen: View {
                 color: Color.vm.question,
                 destination: NewQuestionScreen()
             )
+        }
+    }
+
+    private var buildNarrativeSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("BUILD NARRATIVE")
+                .font(.caption)
+                .fontWeight(.bold)
+                .foregroundStyle(Color.vm.textSecondary)
+                
+            NavigationLink(destination: WeeklyReflectionScreen()) {
+                HStack {
+                    Image(systemName: "book.pages")
+                        .font(.title2)
+                        .foregroundStyle(Color.vm.synthesis)
+                        .frame(width: 44)
+                        
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Weekly Synthesis")
+                            .font(.headline)
+                            .foregroundStyle(Color.vm.textPrimary)
+                        Text("Review your captures and find patterns")
+                            .font(.caption)
+                            .foregroundStyle(Color.vm.textSecondary)
+                    }
+                        
+                    Spacer()
+                        
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(weeklyStatusText)
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(hasEnoughCaptures ? Color.vm.synthesis : Color.vm.textSecondary)
+                        Text("\(capturesThisWeek) captures")
+                            .font(.caption2)
+                            .foregroundStyle(Color.vm.textTertiary)
+                    }
+                        
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundStyle(Color.vm.textTertiary)
+                }
+                .padding()
+                .background(Color.vm.cardBackground)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 2)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+    
+    private var capturesThisWeek: Int {
+        let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
+        return reflections.filter { $0.createdAt >= weekAgo && !$0.isArchived }.count
+    }
+    
+    private var hasEnoughCaptures: Bool {
+        capturesThisWeek >= 3
+    }
+    
+    private var weeklyStatusText: String {
+        if hasEnoughCaptures {
+            return "Ready"
+        } else {
+            let needed = 3 - capturesThisWeek
+            return "Need \(needed) more"
         }
     }
 
@@ -155,7 +216,6 @@ struct HomeScreen: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     HomeScreen()
         .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self], inMemory: true)

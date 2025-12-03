@@ -43,7 +43,7 @@ struct QuestionDetailScreen: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Context")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.vm.textSecondary)
 
                         Text(context)
                             .font(.body)
@@ -93,12 +93,12 @@ struct QuestionDetailScreen: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Created \(question.createdAt.relativeFormattedFull)")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
 
                     if question.updatedAt != question.createdAt {
                         Text("Updated \(question.updatedAt.relativeFormattedFull)")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.vm.textSecondary)
                     }
                 }
                 .padding(.top, 16)

@@ -21,7 +21,7 @@ struct ConnectionSurfacerView: View {
 
                         Text("These patterns emerged from your captures. Consider them as starting points for synthesis, not conclusions.")
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.vm.textSecondary)
                             .multilineTextAlignment(.center)
                     }
                     .padding()
@@ -55,15 +55,15 @@ struct ConnectionSurfacerView: View {
         VStack(spacing: 12) {
             Image(systemName: "puzzlepiece")
                 .font(.largeTitle)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
 
             Text("No connections detected yet")
                 .font(.headline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
 
             Text("As you add more captures, patterns will emerge.")
                 .font(.subheadline)
-                .foregroundStyle(.tertiary)
+                .foregroundStyle(Color.vm.textTertiary)
                 .multilineTextAlignment(.center)
         }
         .padding(.vertical, 40)
@@ -95,12 +95,12 @@ struct ConnectionCard: View {
             // Description
             Text(connection.description)
                 .font(.subheadline)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color.vm.textPrimary)
 
             // Type description
             Text(connection.connectionType.description)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
         }
         .padding()
         .background(Color.vm.surface)
@@ -116,7 +116,7 @@ struct ConfidenceIndicator: View {
         HStack(spacing: 2) {
             ForEach(0..<3) { index in
                 Circle()
-                    .fill(index < confidenceLevel ? Color.vm.synthesis : Color.vm.synthesis.opacity(0.3))
+                    .fill(index < confidenceLevel ? Color.vm.synthesis : Color.vm.synthesis.opacity(0.6))
                     .frame(width: 6, height: 6)
             }
         }

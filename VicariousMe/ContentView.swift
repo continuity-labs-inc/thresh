@@ -3,13 +3,20 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @State private var appState = AppState()
     @State private var designNotesService: DesignNotesService?
     
     var body: some View {
         Group {
             if let service = designNotesService {
-                HomeScreen()
-                    .environment(service)
+                if appState.hasCompletedOnboarding {
+                    HomeScreen()
+                        .environment(service)
+                        .environment(appState)
+                } else {
+                    OnboardingScreen()
+                        .environment(appState)
+                }
             } else {
                 ProgressView()
             }

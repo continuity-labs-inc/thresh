@@ -31,21 +31,21 @@ struct QuestionRow: View {
 
                     Text(question.createdAt.relativeFormatted)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
                 }
 
                 // Question text
                 Text(question.text)
                     .font(.subheadline)
                     .lineLimit(2)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.vm.textPrimary)
 
                 // Context preview (if exists)
                 if let context = question.context, !context.isEmpty {
                     Text(context)
                         .font(.caption)
                         .lineLimit(1)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
                 }
             }
             .padding()

@@ -29,20 +29,20 @@ struct IdeaRow: View {
 
                     Text(idea.createdAt.relativeFormatted)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
                 }
 
                 // Title
                 Text(idea.title)
                     .font(.headline)
                     .lineLimit(1)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color.vm.textPrimary)
 
                 // Description preview
                 Text(previewText)
                     .font(.subheadline)
                     .lineLimit(2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.vm.textSecondary)
             }
             .padding()
             .background(Color.vm.surface)

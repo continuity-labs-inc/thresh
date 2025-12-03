@@ -59,12 +59,12 @@ struct IdeaDetailScreen: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Created \(idea.createdAt.relativeFormattedFull)")
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
 
                     if idea.updatedAt != idea.createdAt {
                         Text("Updated \(idea.updatedAt.relativeFormattedFull)")
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.vm.textSecondary)
                     }
                 }
                 .padding(.top, 16)

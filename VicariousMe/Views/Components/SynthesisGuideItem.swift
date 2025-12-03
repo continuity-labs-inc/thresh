@@ -15,7 +15,7 @@ struct SynthesisGuideItem: View {
 
             Text(text)
                 .font(.subheadline)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color.vm.textPrimary)
         }
     }
 }

@@ -24,7 +24,7 @@ struct ArchiveScreen: View {
                                     Spacer()
                                     Text(reflection.createdAt.relativeFormatted)
                                         .font(.caption)
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(Color.vm.textSecondary)
                                 }
 
                                 Text(reflection.captureContent.prefix(100) + (reflection.captureContent.count > 100 ? "..." : ""))
@@ -54,7 +54,7 @@ struct ArchiveScreen: View {
 
             Text("Reflections you archive will appear here for safekeeping")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .padding()

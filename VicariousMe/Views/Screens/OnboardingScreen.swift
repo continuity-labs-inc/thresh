@@ -45,7 +45,7 @@ struct WelcomePage: View {
 
             Text("See your life clearly.\nUnderstand it deeply.")
                 .font(.title3)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
                 .multilineTextAlignment(.center)
 
             Spacer()
@@ -79,7 +79,7 @@ struct TwoModesPage: View {
                             .foregroundStyle(Color.vm.capture)
                         Text("Record what happened")
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.vm.textSecondary)
                     }
                     Spacer()
                 }
@@ -90,7 +90,7 @@ struct TwoModesPage: View {
                 // Arrow
                 Image(systemName: "arrow.down")
                     .font(.title2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.vm.textSecondary)
 
                 // Synthesis Mode
                 HStack(spacing: 16) {
@@ -105,7 +105,7 @@ struct TwoModesPage: View {
                             .foregroundStyle(Color.vm.synthesis)
                         Text("Find what it means")
                             .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.vm.textSecondary)
                     }
                     Spacer()
                 }
@@ -117,7 +117,7 @@ struct TwoModesPage: View {
 
             Text("Most apps blur these together.\nWe keep them separate.")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
                 .multilineTextAlignment(.center)
 
             Spacer()
@@ -148,13 +148,13 @@ struct ObservationIsHardPage: View {
                     }
                     Text("We do it automatically. The moment something happens, we're already deciding what it means.")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
                         .multilineTextAlignment(.center)
                 }
 
                 // Divider
                 Rectangle()
-                    .fill(Color.secondary.opacity(0.3))
+                    .fill(Color.secondary.opacity(0.6))
                     .frame(height: 1)
                     .padding(.horizontal, 40)
 
@@ -168,7 +168,7 @@ struct ObservationIsHardPage: View {
                     }
                     Text("Staying with what happened—the details, the words, the sequence—without sliding into meaning? That takes discipline.")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.vm.textSecondary)
                         .multilineTextAlignment(.center)
                 }
             }
@@ -200,7 +200,7 @@ struct AIPhilosophyPage: View {
 
             Image(systemName: "brain.head.profile")
                 .font(.system(size: 50))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
 
             Text("AI extracts.\nIt never writes.")
                 .font(.title2)
@@ -216,7 +216,7 @@ struct AIPhilosophyPage: View {
 
             Text("The reflection is yours.\nAI is a mirror, not an author.")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
                 .multilineTextAlignment(.center)
 
             Spacer()
@@ -259,7 +259,7 @@ struct GetStartedPage: View {
 
             Text("Start with a capture.\nMeaning can come later.")
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
                 .multilineTextAlignment(.center)
 
             Spacer()

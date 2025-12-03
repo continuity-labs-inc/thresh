@@ -7,15 +7,15 @@ struct EmptyStateView: View {
         VStack(spacing: 16) {
             Image(systemName: icon)
                 .font(.system(size: 48))
-                .foregroundStyle(color.opacity(0.6))
+                .foregroundStyle(color)
 
             Text(title)
                 .font(.headline)
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color.vm.textPrimary)
 
             Text(subtitle)
                 .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Color.vm.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .padding(.vertical, 48)
@@ -64,4 +64,5 @@ struct EmptyStateView: View {
         EmptyStateView(tab: .reflections)
         EmptyStateView(tab: .ideas)
     }
+    .background(Color.vm.background)
 }
