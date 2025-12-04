@@ -29,6 +29,11 @@ struct HomeScreen: View {
             .background(Color.vm.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink(destination: PatternsScreen()) {
+                        Image(systemName: "sparkles")
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     if selectedTab == .reflections {
                         NavigationLink(destination: ArchiveScreen()) {
