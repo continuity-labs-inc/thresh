@@ -1,12 +1,181 @@
 import Foundation
 
+/// Represents extracted items from a reflection
+struct ExtractionResult: Sendable {
+    struct ExtractedStory: Identifiable, Sendable {
+        let id = UUID()
+        let title: String
+        let content: String
+    }
+
+    struct ExtractedIdea: Identifiable, Sendable {
+        let id = UUID()
+        let title: String
+        let details: String
+        let category: String?
+    }
+
+    struct ExtractedQuestion: Identifiable, Sendable {
+        let id = UUID()
+        let text: String
+        let context: String?
+    }
+
+    let stories: [ExtractedStory]
+    let ideas: [ExtractedIdea]
+    let questions: [ExtractedQuestion]
+
+    var isEmpty: Bool {
+        stories.isEmpty && ideas.isEmpty && questions.isEmpty
+    }
+
+    var totalCount: Int {
+        stories.count + ideas.count + questions.count
+    }
+}
+
 /// AIService provides AI-powered features for reflection analysis.
 /// Currently provides connection detection between reflections.
 actor AIService {
     /// Shared instance for app-wide access
     static let shared = AIService()
 
+    private let apiKey = "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"
+    private let model = "claude-sonnet-4-20250514"
+    private let apiURL = URL(string: "https://api.anthropic.com/v1/messages")!
+
     private init() {}
+
+    // MARK: - Extraction from Reflection
+
+    /// Extract stories, ideas, and questions from reflection text using Claude API
+    func extractFromReflection(_ text: String) async throws -> ExtractionResult {
+        // Skip short texts to avoid wasting tokens
+        guard text.count >= 50 else {
+            return ExtractionResult(stories: [], ideas: [], questions: [])
+        }
+
+        let prompt = """
+        Analyze the following personal reflection and extract any embedded stories, ideas, or questions.
+
+        A STORY is a narrative about something that happened - it has characters, events, or a sequence of actions.
+        An IDEA is a concept, insight, plan, or actionable thought the person has.
+        A QUESTION is something the person is wondering about or wants to explore further.
+
+        Only extract items that are clearly present in the text. Don't invent things that aren't there.
+
+        Respond in this exact JSON format (no markdown, just raw JSON):
+        {
+            "stories": [
+                {"title": "Brief title", "content": "The story content"}
+            ],
+            "ideas": [
+                {"title": "Brief title", "details": "The idea details", "category": "optional category or null"}
+            ],
+            "questions": [
+                {"text": "The question", "context": "optional context or null"}
+            ]
+        }
+
+        If nothing is found for a category, use an empty array.
+
+        REFLECTION TEXT:
+        \(text)
+        """
+
+        let requestBody: [String: Any] = [
+            "model": model,
+            "max_tokens": 1024,
+            "messages": [
+                ["role": "user", "content": prompt]
+            ]
+        ]
+
+        var request = URLRequest(url: apiURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            print("❌ Claude API error: HTTP \(statusCode)")
+            if let errorText = String(data: data, encoding: .utf8) {
+                print("❌ Error body: \(errorText)")
+            }
+            throw NSError(domain: "AIService", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "API request failed"])
+        }
+
+        // Parse Claude's response
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let content = json["content"] as? [[String: Any]],
+              let firstContent = content.first,
+              let textContent = firstContent["text"] as? String else {
+            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
+        }
+
+        // Parse the JSON from Claude's text response
+        return try parseExtractionResponse(textContent)
+    }
+
+    private func parseExtractionResponse(_ text: String) throws -> ExtractionResult {
+        // Clean up the text - remove any markdown code blocks if present
+        var cleanedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if cleanedText.hasPrefix("```json") {
+            cleanedText = String(cleanedText.dropFirst(7))
+        } else if cleanedText.hasPrefix("```") {
+            cleanedText = String(cleanedText.dropFirst(3))
+        }
+        if cleanedText.hasSuffix("```") {
+            cleanedText = String(cleanedText.dropLast(3))
+        }
+        cleanedText = cleanedText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard let jsonData = cleanedText.data(using: .utf8),
+              let json = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
+            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to parse extraction JSON"])
+        }
+
+        var stories: [ExtractionResult.ExtractedStory] = []
+        var ideas: [ExtractionResult.ExtractedIdea] = []
+        var questions: [ExtractionResult.ExtractedQuestion] = []
+
+        // Parse stories
+        if let storiesArray = json["stories"] as? [[String: Any]] {
+            for storyDict in storiesArray {
+                if let title = storyDict["title"] as? String,
+                   let content = storyDict["content"] as? String {
+                    stories.append(ExtractionResult.ExtractedStory(title: title, content: content))
+                }
+            }
+        }
+
+        // Parse ideas
+        if let ideasArray = json["ideas"] as? [[String: Any]] {
+            for ideaDict in ideasArray {
+                if let title = ideaDict["title"] as? String,
+                   let details = ideaDict["details"] as? String {
+                    let category = ideaDict["category"] as? String
+                    ideas.append(ExtractionResult.ExtractedIdea(title: title, details: details, category: category))
+                }
+            }
+        }
+
+        // Parse questions
+        if let questionsArray = json["questions"] as? [[String: Any]] {
+            for questionDict in questionsArray {
+                if let text = questionDict["text"] as? String {
+                    let context = questionDict["context"] as? String
+                    questions.append(ExtractionResult.ExtractedQuestion(text: text, context: context))
+                }
+            }
+        }
+
+        return ExtractionResult(stories: stories, ideas: ideas, questions: questions)
+    }
 
     /// Detect connections between a set of reflections.
     /// This is a simplified local implementation that looks for keyword overlap.

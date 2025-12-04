@@ -4,6 +4,18 @@ import SwiftData
 struct StoryDetailScreen: View {
     @Bindable var story: Story
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+
+    // Edit mode state
+    @State private var isEditing = false
+    @State private var editedTitle = ""
+    @State private var editedContent = ""
+
+    // Delete confirmation
+    @State private var showDeleteConfirmation = false
+
+    // Copy feedback
+    @State private var showCopiedToast = false
 
     var body: some View {
         ScrollView {
@@ -22,28 +34,99 @@ struct StoryDetailScreen: View {
                 }
 
                 // Title
-                Text(story.title)
-                    .font(.title)
-                    .fontWeight(.bold)
+                if isEditing {
+                    TextField("Title", text: $editedTitle)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.vm.textPrimary)
+                        .textFieldStyle(.plain)
+                        .padding(12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.vm.surface)
+                        )
+                } else {
+                    Text(story.title)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color.vm.textPrimary)
+                        .textSelection(.enabled)
+                        .contextMenu {
+                            Button(action: { copyText(story.title) }) {
+                                Label("Copy Title", systemImage: "doc.on.doc")
+                            }
+                        }
+                }
 
                 // Content
-                Text(story.content)
-                    .font(.body)
-                    .lineSpacing(4)
+                if isEditing {
+                    TextField("Content", text: $editedContent, axis: .vertical)
+                        .font(.body)
+                        .foregroundStyle(Color.vm.textPrimary)
+                        .textFieldStyle(.plain)
+                        .padding(12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.vm.surface)
+                        )
+                } else {
+                    Text(story.content)
+                        .font(.body)
+                        .lineSpacing(4)
+                        .foregroundStyle(Color.vm.textPrimary)
+                        .textSelection(.enabled)
+                        .contextMenu {
+                            Button(action: { copyText(story.content) }) {
+                                Label("Copy", systemImage: "doc.on.doc")
+                            }
+                        }
+                }
 
                 // Tags (if any)
-                if !story.tags.isEmpty {
+                if !story.tags.isEmpty && !isEditing {
                     FlowLayout(spacing: 8) {
                         ForEach(story.tags, id: \.self) { tag in
                             Text(tag)
                                 .font(.caption)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 6)
-                                .background(Color.vm.story.opacity(0.15))
+                                .background(Color.vm.storyBackground)
                                 .foregroundStyle(Color.vm.story)
                                 .clipShape(Capsule())
                         }
                     }
+                }
+
+                // Edit mode buttons
+                if isEditing {
+                    HStack(spacing: 16) {
+                        Button(action: cancelEdit) {
+                            Text("Cancel")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundStyle(Color.vm.textSecondary)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.vm.surface)
+                                )
+                        }
+
+                        Button(action: saveEdit) {
+                            Text("Save Changes")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.vm.story)
+                                )
+                        }
+                    }
+                    .padding(.top, 8)
                 }
 
                 // Metadata
@@ -65,6 +148,115 @@ struct StoryDetailScreen: View {
         .background(Color.vm.background)
         .navigationTitle("Story")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                if isEditing {
+                    EmptyView()
+                } else {
+                    Menu {
+                        Button(action: startEditing) {
+                            Label("Edit", systemImage: "pencil")
+                        }
+
+                        Button(action: copyAllText) {
+                            Label("Copy All", systemImage: "doc.on.doc")
+                        }
+
+                        Divider()
+
+                        Button(role: .destructive, action: { showDeleteConfirmation = true }) {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                }
+            }
+        }
+        .alert("Delete Story?", isPresented: $showDeleteConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive, action: deleteStory)
+        } message: {
+            Text("This story will be moved to Recently Deleted for 30 days.")
+        }
+        .overlay(alignment: .bottom) {
+            if showCopiedToast {
+                Text("Copied to clipboard")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(
+                        Capsule()
+                            .fill(Color.black.opacity(0.8))
+                    )
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .padding(.bottom, 20)
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: showCopiedToast)
+    }
+
+    private func startEditing() {
+        editedTitle = story.title
+        editedContent = story.content
+        isEditing = true
+    }
+
+    private func cancelEdit() {
+        isEditing = false
+        editedTitle = ""
+        editedContent = ""
+    }
+
+    private func saveEdit() {
+        let trimmedTitle = editedTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedContent = editedContent.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmedTitle.isEmpty && !trimmedContent.isEmpty else { return }
+
+        story.title = trimmedTitle
+        story.content = trimmedContent
+        story.updatedAt = Date()
+
+        do {
+            try modelContext.save()
+            print("Story updated successfully")
+        } catch {
+            print("Failed to save story: \(error)")
+        }
+
+        isEditing = false
+    }
+
+    private func deleteStory() {
+        // Soft delete - set deletedAt timestamp
+        story.deletedAt = Date()
+        story.updatedAt = Date()
+
+        do {
+            try modelContext.save()
+            print("Story moved to Recently Deleted")
+        } catch {
+            print("Failed to delete story: \(error)")
+        }
+
+        dismiss()
+    }
+
+    private func copyText(_ text: String) {
+        UIPasteboard.general.string = text
+        showCopiedToast = true
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            showCopiedToast = false
+        }
+    }
+
+    private func copyAllText() {
+        let allText = "\(story.title)\n\n\(story.content)"
+        copyText(allText)
     }
 }
 

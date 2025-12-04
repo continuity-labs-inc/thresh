@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E1000001238F5E0000000001 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1000002238F5E0000000001 /* AboutScreen.swift */; };
+		C1000001238F5E0000000001 /* ExtractionReviewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1000002238F5E0000000001 /* ExtractionReviewModal.swift */; };
 		2E1CD0F12EE048EE003B470E /* QuarterlyReflectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */; };
 		2E5A01552EE02C6B00E5A8CB /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5A01532EE02C6B00E5A8CB /* Colors.swift */; };
 		2E5A01572EE0396800E5A8CB /* SaveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5A01562EE0395D00E5A8CB /* SaveButton.swift */; };
+		2E7B672C2EE1755100EEF8B2 /* PatternsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B672B2EE1755100EEF8B2 /* PatternsScreen.swift */; };
+		2E7B672E2EE1758000EEF8B2 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B672D2EE1758000EEF8B2 /* HomeScreen.swift */; };
 		2EAD3D462EDFE92F004929DF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D452EDFE92F004929DF /* AppState.swift */; };
 		2EAD3D482EDFE93A004929DF /* VicariousMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D472EDFE93A004929DF /* VicariousMeApp.swift */; };
 		2EAD3D4A2EDFEB74004929DF /* DevelopmentStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D492EDFEB66004929DF /* DevelopmentStage.swift */; };
@@ -36,13 +40,13 @@
 		B3000001238F5E0000000001 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000002238F5E0000000001 /* Question.swift */; };
 		B3000003238F5E0000000001 /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000004238F5E0000000001 /* Story.swift */; };
 		B3000005238F5E0000000001 /* Idea.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000006238F5E0000000001 /* Idea.swift */; };
-		B3000007238F5E0000000001 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000008238F5E0000000001 /* HomeScreen.swift */; };
 		B3000009238F5E0000000001 /* NewQuestionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300000A238F5E0000000001 /* NewQuestionScreen.swift */; };
 		B300000B238F5E0000000001 /* NewIdeaScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300000C238F5E0000000001 /* NewIdeaScreen.swift */; };
 		B300000D238F5E0000000001 /* NewStoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300000E238F5E0000000001 /* NewStoryScreen.swift */; };
 		B300000F238F5E0000000001 /* QuickCaptureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000010238F5E0000000001 /* QuickCaptureScreen.swift */; };
 		B3000011238F5E0000000001 /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000012238F5E0000000001 /* OnboardingScreen.swift */; };
 		B3000013238F5E0000000001 /* ArchiveScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000014238F5E0000000001 /* ArchiveScreen.swift */; };
+		D1000001238F5E0000000001 /* RecentlyDeletedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */; };
 		B3000015238F5E0000000001 /* ReflectionDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000016238F5E0000000001 /* ReflectionDetailScreen.swift */; };
 		B3000017238F5E0000000001 /* QuestionDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000018238F5E0000000001 /* QuestionDetailScreen.swift */; };
 		B3000019238F5E0000000001 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300001A238F5E0000000001 /* QuickActionButton.swift */; };
@@ -56,9 +60,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E1000002238F5E0000000001 /* AboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
+		C1000002238F5E0000000001 /* ExtractionReviewModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionReviewModal.swift; sourceTree = "<group>"; };
 		2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarterlyReflectionScreen.swift; sourceTree = "<group>"; };
 		2E5A01532EE02C6B00E5A8CB /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		2E5A01562EE0395D00E5A8CB /* SaveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButton.swift; sourceTree = "<group>"; };
+		2E7B672B2EE1755100EEF8B2 /* PatternsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternsScreen.swift; sourceTree = "<group>"; };
+		2E7B672D2EE1758000EEF8B2 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		2EAD3D452EDFE92F004929DF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = VicariousMe/Models/AppState.swift; sourceTree = SOURCE_ROOT; };
 		2EAD3D472EDFE93A004929DF /* VicariousMeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VicariousMeApp.swift; path = VicariousMe/VicariousMeApp.swift; sourceTree = SOURCE_ROOT; };
 		2EAD3D492EDFEB66004929DF /* DevelopmentStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevelopmentStage.swift; sourceTree = "<group>"; };
@@ -88,13 +96,13 @@
 		B3000002238F5E0000000001 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		B3000004238F5E0000000001 /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
 		B3000006238F5E0000000001 /* Idea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Idea.swift; sourceTree = "<group>"; };
-		B3000008238F5E0000000001 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		B300000A238F5E0000000001 /* NewQuestionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestionScreen.swift; sourceTree = "<group>"; };
 		B300000C238F5E0000000001 /* NewIdeaScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewIdeaScreen.swift; sourceTree = "<group>"; };
 		B300000E238F5E0000000001 /* NewStoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStoryScreen.swift; sourceTree = "<group>"; };
 		B3000010238F5E0000000001 /* QuickCaptureScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCaptureScreen.swift; sourceTree = "<group>"; };
 		B3000012238F5E0000000001 /* OnboardingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
 		B3000014238F5E0000000001 /* ArchiveScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveScreen.swift; sourceTree = "<group>"; };
+		D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyDeletedScreen.swift; sourceTree = "<group>"; };
 		B3000016238F5E0000000001 /* ReflectionDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionDetailScreen.swift; sourceTree = "<group>"; };
 		B3000018238F5E0000000001 /* QuestionDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionDetailScreen.swift; sourceTree = "<group>"; };
 		B300001A238F5E0000000001 /* QuickActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionButton.swift; sourceTree = "<group>"; };
@@ -240,16 +248,19 @@
 		A100002A238F5E0000000001 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				E1000002238F5E0000000001 /* AboutScreen.swift */,
 				2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */,
-				B3000008238F5E0000000001 /* HomeScreen.swift */,
 				A2000016238F5E0000000001 /* WeeklyReflectionScreen.swift */,
 				A2000018238F5E0000000001 /* NewReflectionScreen.swift */,
 				B300000A238F5E0000000001 /* NewQuestionScreen.swift */,
+				2E7B672B2EE1755100EEF8B2 /* PatternsScreen.swift */,
 				B300000C238F5E0000000001 /* NewIdeaScreen.swift */,
+				2E7B672D2EE1758000EEF8B2 /* HomeScreen.swift */,
 				B300000E238F5E0000000001 /* NewStoryScreen.swift */,
 				B3000010238F5E0000000001 /* QuickCaptureScreen.swift */,
 				B3000012238F5E0000000001 /* OnboardingScreen.swift */,
 				B3000014238F5E0000000001 /* ArchiveScreen.swift */,
+				D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */,
 				B3000016238F5E0000000001 /* ReflectionDetailScreen.swift */,
 				B3000018238F5E0000000001 /* QuestionDetailScreen.swift */,
 				2EAD3D532EDFF438004929DF /* IdeaDetailScreen.swift */,
@@ -275,6 +286,7 @@
 				B3000024238F5E0000000001 /* TabButton.swift */,
 				B3000026238F5E0000000001 /* EmptyStateView.swift */,
 				2EAD3D4E2EDFF089004929DF /* EntryTypeBadge.swift */,
+				C1000002238F5E0000000001 /* ExtractionReviewModal.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -413,7 +425,6 @@
 				B3000023238F5E0000000001 /* TabButton.swift in Sources */,
 				2EAD3D4F2EDFF089004929DF /* EntryTypeBadge.swift in Sources */,
 				B3000025238F5E0000000001 /* EmptyStateView.swift in Sources */,
-				B3000007238F5E0000000001 /* HomeScreen.swift in Sources */,
 				2EAD3D462EDFE92F004929DF /* AppState.swift in Sources */,
 				A2000015238F5E0000000001 /* WeeklyReflectionScreen.swift in Sources */,
 				2EAD3D522EDFF22C004929DF /* Date+Extensions.swift in Sources */,
@@ -429,8 +440,13 @@
 				B3000011238F5E0000000001 /* OnboardingScreen.swift in Sources */,
 				2E5A01572EE0396800E5A8CB /* SaveButton.swift in Sources */,
 				B3000013238F5E0000000001 /* ArchiveScreen.swift in Sources */,
+				D1000001238F5E0000000001 /* RecentlyDeletedScreen.swift in Sources */,
+				2E7B672E2EE1758000EEF8B2 /* HomeScreen.swift in Sources */,
 				B3000015238F5E0000000001 /* ReflectionDetailScreen.swift in Sources */,
 				B3000017238F5E0000000001 /* QuestionDetailScreen.swift in Sources */,
+				2E7B672C2EE1755100EEF8B2 /* PatternsScreen.swift in Sources */,
+				C1000001238F5E0000000001 /* ExtractionReviewModal.swift in Sources */,
+				E1000001238F5E0000000001 /* AboutScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,8 +22,8 @@ struct QuestionRow: View {
                             .fontWeight(.medium)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
-                            .background(Color.green.opacity(0.15))
-                            .foregroundStyle(.green)
+                            .background(Color.vm.questionAnswered.opacity(0.15))
+                            .foregroundStyle(Color.vm.questionAnswered)
                             .clipShape(Capsule())
                     }
 

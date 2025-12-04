@@ -19,6 +19,7 @@ struct IdeaRow: View {
                     if let category = idea.category {
                         Text(category)
                             .font(.caption2)
+                            .foregroundStyle(Color.vm.textSecondary)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
                             .background(Color.vm.surfaceSecondary)

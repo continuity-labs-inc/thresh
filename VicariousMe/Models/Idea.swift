@@ -12,6 +12,9 @@ final class Idea {
     var tags: [String]
     var linkedReflectionIds: [UUID]
 
+    // Soft delete support (photo-like deletion)
+    var deletedAt: Date?
+
     init(
         id: UUID = UUID(),
         title: String,
@@ -20,7 +23,8 @@ final class Idea {
         createdAt: Date = Date(),
         updatedAt: Date = Date(),
         tags: [String] = [],
-        linkedReflectionIds: [UUID] = []
+        linkedReflectionIds: [UUID] = [],
+        deletedAt: Date? = nil
     ) {
         self.id = id
         self.title = title
@@ -30,6 +34,7 @@ final class Idea {
         self.updatedAt = updatedAt
         self.tags = tags
         self.linkedReflectionIds = linkedReflectionIds
+        self.deletedAt = deletedAt
     }
 }
 

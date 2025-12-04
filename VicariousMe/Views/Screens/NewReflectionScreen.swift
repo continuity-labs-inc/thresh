@@ -3,11 +3,15 @@ import SwiftData
 
 struct NewReflectionScreen: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext  // ← ADD THIS LINE
-    
+    @Environment(\.modelContext) private var modelContext
+
     @State private var captureText = ""
     @State private var showingCamera = false
-    
+    @State private var isExtracting = false
+    @State private var showExtractionModal = false
+    @State private var extractionResult: ExtractionResult?
+    @State private var savedReflection: Reflection?
+
     var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -103,25 +107,58 @@ struct NewReflectionScreen: View {
             
             // Save Button - STAYS VISIBLE WHEN KEYBOARD IS OPEN
             SaveButton(
-                title: "Save Capture",
-                isEnabled: !captureText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                title: isExtracting ? "Analyzing..." : "Save Capture",
+                isEnabled: !captureText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !isExtracting,
                 action: saveCapture,
                 theme: .blue
             )
         }
         .background(Color.vm.background)
+        .overlay {
+            if isExtracting {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .overlay {
+                        VStack(spacing: 16) {
+                            ProgressView()
+                                .scaleEffect(1.5)
+                                .tint(Color.vm.synthesis)
+                            Text("Finding stories, ideas & questions...")
+                                .font(.subheadline)
+                                .foregroundStyle(Color.vm.textPrimary)
+                        }
+                        .padding(24)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.vm.surface)
+                        )
+                    }
+            }
+        }
+        .sheet(isPresented: $showExtractionModal) {
+            if let result = extractionResult, let reflection = savedReflection {
+                ExtractionReviewModal(
+                    extractionResult: result,
+                    sourceReflection: reflection,
+                    onComplete: {
+                        showExtractionModal = false
+                        dismiss()
+                    }
+                )
+            }
+        }
     }
     
     private func saveCapture() {
         print("🔴 DEBUG: Save button pressed")
-        
+
         let trimmedText = captureText.trimmingCharacters(in: .whitespacesAndNewlines)
-        
+
         guard !trimmedText.isEmpty else {
             print("🔴 DEBUG: Text is empty, not saving")
             return
         }
-        
+
         // CREATE NEW REFLECTION
         let newReflection = Reflection(
             captureContent: trimmedText,
@@ -129,23 +166,55 @@ struct NewReflectionScreen: View {
             tier: .active,
             modeBalance: .captureOnly
         )
-        
+
         print("🔴 DEBUG: Created reflection with ID: \(newReflection.id)")
-        
+
         // INSERT INTO SWIFTDATA
         modelContext.insert(newReflection)
-        
+
         print("🔴 DEBUG: Inserted into modelContext")
-        
+
         // SAVE TO DATABASE
         do {
             try modelContext.save()
             print("✅ SUCCESS: Reflection saved to database!")
         } catch {
             print("❌ ERROR: Failed to save - \(error.localizedDescription)")
+            dismiss()
+            return
         }
-        
-        dismiss()
+
+        // Store the reflection for linking extracted items
+        savedReflection = newReflection
+
+        // Run AI extraction if text is long enough
+        if trimmedText.count >= 50 {
+            isExtracting = true
+            Task {
+                do {
+                    let result = try await AIService.shared.extractFromReflection(trimmedText)
+                    await MainActor.run {
+                        isExtracting = false
+                        if !result.isEmpty {
+                            print("✅ Extracted \(result.totalCount) items from reflection")
+                            extractionResult = result
+                            showExtractionModal = true
+                        } else {
+                            print("ℹ️ No items extracted from reflection")
+                            dismiss()
+                        }
+                    }
+                } catch {
+                    await MainActor.run {
+                        isExtracting = false
+                        print("❌ Extraction failed: \(error.localizedDescription)")
+                        dismiss()
+                    }
+                }
+            }
+        } else {
+            dismiss()
+        }
     }
 }
 

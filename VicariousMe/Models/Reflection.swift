@@ -68,7 +68,10 @@ final class Reflection {
     var themes: [String]
     var isArchived: Bool
     var marinating: Bool
-    
+
+    // Soft delete support (photo-like deletion)
+    var deletedAt: Date?
+
     // Revision layers for adding new perspective with temporal distance
     var revisionLayers: [RevisionLayer]
     
@@ -90,6 +93,7 @@ final class Reflection {
         themes: [String] = [],
         isArchived: Bool = false,
         marinating: Bool = false,
+        deletedAt: Date? = nil,
         revisionLayers: [RevisionLayer] = [],
         linkedReflections: [Reflection] = []
     ) {
@@ -107,6 +111,7 @@ final class Reflection {
         self.themes = themes
         self.isArchived = isArchived
         self.marinating = marinating
+        self.deletedAt = deletedAt
         self.revisionLayers = revisionLayers
         self.linkedReflections = linkedReflections
     }

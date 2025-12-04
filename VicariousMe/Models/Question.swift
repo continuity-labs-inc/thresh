@@ -28,6 +28,9 @@ final class Question {
     var answer: String?
     var linkedReflectionIds: [UUID]
 
+    // Soft delete support (photo-like deletion)
+    var deletedAt: Date?
+
     init(
         id: UUID = UUID(),
         text: String,
@@ -37,7 +40,8 @@ final class Question {
         updatedAt: Date = Date(),
         isAnswered: Bool = false,
         answer: String? = nil,
-        linkedReflectionIds: [UUID] = []
+        linkedReflectionIds: [UUID] = [],
+        deletedAt: Date? = nil
     ) {
         self.id = id
         self.text = text
@@ -48,6 +52,7 @@ final class Question {
         self.isAnswered = isAnswered
         self.answer = answer
         self.linkedReflectionIds = linkedReflectionIds
+        self.deletedAt = deletedAt
     }
 }
 

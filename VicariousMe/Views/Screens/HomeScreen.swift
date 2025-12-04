@@ -3,12 +3,30 @@ import SwiftData
 
 struct HomeScreen: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Reflection.createdAt, order: .reverse) private var reflections: [Reflection]
-    @Query(sort: \Story.createdAt, order: .reverse) private var stories: [Story]
-    @Query(sort: \Idea.createdAt, order: .reverse) private var ideas: [Idea]
-    @Query(sort: \Question.createdAt, order: .reverse) private var questions: [Question]
+    @Query(sort: \Reflection.createdAt, order: .reverse) private var allReflections: [Reflection]
+    @Query(sort: \Story.createdAt, order: .reverse) private var allStories: [Story]
+    @Query(sort: \Idea.createdAt, order: .reverse) private var allIdeas: [Idea]
+    @Query(sort: \Question.createdAt, order: .reverse) private var allQuestions: [Question]
+
+    // Filter out deleted and archived items for display
+    private var reflections: [Reflection] {
+        allReflections.filter { $0.deletedAt == nil && !$0.isArchived }
+    }
+
+    private var stories: [Story] {
+        allStories.filter { $0.deletedAt == nil }
+    }
+
+    private var ideas: [Idea] {
+        allIdeas.filter { $0.deletedAt == nil }
+    }
+
+    private var questions: [Question] {
+        allQuestions.filter { $0.deletedAt == nil }
+    }
 
     @State private var selectedTab: ContentTab = .reflections
+    @State private var showingAboutSheet = false
 
     enum ContentTab: String, CaseIterable {
         case reflections, stories, ideas, questions
@@ -35,12 +53,25 @@ struct HomeScreen: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    if selectedTab == .reflections {
-                        NavigationLink(destination: ArchiveScreen()) {
-                            Image(systemName: "archivebox")
+                    HStack(spacing: 16) {
+                        NavigationLink(destination: RecentlyDeletedScreen()) {
+                            Image(systemName: "trash")
+                        }
+                        if selectedTab == .reflections {
+                            NavigationLink(destination: ArchiveScreen()) {
+                                Image(systemName: "archivebox")
+                            }
+                        }
+                        Button {
+                            showingAboutSheet = true
+                        } label: {
+                            Image(systemName: "info.circle")
                         }
                     }
                 }
+            }
+            .sheet(isPresented: $showingAboutSheet) {
+                AboutScreen()
             }
         }
     }
@@ -137,7 +168,7 @@ struct HomeScreen: View {
     
     private var capturesThisWeek: Int {
         let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
-        return reflections.filter { $0.createdAt >= weekAgo && !$0.isArchived }.count
+        return reflections.filter { $0.createdAt >= weekAgo }.count
     }
     
     private var hasEnoughCaptures: Bool {
