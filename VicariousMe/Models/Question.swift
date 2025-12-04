@@ -1,11 +1,27 @@
 import Foundation
 import SwiftData
 
+// MARK: - Question Source
+enum QuestionSource: String, Codable, CaseIterable {
+    case userCreated = "user_created"
+    case extractedFromReflection = "extracted_from_reflection"
+    case suggestedByAI = "suggested_by_ai"
+
+    var displayName: String {
+        switch self {
+        case .userCreated: return "Created"
+        case .extractedFromReflection: return "Extracted"
+        case .suggestedByAI: return "Suggested"
+        }
+    }
+}
+
 @Model
 final class Question {
     var id: UUID
     var text: String
     var context: String?
+    var source: QuestionSource
     var createdAt: Date
     var updatedAt: Date
     var isAnswered: Bool
@@ -16,6 +32,7 @@ final class Question {
         id: UUID = UUID(),
         text: String,
         context: String? = nil,
+        source: QuestionSource = .userCreated,
         createdAt: Date = Date(),
         updatedAt: Date = Date(),
         isAnswered: Bool = false,
@@ -25,6 +42,7 @@ final class Question {
         self.id = id
         self.text = text
         self.context = context
+        self.source = source
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.isAnswered = isAnswered
