@@ -7,15 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E1000001238F5E0000000001 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1000002238F5E0000000001 /* AboutScreen.swift */; };
-		C1000001238F5E0000000001 /* ExtractionReviewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1000002238F5E0000000001 /* ExtractionReviewModal.swift */; };
 		2E1CD0F12EE048EE003B470E /* QuarterlyReflectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */; };
 		2E5A01552EE02C6B00E5A8CB /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5A01532EE02C6B00E5A8CB /* Colors.swift */; };
 		2E5A01572EE0396800E5A8CB /* SaveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5A01562EE0395D00E5A8CB /* SaveButton.swift */; };
 		2E7B672C2EE1755100EEF8B2 /* PatternsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B672B2EE1755100EEF8B2 /* PatternsScreen.swift */; };
 		2E7B672E2EE1758000EEF8B2 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B672D2EE1758000EEF8B2 /* HomeScreen.swift */; };
 		2EAD3D462EDFE92F004929DF /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D452EDFE92F004929DF /* AppState.swift */; };
-		2EAD3D482EDFE93A004929DF /* VicariousMeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D472EDFE93A004929DF /* VicariousMeApp.swift */; };
+		2EAD3D482EDFE93A004929DF /* ThreshApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D472EDFE93A004929DF /* ThreshApp.swift */; };
 		2EAD3D4A2EDFEB74004929DF /* DevelopmentStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D492EDFEB66004929DF /* DevelopmentStage.swift */; };
 		2EAD3D4C2EDFEC50004929DF /* ReflectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D4B2EDFEC42004929DF /* ReflectionMode.swift */; };
 		2EAD3D4F2EDFF089004929DF /* EntryTypeBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D4E2EDFF089004929DF /* EntryTypeBadge.swift */; };
@@ -46,7 +44,6 @@
 		B300000F238F5E0000000001 /* QuickCaptureScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000010238F5E0000000001 /* QuickCaptureScreen.swift */; };
 		B3000011238F5E0000000001 /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000012238F5E0000000001 /* OnboardingScreen.swift */; };
 		B3000013238F5E0000000001 /* ArchiveScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000014238F5E0000000001 /* ArchiveScreen.swift */; };
-		D1000001238F5E0000000001 /* RecentlyDeletedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */; };
 		B3000015238F5E0000000001 /* ReflectionDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000016238F5E0000000001 /* ReflectionDetailScreen.swift */; };
 		B3000017238F5E0000000001 /* QuestionDetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000018238F5E0000000001 /* QuestionDetailScreen.swift */; };
 		B3000019238F5E0000000001 /* QuickActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B300001A238F5E0000000001 /* QuickActionButton.swift */; };
@@ -57,30 +54,31 @@
 		B3000023238F5E0000000001 /* TabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000024238F5E0000000001 /* TabButton.swift */; };
 		B3000025238F5E0000000001 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000026238F5E0000000001 /* EmptyStateView.swift */; };
 		B3000027238F5E0000000001 /* DesignNotesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000028238F5E0000000001 /* DesignNotesService.swift */; };
+		C1000001238F5E0000000001 /* ExtractionReviewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1000002238F5E0000000001 /* ExtractionReviewModal.swift */; };
+		D1000001238F5E0000000001 /* RecentlyDeletedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */; };
+		E1000001238F5E0000000001 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1000002238F5E0000000001 /* AboutScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E1000002238F5E0000000001 /* AboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
-		C1000002238F5E0000000001 /* ExtractionReviewModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionReviewModal.swift; sourceTree = "<group>"; };
 		2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarterlyReflectionScreen.swift; sourceTree = "<group>"; };
 		2E5A01532EE02C6B00E5A8CB /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		2E5A01562EE0395D00E5A8CB /* SaveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButton.swift; sourceTree = "<group>"; };
 		2E7B672B2EE1755100EEF8B2 /* PatternsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternsScreen.swift; sourceTree = "<group>"; };
 		2E7B672D2EE1758000EEF8B2 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
-		2EAD3D452EDFE92F004929DF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = VicariousMe/Models/AppState.swift; sourceTree = SOURCE_ROOT; };
-		2EAD3D472EDFE93A004929DF /* VicariousMeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VicariousMeApp.swift; path = VicariousMe/VicariousMeApp.swift; sourceTree = SOURCE_ROOT; };
+		2EAD3D452EDFE92F004929DF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = Thresh/Models/AppState.swift; sourceTree = SOURCE_ROOT; };
+		2EAD3D472EDFE93A004929DF /* ThreshApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThreshApp.swift; path = Thresh/ThreshApp.swift; sourceTree = SOURCE_ROOT; };
 		2EAD3D492EDFEB66004929DF /* DevelopmentStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevelopmentStage.swift; sourceTree = "<group>"; };
 		2EAD3D4B2EDFEC42004929DF /* ReflectionMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionMode.swift; sourceTree = "<group>"; };
 		2EAD3D4E2EDFF089004929DF /* EntryTypeBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryTypeBadge.swift; sourceTree = "<group>"; };
 		2EAD3D502EDFF0C9004929DF /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		2EAD3D532EDFF438004929DF /* IdeaDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaDetailScreen.swift; sourceTree = "<group>"; };
 		2EAD3D552EDFF499004929DF /* StoryDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryDetailScreen.swift; sourceTree = "<group>"; };
-		2EAD3D572EDFF697004929DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = VicariousMe/ContentView.swift; sourceTree = SOURCE_ROOT; };
+		2EAD3D572EDFF697004929DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = Thresh/ContentView.swift; sourceTree = SOURCE_ROOT; };
 		A1000006238F5E0000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A100000A238F5E0000000001 /* PromptLibrary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PromptLibrary.json; sourceTree = "<group>"; };
-		A100000B238F5E0000000001 /* VicariousMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VicariousMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A100000B238F5E0000000001 /* Thresh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thresh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A100000C238F5E0000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A100000D238F5E0000000001 /* VicariousMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VicariousMe.entitlements; sourceTree = "<group>"; };
+		A100000D238F5E0000000001 /* Thresh.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thresh.entitlements; sourceTree = "<group>"; };
 		A2000002238F5E0000000001 /* Reflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reflection.swift; sourceTree = "<group>"; };
 		A2000004238F5E0000000001 /* RevisionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionLayer.swift; sourceTree = "<group>"; };
 		A2000006238F5E0000000001 /* Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 		B3000010238F5E0000000001 /* QuickCaptureScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCaptureScreen.swift; sourceTree = "<group>"; };
 		B3000012238F5E0000000001 /* OnboardingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScreen.swift; sourceTree = "<group>"; };
 		B3000014238F5E0000000001 /* ArchiveScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveScreen.swift; sourceTree = "<group>"; };
-		D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyDeletedScreen.swift; sourceTree = "<group>"; };
 		B3000016238F5E0000000001 /* ReflectionDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionDetailScreen.swift; sourceTree = "<group>"; };
 		B3000018238F5E0000000001 /* QuestionDetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionDetailScreen.swift; sourceTree = "<group>"; };
 		B300001A238F5E0000000001 /* QuickActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionButton.swift; sourceTree = "<group>"; };
@@ -113,6 +110,9 @@
 		B3000024238F5E0000000001 /* TabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabButton.swift; sourceTree = "<group>"; };
 		B3000026238F5E0000000001 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		B3000028238F5E0000000001 /* DesignNotesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignNotesService.swift; sourceTree = "<group>"; };
+		C1000002238F5E0000000001 /* ExtractionReviewModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionReviewModal.swift; sourceTree = "<group>"; };
+		D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyDeletedScreen.swift; sourceTree = "<group>"; };
+		E1000002238F5E0000000001 /* AboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,12 +145,12 @@
 		A1000020238F5E0000000001 = {
 			isa = PBXGroup;
 			children = (
-				A1000021238F5E0000000001 /* VicariousMe */,
+				A1000021238F5E0000000001 /* Thresh */,
 				A1000022238F5E0000000001 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A1000021238F5E0000000001 /* VicariousMe */ = {
+		A1000021238F5E0000000001 /* Thresh */ = {
 			isa = PBXGroup;
 			children = (
 				A1000023238F5E0000000001 /* App */,
@@ -161,17 +161,17 @@
 				A1000028238F5E0000000001 /* Utilities */,
 				A1000029238F5E0000000001 /* Resources */,
 				A100000C238F5E0000000001 /* Info.plist */,
-				A100000D238F5E0000000001 /* VicariousMe.entitlements */,
+				A100000D238F5E0000000001 /* Thresh.entitlements */,
 				2EAD3D512EDFF0C9004929DF /* Extensions */,
 				2E5A01542EE02C6B00E5A8CB /* Design */,
 			);
-			path = VicariousMe;
+			path = Thresh;
 			sourceTree = "<group>";
 		};
 		A1000022238F5E0000000001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A100000B238F5E0000000001 /* VicariousMe.app */,
+				A100000B238F5E0000000001 /* Thresh.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -181,7 +181,7 @@
 			children = (
 				2EAD3D452EDFE92F004929DF /* AppState.swift */,
 				2EAD3D572EDFF697004929DF /* ContentView.swift */,
-				2EAD3D472EDFE93A004929DF /* VicariousMeApp.swift */,
+				2EAD3D472EDFE93A004929DF /* ThreshApp.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -332,9 +332,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1000040238F5E0000000001 /* VicariousMe */ = {
+		A1000040238F5E0000000001 /* Thresh */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "VicariousMe" */;
+			buildConfigurationList = A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "Thresh" */;
 			buildPhases = (
 				A1000042238F5E0000000001 /* Sources */,
 				A1000010238F5E0000000001 /* Frameworks */,
@@ -344,9 +344,9 @@
 			);
 			dependencies = (
 			);
-			name = VicariousMe;
-			productName = VicariousMe;
-			productReference = A100000B238F5E0000000001 /* VicariousMe.app */;
+			name = Thresh;
+			productName = Thresh;
+			productReference = A100000B238F5E0000000001 /* Thresh.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -364,7 +364,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1000051238F5E0000000001 /* Build configuration list for PBXProject "VicariousMe" */;
+			buildConfigurationList = A1000051238F5E0000000001 /* Build configuration list for PBXProject "Thresh" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -377,7 +377,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1000040238F5E0000000001 /* VicariousMe */,
+				A1000040238F5E0000000001 /* Thresh */,
 			);
 		};
 /* End PBXProject section */
@@ -412,7 +412,7 @@
 				A200000B238F5E0000000001 /* ModeIndicator.swift in Sources */,
 				A200000D238F5E0000000001 /* StepIndicator.swift in Sources */,
 				2EAD3D4A2EDFEB74004929DF /* DevelopmentStage.swift in Sources */,
-				2EAD3D482EDFE93A004929DF /* VicariousMeApp.swift in Sources */,
+				2EAD3D482EDFE93A004929DF /* ThreshApp.swift in Sources */,
 				A200000F238F5E0000000001 /* PromptView.swift in Sources */,
 				2EAD3D4C2EDFEC50004929DF /* ReflectionMode.swift in Sources */,
 				A2000011238F5E0000000001 /* ConnectionSurfacerView.swift in Sources */,
@@ -583,12 +583,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = VicariousMe/VicariousMe.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Thresh/Thresh.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4KNT4UJ5H8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = VicariousMe/Info.plist;
+				INFOPLIST_FILE = Thresh/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -599,7 +600,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = continuitylabs.com.vicariousme.app;
+				PRODUCT_BUNDLE_IDENTIFIER = continuitylabs.com.thresh.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -612,12 +613,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = VicariousMe/VicariousMe.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Thresh/Thresh.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4KNT4UJ5H8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = VicariousMe/Info.plist;
+				INFOPLIST_FILE = Thresh/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -628,7 +630,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = continuitylabs.com.vicariousme.app;
+				PRODUCT_BUNDLE_IDENTIFIER = continuitylabs.com.thresh.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -639,7 +641,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "VicariousMe" */ = {
+		A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "Thresh" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1000062238F5E0000000001 /* Debug */,
@@ -648,7 +650,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1000051238F5E0000000001 /* Build configuration list for PBXProject "VicariousMe" */ = {
+		A1000051238F5E0000000001 /* Build configuration list for PBXProject "Thresh" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1000060238F5E0000000001 /* Debug */,

@@ -40,7 +40,7 @@ struct AboutScreen: View {
                     .font(.system(size: 20))
                     .foregroundStyle(Color.vm.capture)
 
-                Text("Vicarious Me")
+                Text("Thresh")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.vm.textPrimary)
@@ -65,7 +65,7 @@ struct AboutScreen: View {
             icon: "book.pages",
             iconColor: Color.vm.textPrimary,
             title: "About This App",
-            content: "Vicarious Me helps you capture daily moments and build narratives over time. The app is designed around two complementary modes: Capture Mode for recording what happened, and Synthesis Mode for stepping back to find patterns and meaning across your reflections."
+            content: "Thresh helps you capture daily moments and build narratives over time. The app is designed around two complementary modes: Capture Mode for recording what happened, and Synthesis Mode for stepping back to find patterns and meaning across your reflections."
         )
     }
 
@@ -106,7 +106,7 @@ struct AboutScreen: View {
 
     private var footerSection: some View {
         VStack(spacing: 8) {
-            Text("Vicarious Me v0.2 Beta")
+            Text("Thresh v0.2 Beta")
                 .font(.caption)
                 .foregroundStyle(Color.vm.textSecondary)
 

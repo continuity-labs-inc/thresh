@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSUserNotificationUsageDescription</key>
-	<string>Vicarious Me sends gentle reminders for reflection.</string>
+	<string>Thresh sends gentle reminders for reflection.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

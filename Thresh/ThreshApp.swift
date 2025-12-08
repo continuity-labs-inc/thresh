@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct VicariousMeApp: App {
+struct ThreshApp: App {
     private let promptLibrary = PromptLibrary()
 
     var sharedModelContainer: ModelContainer = {
