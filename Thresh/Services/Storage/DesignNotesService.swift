@@ -1,6 +1,6 @@
 //
 //  DesignNotesService.swift
-//  VicariousMe
+//  Thresh
 //
 //  Service for managing Design Notes - contextual explanations of WHY features
 //  work the way they do. Notes appear at key moments, are dismissable, and
@@ -47,7 +47,7 @@ The same is true for reflection. Interpretation is easy—we do it automatically
 
 Observation is hard. Staying with what happened—the sensory details, the exact words, the sequence of events—without sliding into meaning requires real work.
 
-Vicarious Me trains both:
+Thresh trains both:
 • Capture Mode: Recording what happened—sensory, specific, judgment-free
 • Synthesis Mode: Finding what it means—interpretive, connective, questioning
 
@@ -60,7 +60,7 @@ Daily entries emphasize capture—the harder skill. Weekly and monthly reviews e
         DesignNote(
             id: "ai_philosophy",
             title: "How AI Works Here",
-            brief: "AI in Vicarious Me extracts and surfaces—it never writes for you. When you see AI-generated questions or connections, these are drawn from your words, not invented. The reflection is yours; AI just helps you see what's already there.",
+            brief: "AI in Thresh extracts and surfaces—it never writes for you. When you see AI-generated questions or connections, these are drawn from your words, not invented. The reflection is yours; AI just helps you see what's already there.",
             expanded: """
 Many apps use AI to generate content for users. We take a different approach.
 
@@ -250,7 +250,7 @@ Some questions resolve quickly. Others persist for months. Both are valuable.
             expanded: """
 Human memory is associative but limited. You might remember that you felt a certain way before, but not when or what triggered it.
 
-Vicarious Me's connection surfacing helps by:
+Thresh's connection surfacing helps by:
 • Finding entries with similar emotional tones
 • Linking entries that mention the same people or places
 • Identifying recurring patterns you might not notice
@@ -483,7 +483,7 @@ Think of it as recalibrating—swinging the pendulum back toward observation bef
 }
 //
 //  DesignNote.swift
-//  VicariousMe
+//  Thresh
 //
 //  Design Notes are brief, contextual explanations of WHY features work the way they do.
 //  They appear at key moments, are dismissable, and collected in Settings.
@@ -595,7 +595,7 @@ enum NoteTrigger: String, CaseIterable, Identifiable {
 }
 //
 //  DesignNoteStatus.swift
-//  VicariousMe
+//  Thresh
 //
 //  SwiftData model for tracking which design notes have been seen by the user.
 //

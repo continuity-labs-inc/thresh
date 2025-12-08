@@ -171,7 +171,7 @@ struct QuickCaptureWidget: Widget {
 // MARK: - Widget Bundle
 
 @main
-struct VicariousMeWidgetBundle: WidgetBundle {
+struct ThreshWidgetBundle: WidgetBundle {
     var body: some Widget {
         QuickCaptureWidget()
     }

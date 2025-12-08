@@ -39,7 +39,7 @@ struct WelcomePage: View {
                 .font(.system(size: 60))
                 .foregroundStyle(Color.vm.capture)
 
-            Text("Vicarious Me")
+            Text("Thresh")
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
@@ -175,7 +175,7 @@ struct ObservationIsHardPage: View {
             .padding(.horizontal, 24)
 
             // The point
-            Text("Vicarious Me trains observation first.\nIt's the harder skill—and the foundation.")
+            Text("Thresh trains observation first.\nIt's the harder skill—and the foundation.")
                 .font(.subheadline)
                 .fontWeight(.medium)
                 .foregroundStyle(Color.vm.capture)

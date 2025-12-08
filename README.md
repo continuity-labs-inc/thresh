@@ -1,4 +1,4 @@
-# Vicarious Me — Swift iOS App
+# Thresh — Swift iOS App
 
 **A reflection journaling app that trains observation before interpretation**
 
@@ -211,9 +211,9 @@ Notes are brief (2-4 sentences), expandable, dismissable, and collected in Setti
 ## File Structure
 
 ```
-VicariousMe/
+Thresh/
 ├── App/
-│   ├── VicariousMeApp.swift
+│   ├── ThreshApp.swift
 │   └── AppState.swift
 ├── Models/
 │   └── ReflectionModels.swift
@@ -239,9 +239,9 @@ VicariousMe/
 ## Additional Documentation
 
 For complete details, see project knowledge files:
-- **`VicariousMe_-_TECHNICAL___STRATEGIC_SPECIFICATION.md`** - Full product spec
-- **`VicariousMe_Enhancement_Specification.md`** - Research-based enhancements
-- **`VicariousMe_-_TICKET_INDEX.md`** - Implementation tickets
+- **`Thresh_-_TECHNICAL___STRATEGIC_SPECIFICATION.md`** - Full product spec
+- **`Thresh_Enhancement_Specification.md`** - Research-based enhancements
+- **`Thresh_-_TICKET_INDEX.md`** - Implementation tickets
 - **`Reflection_as_Cognitive_Architecture.md`** - Research foundation
 
 ## Known Gaps
@@ -261,7 +261,7 @@ For complete details, see project knowledge files:
 
 ## One-Sentence Summary
 
-Vicarious Me trains users to observe before interpreting—the harder skill first—building genuine self-understanding through captured moments that aggregate into meaning over time.
+Thresh trains users to observe before interpreting—the harder skill first—building genuine self-understanding through captured moments that aggregate into meaning over time.
 
 ---
 

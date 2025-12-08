@@ -78,7 +78,7 @@ struct HomeScreen: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Vicarious Me")
+            Text("Thresh")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundStyle(Color.vm.textPrimary)
