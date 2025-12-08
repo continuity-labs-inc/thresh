@@ -14,14 +14,14 @@ struct ConnectionSurfacerView: View {
                     VStack(spacing: 8) {
                         Image(systemName: "link.circle.fill")
                             .font(.largeTitle)
-                            .foregroundStyle(Color.vm.synthesis)
+                            .foregroundStyle(Color.thresh.synthesis)
 
                         Text("Detected Connections")
                             .font(.headline)
 
                         Text("These patterns emerged from your captures. Consider them as starting points for synthesis, not conclusions.")
                             .font(.subheadline)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                             .multilineTextAlignment(.center)
                     }
                     .padding()
@@ -55,15 +55,15 @@ struct ConnectionSurfacerView: View {
         VStack(spacing: 12) {
             Image(systemName: "puzzlepiece")
                 .font(.largeTitle)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
 
             Text("No connections detected yet")
                 .font(.headline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
 
             Text("As you add more captures, patterns will emerge.")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textTertiary)
+                .foregroundStyle(Color.thresh.textTertiary)
                 .multilineTextAlignment(.center)
         }
         .padding(.vertical, 40)
@@ -90,20 +90,20 @@ struct ConnectionCard: View {
                 // Confidence indicator
                 ConfidenceIndicator(confidence: connection.confidence)
             }
-            .foregroundStyle(Color.vm.synthesis)
+            .foregroundStyle(Color.thresh.synthesis)
 
             // Description
             Text(connection.description)
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textPrimary)
+                .foregroundStyle(Color.thresh.textPrimary)
 
             // Type description
             Text(connection.connectionType.description)
                 .font(.caption)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
         }
         .padding()
-        .background(Color.vm.surface)
+        .background(Color.thresh.surface)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
@@ -116,7 +116,7 @@ struct ConfidenceIndicator: View {
         HStack(spacing: 2) {
             ForEach(0..<3) { index in
                 Circle()
-                    .fill(index < confidenceLevel ? Color.vm.synthesis : Color.vm.synthesis.opacity(0.6))
+                    .fill(index < confidenceLevel ? Color.thresh.synthesis : Color.thresh.synthesis.opacity(0.6))
                     .frame(width: 6, height: 6)
             }
         }

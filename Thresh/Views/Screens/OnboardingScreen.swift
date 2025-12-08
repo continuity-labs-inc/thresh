@@ -37,7 +37,7 @@ struct WelcomePage: View {
 
             Image(systemName: "eyes")
                 .font(.system(size: 60))
-                .foregroundStyle(Color.vm.capture)
+                .foregroundStyle(Color.thresh.capture)
 
             Text("Thresh")
                 .font(.largeTitle)
@@ -45,7 +45,7 @@ struct WelcomePage: View {
 
             Text("See your life clearly.\nUnderstand it deeply.")
                 .font(.title3)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
 
             Spacer()
@@ -70,54 +70,54 @@ struct TwoModesPage: View {
                 HStack(spacing: 16) {
                     Image(systemName: "camera.fill")
                         .font(.title)
-                        .foregroundStyle(Color.vm.capture)
+                        .foregroundStyle(Color.thresh.capture)
                         .frame(width: 50)
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Capture")
                             .font(.headline)
-                            .foregroundStyle(Color.vm.capture)
+                            .foregroundStyle(Color.thresh.capture)
                         Text("Record what happened")
                             .font(.subheadline)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                     }
                     Spacer()
                 }
                 .padding()
-                .background(Color.vm.capture.opacity(0.1))
+                .background(Color.thresh.capture.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
 
                 // Arrow
                 Image(systemName: "arrow.down")
                     .font(.title2)
-                    .foregroundStyle(Color.vm.textSecondary)
+                    .foregroundStyle(Color.thresh.textSecondary)
 
                 // Synthesis Mode
                 HStack(spacing: 16) {
                     Image(systemName: "sparkles")
                         .font(.title)
-                        .foregroundStyle(Color.vm.synthesis)
+                        .foregroundStyle(Color.thresh.synthesis)
                         .frame(width: 50)
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Synthesis")
                             .font(.headline)
-                            .foregroundStyle(Color.vm.synthesis)
+                            .foregroundStyle(Color.thresh.synthesis)
                         Text("Find what it means")
                             .font(.subheadline)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                     }
                     Spacer()
                 }
                 .padding()
-                .background(Color.vm.synthesis.opacity(0.1))
+                .background(Color.thresh.synthesis.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .padding(.horizontal, 32)
 
             Text("Most apps blur these together.\nWe keep them separate.")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
 
             Spacer()
@@ -142,13 +142,13 @@ struct ObservationIsHardPage: View {
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "sparkles")
-                            .foregroundStyle(Color.vm.synthesis)
+                            .foregroundStyle(Color.thresh.synthesis)
                         Text("Interpretation is easy")
                             .fontWeight(.semibold)
                     }
                     Text("We do it automatically. The moment something happens, we're already deciding what it means.")
                         .font(.subheadline)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                         .multilineTextAlignment(.center)
                 }
 
@@ -162,13 +162,13 @@ struct ObservationIsHardPage: View {
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "camera.fill")
-                            .foregroundStyle(Color.vm.capture)
+                            .foregroundStyle(Color.thresh.capture)
                         Text("Observation is hard")
                             .fontWeight(.semibold)
                     }
                     Text("Staying with what happened—the details, the words, the sequence—without sliding into meaning? That takes discipline.")
                         .font(.subheadline)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                         .multilineTextAlignment(.center)
                 }
             }
@@ -178,10 +178,10 @@ struct ObservationIsHardPage: View {
             Text("Thresh trains observation first.\nIt's the harder skill—and the foundation.")
                 .font(.subheadline)
                 .fontWeight(.medium)
-                .foregroundStyle(Color.vm.capture)
+                .foregroundStyle(Color.thresh.capture)
                 .multilineTextAlignment(.center)
                 .padding()
-                .background(Color.vm.capture.opacity(0.1))
+                .background(Color.thresh.capture.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(.horizontal, 24)
 
@@ -200,7 +200,7 @@ struct AIPhilosophyPage: View {
 
             Image(systemName: "brain.head.profile")
                 .font(.system(size: 50))
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
 
             Text("AI extracts.\nIt never writes.")
                 .font(.title2)
@@ -216,7 +216,7 @@ struct AIPhilosophyPage: View {
 
             Text("The reflection is yours.\nAI is a mirror, not an author.")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
 
             Spacer()
@@ -233,7 +233,7 @@ struct AIFeatureRow: View {
         HStack(spacing: 12) {
             Image(systemName: icon)
                 .frame(width: 24)
-                .foregroundStyle(Color.vm.synthesis)
+                .foregroundStyle(Color.thresh.synthesis)
             Text(text)
                 .font(.subheadline)
         }
@@ -251,7 +251,7 @@ struct GetStartedPage: View {
 
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 60))
-                .foregroundStyle(Color.vm.capture)
+                .foregroundStyle(Color.thresh.capture)
 
             Text("Ready to begin")
                 .font(.title)
@@ -259,7 +259,7 @@ struct GetStartedPage: View {
 
             Text("Start with a capture.\nMeaning can come later.")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
 
             Spacer()
@@ -270,7 +270,7 @@ struct GetStartedPage: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.vm.capture)
+                    .background(Color.thresh.capture)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .padding(.horizontal, 32)

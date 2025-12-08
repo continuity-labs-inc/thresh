@@ -53,12 +53,12 @@ struct RecentlyDeletedScreen: View {
                     Section {
                         HStack(spacing: 12) {
                             Image(systemName: "info.circle.fill")
-                                .foregroundStyle(Color.vm.textSecondary)
+                                .foregroundStyle(Color.thresh.textSecondary)
                             Text("Items are automatically deleted after 30 days")
                                 .font(.subheadline)
-                                .foregroundStyle(Color.vm.textSecondary)
+                                .foregroundStyle(Color.thresh.textSecondary)
                         }
-                        .listRowBackground(Color.vm.surface)
+                        .listRowBackground(Color.thresh.surface)
                     }
 
                     // Reflections
@@ -67,7 +67,7 @@ struct RecentlyDeletedScreen: View {
                             ForEach(deletedReflections) { reflection in
                                 DeletedItemRow(
                                     icon: "doc.text",
-                                    iconColor: Color.vm.capture,
+                                    iconColor: Color.thresh.capture,
                                     title: String(reflection.captureContent.prefix(50)) + (reflection.captureContent.count > 50 ? "..." : ""),
                                     deletedAt: reflection.deletedAt,
                                     onRestore: { restoreReflection(reflection) },
@@ -83,7 +83,7 @@ struct RecentlyDeletedScreen: View {
                             ForEach(deletedStories) { story in
                                 DeletedItemRow(
                                     icon: "book.fill",
-                                    iconColor: Color.vm.story,
+                                    iconColor: Color.thresh.story,
                                     title: story.title,
                                     deletedAt: story.deletedAt,
                                     onRestore: { restoreStory(story) },
@@ -99,7 +99,7 @@ struct RecentlyDeletedScreen: View {
                             ForEach(deletedIdeas) { idea in
                                 DeletedItemRow(
                                     icon: "lightbulb.fill",
-                                    iconColor: Color.vm.idea,
+                                    iconColor: Color.thresh.idea,
                                     title: idea.title,
                                     deletedAt: idea.deletedAt,
                                     onRestore: { restoreIdea(idea) },
@@ -115,7 +115,7 @@ struct RecentlyDeletedScreen: View {
                             ForEach(deletedQuestions) { question in
                                 DeletedItemRow(
                                     icon: "questionmark.circle.fill",
-                                    iconColor: Color.vm.question,
+                                    iconColor: Color.thresh.question,
                                     title: question.text,
                                     deletedAt: question.deletedAt,
                                     onRestore: { restoreQuestion(question) },
@@ -130,7 +130,7 @@ struct RecentlyDeletedScreen: View {
         }
         .navigationTitle("Recently Deleted")
         .navigationBarTitleDisplayMode(.large)
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
         .toolbar {
             if !isEmpty {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -158,14 +158,14 @@ struct RecentlyDeletedScreen: View {
         VStack(spacing: 16) {
             Image(systemName: "trash")
                 .font(.system(size: 48))
-                .foregroundStyle(Color.vm.textTertiary)
+                .foregroundStyle(Color.thresh.textTertiary)
 
             Text("No Deleted Items")
                 .font(.headline)
 
             Text("Items you delete will appear here for 30 days before being permanently removed")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .padding()
@@ -267,7 +267,7 @@ struct RecentlyDeletedScreen: View {
         do {
             try modelContext.save()
         } catch {
-            print("Failed to save context: \(error)")
+            // Handle save error silently
         }
     }
 }
@@ -301,12 +301,12 @@ struct DeletedItemRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.subheadline)
-                    .foregroundStyle(Color.vm.textPrimary)
+                    .foregroundStyle(Color.thresh.textPrimary)
                     .lineLimit(1)
 
                 Text("\(daysRemaining) days remaining")
                     .font(.caption)
-                    .foregroundStyle(daysRemaining <= 7 ? .red : Color.vm.textTertiary)
+                    .foregroundStyle(daysRemaining <= 7 ? .red : Color.thresh.textTertiary)
             }
 
             Spacer()
@@ -316,7 +316,7 @@ struct DeletedItemRow: View {
                     Text("Restore")
                         .font(.subheadline)
                         .fontWeight(.medium)
-                        .foregroundStyle(Color.vm.capture)
+                        .foregroundStyle(Color.thresh.capture)
                 }
 
                 Button(role: .destructive) {

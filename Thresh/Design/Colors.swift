@@ -2,10 +2,10 @@ import SwiftUI
 
 // MARK: - Design System Colors
 extension Color {
-    static let vm = VMColors()
+    static let thresh = ThreshColors()
 }
 
-struct VMColors {
+struct ThreshColors {
     // Mode Colors
     let capture = Color(red: 0.13, green: 0.47, blue: 0.87)    // Strong blue
     let reflect = Color(red: 0.49, green: 0.28, blue: 0.73)    // Rich purple

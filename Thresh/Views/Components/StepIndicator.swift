@@ -55,7 +55,7 @@ struct StepIndicator: View {
         VStack(spacing: 4) {
             ZStack {
                 Circle()
-                    .fill(isCompleted || isCurrent ? Color.vm.synthesis : Color.vm.surface)
+                    .fill(isCompleted || isCurrent ? Color.thresh.synthesis : Color.thresh.surface)
                     .frame(width: 32, height: 32)
 
                 if isCompleted {
@@ -72,7 +72,7 @@ struct StepIndicator: View {
 
             Text(step.title)
                 .font(.caption2)
-                .foregroundStyle(isCurrent ? Color.vm.synthesis : .secondary)
+                .foregroundStyle(isCurrent ? Color.thresh.synthesis : .secondary)
         }
     }
 
@@ -81,7 +81,7 @@ struct StepIndicator: View {
         let isCompleted = step.rawValue < currentStep.rawValue
 
         Rectangle()
-            .fill(isCompleted ? Color.vm.synthesis : Color.vm.surface)
+            .fill(isCompleted ? Color.thresh.synthesis : Color.thresh.surface)
             .frame(height: 2)
             .frame(maxWidth: .infinity)
             .padding(.bottom, 20)

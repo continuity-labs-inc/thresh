@@ -35,15 +35,15 @@ struct WeeklyReflectionScreen: View {
                 HStack {
                     Image(systemName: "sparkles")
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(Color.vm.synthesis)
+                        .foregroundColor(Color.thresh.synthesis)
                     
                     Text("SYNTHESIS MODE")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color.vm.synthesis)
+                        .foregroundColor(Color.thresh.synthesis)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .background(Capsule().fill(Color.vm.synthesis.opacity(0.1)))
+                .background(Capsule().fill(Color.thresh.synthesis.opacity(0.1)))
                 .padding(.bottom, 24)
                 
                 // Step Indicators
@@ -59,7 +59,7 @@ struct WeeklyReflectionScreen: View {
                 refineStep
             }
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
         .onTapGesture {
             isTextEditorFocused = false
         }
@@ -72,16 +72,16 @@ struct WeeklyReflectionScreen: View {
             Button(action: { dismiss() }) {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color.vm.textPrimary)
+                    .foregroundColor(Color.thresh.textPrimary)
                     .frame(width: 44, height: 44)
-                    .background(Circle().fill(Color.vm.surface))
+                    .background(Circle().fill(Color.thresh.surface))
             }
             
             Spacer()
             
             Text("Weekly Reflection")
                 .font(.system(size: 20, weight: .semibold))
-                .foregroundColor(Color.vm.textPrimary)
+                .foregroundColor(Color.thresh.textPrimary)
             
             Spacer()
             
@@ -90,7 +90,7 @@ struct WeeklyReflectionScreen: View {
                 Button(action: { isTextEditorFocused = false }) {
                     Text("Done")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color.vm.synthesis)
+                        .foregroundColor(Color.thresh.synthesis)
                 }
                 .frame(width: 44, height: 44)
             } else {
@@ -119,18 +119,18 @@ struct WeeklyReflectionScreen: View {
     private func stepDot(number: Int, label: String, isActive: Bool) -> some View {
         HStack(spacing: 8) {
             Circle()
-                .fill(isActive ? Color.vm.synthesis : Color.vm.surfaceSecondary)
+                .fill(isActive ? Color.thresh.synthesis : Color.thresh.surfaceSecondary)
                 .frame(width: 40, height: 40)
                 .overlay(
                     Text("\(number)")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(isActive ? .white : Color.vm.textTertiary)
+                        .foregroundColor(isActive ? .white : Color.thresh.textTertiary)
                 )
             
             if currentStep == number {
                 Text(label)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.vm.synthesis)
+                    .foregroundColor(Color.thresh.synthesis)
             }
         }
     }
@@ -148,11 +148,11 @@ struct WeeklyReflectionScreen: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Select captures to include")
                                 .font(.system(size: 18, weight: .semibold))
-                                .foregroundColor(Color.vm.textPrimary)
+                                .foregroundColor(Color.thresh.textPrimary)
                             
                             Text("Choose the moments from this week that feel connected or worth synthesizing.")
                                 .font(.system(size: 14))
-                                .foregroundColor(Color.vm.textSecondary)
+                                .foregroundColor(Color.thresh.textSecondary)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 20)
@@ -192,16 +192,16 @@ struct WeeklyReflectionScreen: View {
             
             Image(systemName: "camera")
                 .font(.system(size: 60))
-                .foregroundColor(Color.vm.textTertiary)
+                .foregroundColor(Color.thresh.textTertiary)
                 .padding(.vertical, 20)
             
             Text("No captures this week")
                 .font(.system(size: 20, weight: .semibold))
-                .foregroundColor(Color.vm.textPrimary)
+                .foregroundColor(Color.thresh.textPrimary)
             
             Text("Weekly synthesis works best with daily captures to draw from. Start capturing your moments to build material for reflection.")
                 .font(.system(size: 16))
-                .foregroundColor(Color.vm.textSecondary)
+                .foregroundColor(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
             
@@ -213,7 +213,7 @@ struct WeeklyReflectionScreen: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 56)
-                    .background(RoundedRectangle(cornerRadius: 28).fill(Color.vm.capture))
+                    .background(RoundedRectangle(cornerRadius: 28).fill(Color.thresh.capture))
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 20)
@@ -233,26 +233,26 @@ struct WeeklyReflectionScreen: View {
                                 HStack {
                                     Image(systemName: "sparkles")
                                         .font(.system(size: 14, weight: .semibold))
-                                        .foregroundColor(Color.vm.synthesis)
+                                        .foregroundColor(Color.thresh.synthesis)
                                     
                                     Text("SYNTHESIS PROMPT")
                                         .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(Color.vm.synthesis)
+                                        .foregroundColor(Color.thresh.synthesis)
                                 }
                                 
                                 Text("What thread connects these moments? What patterns or meaning emerge when you see them together?")
                                     .font(.system(size: 16))
-                                    .foregroundColor(Color.vm.textSecondary)
+                                    .foregroundColor(Color.thresh.textSecondary)
                                     .italic()
                             }
                             .padding(16)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.vm.synthesis.opacity(0.1))
+                                    .fill(Color.thresh.synthesis.opacity(0.1))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 12)
-                                            .strokeBorder(Color.vm.synthesis.opacity(0.3), lineWidth: 1)
+                                            .strokeBorder(Color.thresh.synthesis.opacity(0.3), lineWidth: 1)
                                     )
                             )
                             .padding(.horizontal, 20)
@@ -263,31 +263,31 @@ struct WeeklyReflectionScreen: View {
                             if isTextEditorFocused {
                                 Text("Write your synthesis:")
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(Color.vm.textSecondary)
+                                    .foregroundColor(Color.thresh.textSecondary)
                                     .padding(.horizontal, 20)
                             }
                             
                             ZStack(alignment: .topLeading) {
                                 if synthesisText.isEmpty {
                                     Text("Write your synthesis in complete sentences...")
-                                        .foregroundColor(Color.vm.textTertiary)
+                                        .foregroundColor(Color.thresh.textTertiary)
                                         .font(.system(size: 16))
                                         .padding(.top, 12)
                                         .padding(.leading, 16)
                                 }
                                 
                                 TextEditor(text: $synthesisText)
-                                    .foregroundColor(Color.vm.textPrimary)
+                                    .foregroundColor(Color.thresh.textPrimary)
                                     .font(.system(size: 16))
                                     .scrollContentBackground(.hidden)
                                     .focused($isTextEditorFocused)
                                     .frame(minHeight: isTextEditorFocused ? 250 : 200)
                                     .padding(12)
                             }
-                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surface))
+                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.thresh.surface))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .strokeBorder(isTextEditorFocused ? Color.vm.synthesis : Color.clear, lineWidth: 2)
+                                    .strokeBorder(isTextEditorFocused ? Color.thresh.synthesis : Color.clear, lineWidth: 2)
                             )
                             .padding(.horizontal, 20)
                             .id("textEditor")
@@ -298,18 +298,18 @@ struct WeeklyReflectionScreen: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Selected Captures (\(selectedReflections.count))")
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(Color.vm.textSecondary)
+                                    .foregroundColor(Color.thresh.textSecondary)
                                 
                                 ForEach(recentReflections.filter { selectedReflections.contains($0.id) }) { reflection in
                                     Text("• \(reflection.captureContent)")
                                         .font(.system(size: 14))
-                                        .foregroundColor(Color.vm.textTertiary)
+                                        .foregroundColor(Color.thresh.textTertiary)
                                         .lineLimit(1)
                                 }
                             }
                             .padding(16)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surfaceSecondary))
+                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.thresh.surfaceSecondary))
                             .padding(.horizontal, 20)
                         }
                         
@@ -334,12 +334,12 @@ struct WeeklyReflectionScreen: View {
                 }) {
                     Text("Back")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .frame(maxWidth: .infinity)
                         .frame(height: 56)
                         .background(
                             RoundedRectangle(cornerRadius: 28)
-                                .strokeBorder(Color.vm.textPrimary, lineWidth: 2)
+                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 2)
                         )
                 }
                 
@@ -356,7 +356,7 @@ struct WeeklyReflectionScreen: View {
             .padding(.horizontal, 24)
             .padding(.bottom, 20)
             .padding(.top, 12)
-            .background(Color.vm.background)
+            .background(Color.thresh.background)
         }
     }
     
@@ -373,32 +373,32 @@ struct WeeklyReflectionScreen: View {
                                 HStack {
                                     Image(systemName: "person.2")
                                         .font(.system(size: 14, weight: .semibold))
-                                        .foregroundColor(Color.vm.reflect)
+                                        .foregroundColor(Color.thresh.reflect)
                                     
                                     Text("PERSPECTIVE PROMPT")
                                         .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(Color.vm.reflect)
+                                        .foregroundColor(Color.thresh.reflect)
                                     
                                     Spacer()
                                     
                                     Text("Optional")
                                         .font(.system(size: 12))
-                                        .foregroundColor(Color.vm.textTertiary)
+                                        .foregroundColor(Color.thresh.textTertiary)
                                 }
                                 
                                 Text("Retell this week from someone else's perspective—a person who appears in your reflections. How might they describe these same days?")
                                     .font(.system(size: 16))
-                                    .foregroundColor(Color.vm.textSecondary)
+                                    .foregroundColor(Color.thresh.textSecondary)
                                     .italic()
                             }
                             .padding(16)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.vm.reflect.opacity(0.1))
+                                    .fill(Color.thresh.reflect.opacity(0.1))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 12)
-                                            .strokeBorder(Color.vm.reflect.opacity(0.3), lineWidth: 1)
+                                            .strokeBorder(Color.thresh.reflect.opacity(0.3), lineWidth: 1)
                                     )
                             )
                             .padding(.horizontal, 20)
@@ -409,31 +409,31 @@ struct WeeklyReflectionScreen: View {
                             if isTextEditorFocused {
                                 Text("Write from another perspective:")
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(Color.vm.textSecondary)
+                                    .foregroundColor(Color.thresh.textSecondary)
                                     .padding(.horizontal, 20)
                             }
                             
                             ZStack(alignment: .topLeading) {
                                 if bakhtinianText.isEmpty {
                                     Text("Write from another perspective...")
-                                        .foregroundColor(Color.vm.textTertiary)
+                                        .foregroundColor(Color.thresh.textTertiary)
                                         .font(.system(size: 16))
                                         .padding(.top, 12)
                                         .padding(.leading, 16)
                                 }
                                 
                                 TextEditor(text: $bakhtinianText)
-                                    .foregroundColor(Color.vm.textPrimary)
+                                    .foregroundColor(Color.thresh.textPrimary)
                                     .font(.system(size: 16))
                                     .scrollContentBackground(.hidden)
                                     .focused($isTextEditorFocused)
                                     .frame(minHeight: isTextEditorFocused ? 250 : 200)
                                     .padding(12)
                             }
-                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surface))
+                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.thresh.surface))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .strokeBorder(isTextEditorFocused ? Color.vm.reflect : Color.clear, lineWidth: 2)
+                                    .strokeBorder(isTextEditorFocused ? Color.thresh.reflect : Color.clear, lineWidth: 2)
                             )
                             .padding(.horizontal, 20)
                             .id("bakhtinianEditor")
@@ -444,16 +444,16 @@ struct WeeklyReflectionScreen: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Your Synthesis")
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(Color.vm.textSecondary)
+                                    .foregroundColor(Color.thresh.textSecondary)
                                 
                                 Text(synthesisText)
                                     .font(.system(size: 14))
-                                    .foregroundColor(Color.vm.textTertiary)
+                                    .foregroundColor(Color.thresh.textTertiary)
                                     .lineLimit(4)
                             }
                             .padding(16)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surfaceSecondary))
+                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.thresh.surfaceSecondary))
                             .padding(.horizontal, 20)
                         }
                         
@@ -478,12 +478,12 @@ struct WeeklyReflectionScreen: View {
                 }) {
                     Text("Back")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .frame(maxWidth: .infinity)
                         .frame(height: 56)
                         .background(
                             RoundedRectangle(cornerRadius: 28)
-                                .strokeBorder(Color.vm.textPrimary, lineWidth: 2)
+                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 2)
                         )
                 }
                 
@@ -500,7 +500,7 @@ struct WeeklyReflectionScreen: View {
             .padding(.horizontal, 24)
             .padding(.bottom, 20)
             .padding(.top, 12)
-            .background(Color.vm.background)
+            .background(Color.thresh.background)
         }
     }
     
@@ -549,10 +549,9 @@ struct WeeklyReflectionScreen: View {
         
         do {
             try modelContext.save()
-            print("✅ Weekly synthesis saved!")
             dismiss()
         } catch {
-            print("❌ Error saving: \(error)")
+            // Handle save error silently
         }
     }
 }
@@ -583,8 +582,8 @@ struct CaptureRow: View {
             HStack(spacing: 12) {
                 // Checkbox
                 Circle()
-                    .strokeBorder(isSelected ? Color.vm.synthesis : Color.vm.textTertiary, lineWidth: 2)
-                    .background(Circle().fill(isSelected ? Color.vm.synthesis : Color.clear))
+                    .strokeBorder(isSelected ? Color.thresh.synthesis : Color.thresh.textTertiary, lineWidth: 2)
+                    .background(Circle().fill(isSelected ? Color.thresh.synthesis : Color.clear))
                     .frame(width: 24, height: 24)
                     .overlay(
                         Image(systemName: "checkmark")
@@ -597,19 +596,19 @@ struct CaptureRow: View {
                     HStack {
                         Text(reflection.createdAt.formatted(date: .abbreviated, time: .omitted))
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(Color.vm.textPrimary)
+                            .foregroundColor(Color.thresh.textPrimary)
                         
                         Text("·")
-                            .foregroundColor(Color.vm.textTertiary)
+                            .foregroundColor(Color.thresh.textTertiary)
                         
                         Text(timeSince)
                             .font(.system(size: 14))
-                            .foregroundColor(Color.vm.textSecondary)
+                            .foregroundColor(Color.thresh.textSecondary)
                     }
                     
                     Text(reflection.captureContent)
                         .font(.system(size: 14))
-                        .foregroundColor(Color.vm.textSecondary)
+                        .foregroundColor(Color.thresh.textSecondary)
                         .lineLimit(2)
                 }
                 
@@ -618,11 +617,11 @@ struct CaptureRow: View {
             .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.vm.surface)
+                    .fill(Color.thresh.surface)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .strokeBorder(
-                                isSelected ? Color.vm.synthesis.opacity(0.4) : Color.clear,
+                                isSelected ? Color.thresh.synthesis.opacity(0.4) : Color.clear,
                                 lineWidth: 2
                             )
                     )

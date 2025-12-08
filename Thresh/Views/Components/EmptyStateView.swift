@@ -11,11 +11,11 @@ struct EmptyStateView: View {
 
             Text(title)
                 .font(.headline)
-                .foregroundStyle(Color.vm.textPrimary)
+                .foregroundStyle(Color.thresh.textPrimary)
 
             Text(subtitle)
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .padding(.vertical, 48)
@@ -33,10 +33,10 @@ struct EmptyStateView: View {
 
     private var color: Color {
         switch tab {
-        case .reflections: return Color.vm.capture
-        case .stories: return Color.vm.story
-        case .ideas: return Color.vm.idea
-        case .questions: return Color.vm.question
+        case .reflections: return Color.thresh.capture
+        case .stories: return Color.thresh.story
+        case .ideas: return Color.thresh.idea
+        case .questions: return Color.thresh.question
         }
     }
 
@@ -64,5 +64,5 @@ struct EmptyStateView: View {
         EmptyStateView(tab: .reflections)
         EmptyStateView(tab: .ideas)
     }
-    .background(Color.vm.background)
+    .background(Color.thresh.background)
 }

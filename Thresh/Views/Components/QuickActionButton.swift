@@ -31,13 +31,13 @@ struct QuickActionButton<Destination: View>: View {
             QuickActionButton(
                 title: "New Reflection",
                 icon: "camera.fill",
-                color: Color.vm.capture,
+                color: Color.thresh.capture,
                 destination: Text("Destination")
             )
             QuickActionButton(
                 title: "New Story",
                 icon: "book.fill",
-                color: Color.vm.story,
+                color: Color.thresh.story,
                 destination: Text("Destination")
             )
         }

@@ -44,7 +44,7 @@ struct HomeScreen: View {
                 }
                 .padding()
             }
-            .background(Color.vm.background)
+            .background(Color.thresh.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -81,10 +81,10 @@ struct HomeScreen: View {
             Text("Thresh")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundStyle(Color.vm.textPrimary)
+                .foregroundStyle(Color.thresh.textPrimary)
             Text("Capture moments, find patterns")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -94,25 +94,25 @@ struct HomeScreen: View {
             QuickActionButton(
                 title: "New Reflection",
                 icon: "camera.fill",
-                color: Color.vm.capture,
+                color: Color.thresh.capture,
                 destination: NewReflectionScreen()
             )
             QuickActionButton(
                 title: "New Story",
                 icon: "book.fill",
-                color: Color.vm.story,
+                color: Color.thresh.story,
                 destination: NewStoryScreen()
             )
             QuickActionButton(
                 title: "New Idea",
                 icon: "lightbulb.fill",
-                color: Color.vm.idea,
+                color: Color.thresh.idea,
                 destination: NewIdeaScreen()
             )
             QuickActionButton(
                 title: "New Question",
                 icon: "questionmark.circle.fill",
-                color: Color.vm.question,
+                color: Color.thresh.question,
                 destination: NewQuestionScreen()
             )
         }
@@ -123,22 +123,22 @@ struct HomeScreen: View {
             Text("BUILD NARRATIVE")
                 .font(.caption)
                 .fontWeight(.bold)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
                 
             NavigationLink(destination: WeeklyReflectionScreen()) {
                 HStack {
                     Image(systemName: "book.pages")
                         .font(.title2)
-                        .foregroundStyle(Color.vm.synthesis)
+                        .foregroundStyle(Color.thresh.synthesis)
                         .frame(width: 44)
                         
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Weekly Synthesis")
                             .font(.headline)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.thresh.textPrimary)
                         Text("Review your captures and find patterns")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                     }
                         
                     Spacer()
@@ -147,18 +147,18 @@ struct HomeScreen: View {
                         Text(weeklyStatusText)
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundStyle(hasEnoughCaptures ? Color.vm.synthesis : Color.vm.textSecondary)
+                            .foregroundStyle(hasEnoughCaptures ? Color.thresh.synthesis : Color.thresh.textSecondary)
                         Text("\(capturesThisWeek) captures")
                             .font(.caption2)
-                            .foregroundStyle(Color.vm.textTertiary)
+                            .foregroundStyle(Color.thresh.textTertiary)
                     }
                         
                     Image(systemName: "chevron.right")
                         .font(.caption)
-                        .foregroundStyle(Color.vm.textTertiary)
+                        .foregroundStyle(Color.thresh.textTertiary)
                 }
                 .padding()
-                .background(Color.vm.cardBackground)
+                .background(Color.thresh.cardBackground)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: 2)
             }
@@ -229,7 +229,7 @@ struct HomeScreen: View {
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.vm.capture)
+                            .background(Color.thresh.capture)
                             .foregroundStyle(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                     }

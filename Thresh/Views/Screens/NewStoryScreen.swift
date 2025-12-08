@@ -15,28 +15,28 @@ struct NewStoryScreen: View {
                 Button(action: { dismiss() }) {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .frame(width: 44, height: 44)
-                        .background(Circle().fill(Color.vm.surface))
+                        .background(Circle().fill(Color.thresh.surface))
                 }
                 
                 Spacer()
                 
                 Text("New Story")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color.vm.textSecondary)
+                    .foregroundColor(Color.thresh.textSecondary)
                 
                 Spacer()
                 
                 Button(action: { dismiss() }) {
                     Text("Cancel")
                         .font(.system(size: 16, weight: .regular))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
                         .background(
                             RoundedRectangle(cornerRadius: 20)
-                                .strokeBorder(Color.vm.textPrimary, lineWidth: 1)
+                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 1)
                         )
                 }
             }
@@ -48,17 +48,17 @@ struct NewStoryScreen: View {
             HStack {
                 Image(systemName: "book.fill")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.vm.story)
+                    .foregroundColor(Color.thresh.story)
                 
                 Text("Story Mode")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.vm.story)
+                    .foregroundColor(Color.thresh.story)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(
                 Capsule()
-                    .fill(Color.vm.story.opacity(0.1))
+                    .fill(Color.thresh.story.opacity(0.1))
             )
             .padding(.bottom, 24)
             
@@ -66,14 +66,14 @@ struct NewStoryScreen: View {
                 VStack(spacing: 12) {
                     // Title Field
                     TextField("", text: $storyTitle, prompt: Text("Story title")
-                        .foregroundColor(Color.vm.textTertiary)
+                        .foregroundColor(Color.thresh.textTertiary)
                     )
-                    .foregroundColor(Color.vm.textPrimary)
+                    .foregroundColor(Color.thresh.textPrimary)
                     .font(.system(size: 16))
                     .padding(16)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.vm.surface)
+                            .fill(Color.thresh.surface)
                     )
                     .padding(.horizontal, 20)
                     
@@ -82,11 +82,11 @@ struct NewStoryScreen: View {
                         if storyContent.isEmpty {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Tell your story in complete sentences...")
-                                    .foregroundColor(Color.vm.textTertiary)
+                                    .foregroundColor(Color.thresh.textTertiary)
                                     .font(.system(size: 16))
                                 
                                 Text("Capture a scene, memory, or moment worth keeping.")
-                                    .foregroundColor(Color.vm.textTertiary.opacity(0.7))
+                                    .foregroundColor(Color.thresh.textTertiary.opacity(0.7))
                                     .font(.system(size: 14))
                             }
                             .padding(.top, 8)
@@ -94,7 +94,7 @@ struct NewStoryScreen: View {
                         }
                         
                         TextEditor(text: $storyContent)
-                            .foregroundColor(Color.vm.textPrimary)
+                            .foregroundColor(Color.thresh.textPrimary)
                             .font(.system(size: 16))
                             .scrollContentBackground(.hidden)
                             .frame(minHeight: 300)
@@ -102,7 +102,7 @@ struct NewStoryScreen: View {
                     .padding(16)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.vm.surface)
+                            .fill(Color.thresh.surface)
                     )
                     .padding(.horizontal, 20)
                     
@@ -119,7 +119,7 @@ struct NewStoryScreen: View {
                 theme: .green
             )
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
     }
     
     private func saveStory() {
@@ -137,9 +137,8 @@ struct NewStoryScreen: View {
         
         do {
             try modelContext.save()
-            print("Story saved successfully")
         } catch {
-            print("Error saving story: \(error)")
+            // Handle save error silently
         }
         
         dismiss()

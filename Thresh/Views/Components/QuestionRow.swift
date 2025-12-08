@@ -14,7 +14,7 @@ struct QuestionRow: View {
                     }
                     .font(.caption2)
                     .fontWeight(.semibold)
-                    .foregroundStyle(Color.vm.question)
+                    .foregroundStyle(Color.thresh.question)
 
                     if question.isAnswered {
                         Text("ANSWERED")
@@ -22,8 +22,8 @@ struct QuestionRow: View {
                             .fontWeight(.medium)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
-                            .background(Color.vm.questionAnswered.opacity(0.15))
-                            .foregroundStyle(Color.vm.questionAnswered)
+                            .background(Color.thresh.questionAnswered.opacity(0.15))
+                            .foregroundStyle(Color.thresh.questionAnswered)
                             .clipShape(Capsule())
                     }
 
@@ -31,25 +31,25 @@ struct QuestionRow: View {
 
                     Text(question.createdAt.relativeFormatted)
                         .font(.caption)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                 }
 
                 // Question text
                 Text(question.text)
                     .font(.subheadline)
                     .lineLimit(2)
-                    .foregroundStyle(Color.vm.textPrimary)
+                    .foregroundStyle(Color.thresh.textPrimary)
 
                 // Context preview (if exists)
                 if let context = question.context, !context.isEmpty {
                     Text(context)
                         .font(.caption)
                         .lineLimit(1)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                 }
             }
             .padding()
-            .background(Color.vm.surface)
+            .background(Color.thresh.surface)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)

@@ -15,12 +15,12 @@ struct ModeIndicator: View {
                 .fontWeight(.semibold)
                 .tracking(1)
         }
-        .foregroundStyle(mode == .capture ? Color.vm.capture : Color.vm.synthesis)
+        .foregroundStyle(mode == .capture ? Color.thresh.capture : Color.thresh.synthesis)
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
         .background(
             Capsule()
-                .fill((mode == .capture ? Color.vm.capture : Color.vm.synthesis).opacity(0.15))
+                .fill((mode == .capture ? Color.thresh.capture : Color.thresh.synthesis).opacity(0.15))
         )
     }
 }

@@ -24,7 +24,7 @@ struct ArchiveScreen: View {
                                     Spacer()
                                     Text(reflection.createdAt.relativeFormatted)
                                         .font(.caption)
-                                        .foregroundStyle(Color.vm.textSecondary)
+                                        .foregroundStyle(Color.thresh.textSecondary)
                                 }
 
                                 Text(reflection.captureContent.prefix(100) + (reflection.captureContent.count > 100 ? "..." : ""))
@@ -40,21 +40,21 @@ struct ArchiveScreen: View {
         }
         .navigationTitle("Archive")
         .navigationBarTitleDisplayMode(.large)
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
     }
 
     private var emptyState: some View {
         VStack(spacing: 16) {
             Image(systemName: "archivebox")
                 .font(.system(size: 48))
-                .foregroundStyle(Color.vm.tierArchive)
+                .foregroundStyle(Color.thresh.tierArchive)
 
             Text("Archive Empty")
                 .font(.headline)
 
             Text("Reflections you archive will appear here for safekeeping")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .padding()

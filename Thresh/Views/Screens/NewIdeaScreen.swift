@@ -15,28 +15,28 @@ struct NewIdeaScreen: View {
                 Button(action: { dismiss() }) {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .frame(width: 44, height: 44)
-                        .background(Circle().fill(Color.vm.surface))
+                        .background(Circle().fill(Color.thresh.surface))
                 }
                 
                 Spacer()
                 
                 Text("New Idea")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color.vm.textSecondary)
+                    .foregroundColor(Color.thresh.textSecondary)
                 
                 Spacer()
                 
                 Button(action: { dismiss() }) {
                     Text("Cancel")
                         .font(.system(size: 16, weight: .regular))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
                         .background(
                             RoundedRectangle(cornerRadius: 20)
-                                .strokeBorder(Color.vm.textPrimary, lineWidth: 1)
+                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 1)
                         )
                 }
             }
@@ -48,17 +48,17 @@ struct NewIdeaScreen: View {
             HStack {
                 Image(systemName: "lightbulb.fill")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.vm.idea)
+                    .foregroundColor(Color.thresh.idea)
                 
                 Text("Idea Mode")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.vm.idea)
+                    .foregroundColor(Color.thresh.idea)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(
                 Capsule()
-                    .fill(Color.vm.idea.opacity(0.1))
+                    .fill(Color.thresh.idea.opacity(0.1))
             )
             .padding(.bottom, 24)
             
@@ -66,14 +66,14 @@ struct NewIdeaScreen: View {
                 VStack(spacing: 12) {
                     // Title Field
                     TextField("", text: $ideaTitle, prompt: Text("Idea title")
-                        .foregroundColor(Color.vm.textTertiary)
+                        .foregroundColor(Color.thresh.textTertiary)
                     )
-                    .foregroundColor(Color.vm.textPrimary)
+                    .foregroundColor(Color.thresh.textPrimary)
                     .font(.system(size: 16))
                     .padding(16)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.vm.surface)
+                            .fill(Color.thresh.surface)
                     )
                     .padding(.horizontal, 20)
                     
@@ -82,11 +82,11 @@ struct NewIdeaScreen: View {
                         if ideaDetails.isEmpty {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Capture your idea in complete sentences...")
-                                    .foregroundColor(Color.vm.textTertiary)
+                                    .foregroundColor(Color.thresh.textTertiary)
                                     .font(.system(size: 16))
                                 
                                 Text("Record an insight, seed, or thought worth remembering.")
-                                    .foregroundColor(Color.vm.textTertiary.opacity(0.7))
+                                    .foregroundColor(Color.thresh.textTertiary.opacity(0.7))
                                     .font(.system(size: 14))
                             }
                             .padding(.top, 8)
@@ -94,7 +94,7 @@ struct NewIdeaScreen: View {
                         }
                         
                         TextEditor(text: $ideaDetails)
-                            .foregroundColor(Color.vm.textPrimary)
+                            .foregroundColor(Color.thresh.textPrimary)
                             .font(.system(size: 16))
                             .scrollContentBackground(.hidden)
                             .frame(minHeight: 300)
@@ -102,7 +102,7 @@ struct NewIdeaScreen: View {
                     .padding(16)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.vm.surface)
+                            .fill(Color.thresh.surface)
                     )
                     .padding(.horizontal, 20)
                     
@@ -119,7 +119,7 @@ struct NewIdeaScreen: View {
                 theme: .orange
             )
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
     }
     
     private func saveIdea() {
@@ -137,9 +137,8 @@ struct NewIdeaScreen: View {
         
         do {
             try modelContext.save()
-            print("Idea saved successfully")
         } catch {
-            print("Error saving idea: \(error)")
+            // Handle save error silently
         }
         
         dismiss()

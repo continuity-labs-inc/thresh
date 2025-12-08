@@ -10,12 +10,12 @@ struct SynthesisGuideItem: View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: icon)
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.synthesis)
+                .foregroundStyle(Color.thresh.synthesis)
                 .frame(width: 20)
 
             Text(text)
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textPrimary)
+                .foregroundStyle(Color.thresh.textPrimary)
         }
     }
 }
