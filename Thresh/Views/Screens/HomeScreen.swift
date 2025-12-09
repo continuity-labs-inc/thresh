@@ -48,8 +48,13 @@ struct HomeScreen: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    NavigationLink(destination: PatternsScreen()) {
-                        Image(systemName: "sparkles")
+                    HStack(spacing: 16) {
+                        NavigationLink(destination: PatternsScreen()) {
+                            Image(systemName: "sparkles")
+                        }
+                        NavigationLink(destination: SearchScreen()) {
+                            Image(systemName: "magnifyingglass")
+                        }
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {

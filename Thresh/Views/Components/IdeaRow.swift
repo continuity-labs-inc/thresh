@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct IdeaRow: View {
-    let idea: Idea
+    @Bindable var idea: Idea
 
     var body: some View {
         NavigationLink(destination: IdeaDetailScreen(idea: idea)) {
@@ -15,6 +15,15 @@ struct IdeaRow: View {
                     .font(.caption2)
                     .fontWeight(.semibold)
                     .foregroundStyle(Color.thresh.idea)
+
+                    if !idea.linkedReflectionIds.isEmpty {
+                        HStack(spacing: 2) {
+                            Image(systemName: "arrow.up.right")
+                            Text("Extracted")
+                        }
+                        .font(.caption2)
+                        .foregroundStyle(Color.thresh.textSecondary)
+                    }
 
                     if let category = idea.category {
                         Text(category)
@@ -50,6 +59,14 @@ struct IdeaRow: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)
+        .contextMenu {
+            Button(role: .destructive) {
+                idea.deletedAt = Date()
+                idea.updatedAt = Date()
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
     }
 
     private var previewText: String {

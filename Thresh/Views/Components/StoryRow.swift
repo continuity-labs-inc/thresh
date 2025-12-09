@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct StoryRow: View {
-    let story: Story
+    @Bindable var story: Story
 
     var body: some View {
         NavigationLink(destination: StoryDetailScreen(story: story)) {
@@ -15,6 +15,15 @@ struct StoryRow: View {
                     .font(.caption2)
                     .fontWeight(.semibold)
                     .foregroundStyle(Color.thresh.story)
+
+                    if !story.linkedReflectionIds.isEmpty {
+                        HStack(spacing: 2) {
+                            Image(systemName: "arrow.up.right")
+                            Text("Extracted")
+                        }
+                        .font(.caption2)
+                        .foregroundStyle(Color.thresh.textSecondary)
+                    }
 
                     Spacer()
 
@@ -40,6 +49,14 @@ struct StoryRow: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)
+        .contextMenu {
+            Button(role: .destructive) {
+                story.deletedAt = Date()
+                story.updatedAt = Date()
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
     }
 
     private var previewText: String {

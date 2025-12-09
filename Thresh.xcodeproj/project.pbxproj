@@ -58,6 +58,7 @@
 		D1000001238F5E0000000001 /* RecentlyDeletedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */; };
 		E1000001238F5E0000000001 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1000002238F5E0000000001 /* AboutScreen.swift */; };
 		F1000001238F5E0000000001 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000002238F5E0000000001 /* Secrets.swift */; };
+		G1000001238F5E0000000001 /* SearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = G1000002238F5E0000000001 /* SearchScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,6 +116,7 @@
 		D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyDeletedScreen.swift; sourceTree = "<group>"; };
 		E1000002238F5E0000000001 /* AboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
 		F1000002238F5E0000000001 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		G1000002238F5E0000000001 /* SearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,6 +270,7 @@
 				B3000018238F5E0000000001 /* QuestionDetailScreen.swift */,
 				2EAD3D532EDFF438004929DF /* IdeaDetailScreen.swift */,
 				2EAD3D552EDFF499004929DF /* StoryDetailScreen.swift */,
+				G1000002238F5E0000000001 /* SearchScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -451,6 +454,7 @@
 				C1000001238F5E0000000001 /* ExtractionReviewModal.swift in Sources */,
 				E1000001238F5E0000000001 /* AboutScreen.swift in Sources */,
 				F1000001238F5E0000000001 /* Secrets.swift in Sources */,
+				G1000001238F5E0000000001 /* SearchScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -175,29 +175,47 @@ struct ReflectionDetailScreen: View {
                 if isEditing {
                     EmptyView()
                 } else {
-                    Menu {
-                        Button(action: startEditing) {
-                            Label("Edit", systemImage: "pencil")
+                    HStack(spacing: 16) {
+                        Button {
+                            reflection.marinating.toggle()
+                        } label: {
+                            Image(systemName: reflection.marinating ? "flame.fill" : "flame")
+                                .foregroundStyle(reflection.marinating ? .orange : Color.thresh.textSecondary)
                         }
 
-                        Button(action: copyAllText) {
-                            Label("Copy All", systemImage: "doc.on.doc")
-                        }
+                        Menu {
+                            Button(action: startEditing) {
+                                Label("Edit", systemImage: "pencil")
+                            }
 
-                        Button(action: { toggleArchive() }) {
-                            Label(
-                                reflection.isArchived ? "Unarchive" : "Archive",
-                                systemImage: reflection.isArchived ? "arrow.uturn.backward" : "archivebox"
-                            )
-                        }
+                            Button(action: copyAllText) {
+                                Label("Copy All", systemImage: "doc.on.doc")
+                            }
 
-                        Divider()
+                            Button(action: { toggleArchive() }) {
+                                Label(
+                                    reflection.isArchived ? "Unarchive" : "Archive",
+                                    systemImage: reflection.isArchived ? "arrow.uturn.backward" : "archivebox"
+                                )
+                            }
 
-                        Button(role: .destructive, action: { showDeleteConfirmation = true }) {
-                            Label("Delete", systemImage: "trash")
+                            Button {
+                                reflection.marinating.toggle()
+                            } label: {
+                                Label(
+                                    reflection.marinating ? "Stop Marinating" : "Marinate This",
+                                    systemImage: reflection.marinating ? "flame.fill" : "flame"
+                                )
+                            }
+
+                            Divider()
+
+                            Button(role: .destructive, action: { showDeleteConfirmation = true }) {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis.circle")
                         }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
                     }
                 }
             }

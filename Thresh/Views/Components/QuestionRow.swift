@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct QuestionRow: View {
-    let question: Question
+    @Bindable var question: Question
 
     var body: some View {
         NavigationLink(destination: QuestionDetailScreen(question: question)) {
@@ -15,6 +15,15 @@ struct QuestionRow: View {
                     .font(.caption2)
                     .fontWeight(.semibold)
                     .foregroundStyle(Color.thresh.question)
+
+                    if question.source == .extractedFromReflection {
+                        HStack(spacing: 2) {
+                            Image(systemName: "arrow.up.right")
+                            Text("Extracted")
+                        }
+                        .font(.caption2)
+                        .foregroundStyle(Color.thresh.textSecondary)
+                    }
 
                     if question.isAnswered {
                         Text("ANSWERED")
@@ -53,6 +62,14 @@ struct QuestionRow: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)
+        .contextMenu {
+            Button(role: .destructive) {
+                question.deletedAt = Date()
+                question.updatedAt = Date()
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
     }
 }
 
