@@ -80,7 +80,7 @@
 		2EAD3D572EDFF697004929DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = Thresh/ContentView.swift; sourceTree = SOURCE_ROOT; };
 		A1000006238F5E0000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A100000A238F5E0000000001 /* PromptLibrary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PromptLibrary.json; sourceTree = "<group>"; };
-		A100000B238F5E0000000001 /* Thresh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thresh.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A100000B238F5E0000000001 /* Thresh Life.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Thresh Life.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A100000C238F5E0000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A100000D238F5E0000000001 /* Thresh.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thresh.entitlements; sourceTree = "<group>"; };
 		A2000002238F5E0000000001 /* Reflection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reflection.swift; sourceTree = "<group>"; };
@@ -180,7 +180,7 @@
 		A1000022238F5E0000000001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A100000B238F5E0000000001 /* Thresh.app */,
+				A100000B238F5E0000000001 /* Thresh Life.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -237,14 +237,6 @@
 				A1000030238F5E0000000001 /* Storage */,
 			);
 			path = Services;
-			sourceTree = "<group>";
-		};
-		H1000005238F5E0000000001 /* Export */ = {
-			isa = PBXGroup;
-			children = (
-				H1000004238F5E0000000001 /* ExportService.swift */,
-			);
-			path = Export;
 			sourceTree = "<group>";
 		};
 		A1000028238F5E0000000001 /* Utilities */ = {
@@ -349,12 +341,20 @@
 			path = Storage;
 			sourceTree = "<group>";
 		};
+		H1000005238F5E0000000001 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				H1000004238F5E0000000001 /* ExportService.swift */,
+			);
+			path = Export;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1000040238F5E0000000001 /* Thresh */ = {
+		A1000040238F5E0000000001 /* Thresh Life */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "Thresh" */;
+			buildConfigurationList = A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "Thresh Life" */;
 			buildPhases = (
 				A1000042238F5E0000000001 /* Sources */,
 				A1000010238F5E0000000001 /* Frameworks */,
@@ -364,9 +364,9 @@
 			);
 			dependencies = (
 			);
-			name = Thresh;
+			name = "Thresh Life";
 			productName = Thresh;
-			productReference = A100000B238F5E0000000001 /* Thresh.app */;
+			productReference = A100000B238F5E0000000001 /* Thresh Life.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -397,7 +397,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1000040238F5E0000000001 /* Thresh */,
+				A1000040238F5E0000000001 /* Thresh Life */,
 			);
 		};
 /* End PBXProject section */
@@ -626,7 +626,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = continuitylabs.com.thresh;
+				PRODUCT_BUNDLE_IDENTIFIER = com.continuitylabs.thresh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -658,7 +658,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = continuitylabs.com.thresh;
+				PRODUCT_BUNDLE_IDENTIFIER = com.continuitylabs.thresh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -669,7 +669,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "Thresh" */ = {
+		A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "Thresh Life" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A1000062238F5E0000000001 /* Debug */,
