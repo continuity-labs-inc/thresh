@@ -67,6 +67,9 @@ struct HomeScreen: View {
                                 Image(systemName: "archivebox")
                             }
                         }
+                        NavigationLink(destination: SettingsScreen()) {
+                            Image(systemName: "gearshape")
+                        }
                         Button {
                             showingAboutSheet = true
                         } label: {

@@ -59,6 +59,8 @@
 		E1000001238F5E0000000001 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1000002238F5E0000000001 /* AboutScreen.swift */; };
 		F1000001238F5E0000000001 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000002238F5E0000000001 /* Secrets.swift */; };
 		G1000001238F5E0000000001 /* SearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = G1000002238F5E0000000001 /* SearchScreen.swift */; };
+		H1000001238F5E0000000001 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = H1000002238F5E0000000001 /* SettingsScreen.swift */; };
+		H1000003238F5E0000000001 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = H1000004238F5E0000000001 /* ExportService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,6 +119,8 @@
 		E1000002238F5E0000000001 /* AboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
 		F1000002238F5E0000000001 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		G1000002238F5E0000000001 /* SearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreen.swift; sourceTree = "<group>"; };
+		H1000002238F5E0000000001 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		H1000004238F5E0000000001 /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,10 +232,19 @@
 			isa = PBXGroup;
 			children = (
 				A100002E238F5E0000000001 /* AI */,
+				H1000005238F5E0000000001 /* Export */,
 				A100002F238F5E0000000001 /* Prompts */,
 				A1000030238F5E0000000001 /* Storage */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		H1000005238F5E0000000001 /* Export */ = {
+			isa = PBXGroup;
+			children = (
+				H1000004238F5E0000000001 /* ExportService.swift */,
+			);
+			path = Export;
 			sourceTree = "<group>";
 		};
 		A1000028238F5E0000000001 /* Utilities */ = {
@@ -271,6 +284,7 @@
 				2EAD3D532EDFF438004929DF /* IdeaDetailScreen.swift */,
 				2EAD3D552EDFF499004929DF /* StoryDetailScreen.swift */,
 				G1000002238F5E0000000001 /* SearchScreen.swift */,
+				H1000002238F5E0000000001 /* SettingsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -455,6 +469,8 @@
 				E1000001238F5E0000000001 /* AboutScreen.swift in Sources */,
 				F1000001238F5E0000000001 /* Secrets.swift in Sources */,
 				G1000001238F5E0000000001 /* SearchScreen.swift in Sources */,
+				H1000001238F5E0000000001 /* SettingsScreen.swift in Sources */,
+				H1000003238F5E0000000001 /* ExportService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
