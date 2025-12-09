@@ -1,17 +1,24 @@
 import SwiftUI
 
 struct ReflectionRow: View {
-    let reflection: Reflection
+    @Bindable var reflection: Reflection
 
     var body: some View {
         NavigationLink(destination: ReflectionDetailScreen(reflection: reflection)) {
             VStack(alignment: .leading, spacing: 8) {
-                // Entry type badge + tier + time
+                // Entry type badge + tier + marinating + time
                 HStack {
                     EntryTypeBadge(type: reflection.entryType)
                     Text(reflection.tier.rawValue.uppercased())
                         .font(.caption2)
                         .foregroundStyle(Color.thresh.textSecondary)
+
+                    if reflection.marinating {
+                        Image(systemName: "flame.fill")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                    }
+
                     Spacer()
                     Text(reflection.createdAt.relativeFormatted)
                         .font(.caption)
@@ -29,6 +36,25 @@ struct ReflectionRow: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)
+        .contextMenu {
+            Button {
+                reflection.marinating.toggle()
+            } label: {
+                Label(
+                    reflection.marinating ? "Stop Marinating" : "Marinate This",
+                    systemImage: reflection.marinating ? "flame.fill" : "flame"
+                )
+            }
+
+            Divider()
+
+            Button(role: .destructive) {
+                reflection.deletedAt = Date()
+                reflection.updatedAt = Date()
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
     }
 
     private var previewText: String {
