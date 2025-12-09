@@ -32,22 +32,22 @@ struct ReflectionDetailScreen: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Label("Capture", systemImage: "camera.fill")
                         .font(.caption)
-                        .foregroundStyle(Color.vm.capture)
+                        .foregroundStyle(Color.thresh.capture)
 
                     if isEditing {
                         TextField("Capture content", text: $editedCaptureContent, axis: .vertical)
                             .font(.body)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.thresh.textPrimary)
                             .textFieldStyle(.plain)
                             .padding(12)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.vm.surface)
+                                    .fill(Color.thresh.surface)
                             )
                     } else {
                         Text(reflection.captureContent)
                             .font(.body)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.thresh.textPrimary)
                             .textSelection(.enabled)
                             .contextMenu {
                                 Button(action: { copyText(reflection.captureContent) }) {
@@ -62,22 +62,22 @@ struct ReflectionDetailScreen: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Reflection", systemImage: "arrow.right")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.reflect)
+                            .foregroundStyle(Color.thresh.reflect)
 
                         if isEditing {
                             TextField("Reflection content (optional)", text: $editedReflectionContent, axis: .vertical)
                                 .font(.body)
-                                .foregroundStyle(Color.vm.textPrimary)
+                                .foregroundStyle(Color.thresh.textPrimary)
                                 .textFieldStyle(.plain)
                                 .padding(12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .fill(Color.vm.surface)
+                                        .fill(Color.thresh.surface)
                                 )
                         } else if let reflectionContent = reflection.reflectionContent, !reflectionContent.isEmpty {
                             Text(reflectionContent)
                                 .font(.body)
-                                .foregroundStyle(Color.vm.textPrimary)
+                                .foregroundStyle(Color.thresh.textPrimary)
                                 .textSelection(.enabled)
                                 .contextMenu {
                                     Button(action: { copyText(reflectionContent) }) {
@@ -93,22 +93,22 @@ struct ReflectionDetailScreen: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Synthesis", systemImage: "sparkles")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.synthesis)
+                            .foregroundStyle(Color.thresh.synthesis)
 
                         if isEditing {
                             TextField("Synthesis content (optional)", text: $editedSynthesisContent, axis: .vertical)
                                 .font(.body)
-                                .foregroundStyle(Color.vm.textPrimary)
+                                .foregroundStyle(Color.thresh.textPrimary)
                                 .textFieldStyle(.plain)
                                 .padding(12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .fill(Color.vm.surface)
+                                        .fill(Color.thresh.surface)
                                 )
                         } else if let synthesisContent = reflection.synthesisContent, !synthesisContent.isEmpty {
                             Text(synthesisContent)
                                 .font(.body)
-                                .foregroundStyle(Color.vm.textPrimary)
+                                .foregroundStyle(Color.thresh.textPrimary)
                                 .textSelection(.enabled)
                                 .contextMenu {
                                     Button(action: { copyText(synthesisContent) }) {
@@ -126,12 +126,12 @@ struct ReflectionDetailScreen: View {
                             Text("Cancel")
                                 .font(.subheadline)
                                 .fontWeight(.medium)
-                                .foregroundStyle(Color.vm.textSecondary)
+                                .foregroundStyle(Color.thresh.textSecondary)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.vm.surface)
+                                        .fill(Color.thresh.surface)
                                 )
                         }
 
@@ -144,7 +144,7 @@ struct ReflectionDetailScreen: View {
                                 .padding(.vertical, 12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.vm.capture)
+                                        .fill(Color.thresh.capture)
                                 )
                         }
                     }
@@ -155,19 +155,19 @@ struct ReflectionDetailScreen: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Created \(reflection.createdAt.relativeFormattedFull)")
                         .font(.caption)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
 
                     if reflection.updatedAt != reflection.createdAt {
                         Text("Updated \(reflection.updatedAt.relativeFormattedFull)")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                     }
                 }
                 .padding(.top, 16)
             }
             .padding()
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
         .navigationTitle("Reflection")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -264,9 +264,8 @@ struct ReflectionDetailScreen: View {
 
         do {
             try modelContext.save()
-            print("✅ Reflection updated successfully")
         } catch {
-            print("❌ Failed to save reflection: \(error)")
+            // Handle save error silently
         }
 
         isEditing = false
@@ -279,9 +278,8 @@ struct ReflectionDetailScreen: View {
 
         do {
             try modelContext.save()
-            print("Reflection moved to Recently Deleted")
         } catch {
-            print("Failed to delete reflection: \(error)")
+            // Handle save error silently
         }
 
         dismiss()
@@ -328,13 +326,13 @@ struct TierBadge: View {
 
     private var color: Color {
         switch tier {
-        case .core: return Color.vm.tierCore
-        case .active: return Color.vm.tierActive
-        case .archive: return Color.vm.tierArchive
-        case .daily: return Color.vm.capture
-        case .weekly: return Color.vm.synthesis
-        case .monthly: return Color.vm.story
-        case .yearly: return Color.vm.question
+        case .core: return Color.thresh.tierCore
+        case .active: return Color.thresh.tierActive
+        case .archive: return Color.thresh.tierArchive
+        case .daily: return Color.thresh.capture
+        case .weekly: return Color.thresh.synthesis
+        case .monthly: return Color.thresh.story
+        case .yearly: return Color.thresh.question
         }
     }
 }

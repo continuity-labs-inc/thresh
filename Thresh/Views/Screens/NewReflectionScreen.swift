@@ -19,28 +19,28 @@ struct NewReflectionScreen: View {
                 Button(action: { dismiss() }) {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .frame(width: 44, height: 44)
-                        .background(Circle().fill(Color.vm.surface))
+                        .background(Circle().fill(Color.thresh.surface))
                 }
                 
                 Spacer()
                 
                 Text("New Reflection")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color.vm.textSecondary)
+                    .foregroundColor(Color.thresh.textSecondary)
                 
                 Spacer()
                 
                 Button(action: { dismiss() }) {
                     Text("Cancel")
                         .font(.system(size: 16, weight: .regular))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
                         .background(
                             RoundedRectangle(cornerRadius: 20)
-                                .strokeBorder(Color.vm.textPrimary, lineWidth: 1)
+                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 1)
                         )
                 }
             }
@@ -52,17 +52,17 @@ struct NewReflectionScreen: View {
             HStack {
                 Image(systemName: "camera.fill")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.vm.capture)
+                    .foregroundColor(Color.thresh.capture)
                 
                 Text("Capture Mode")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.vm.capture)
+                    .foregroundColor(Color.thresh.capture)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(
                 Capsule()
-                    .fill(Color.vm.capture.opacity(0.1))
+                    .fill(Color.thresh.capture.opacity(0.1))
             )
             .padding(.bottom, 24)
             
@@ -74,11 +74,11 @@ struct NewReflectionScreen: View {
                         if captureText.isEmpty {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Describe what happened in complete sentences...")
-                                    .foregroundColor(Color.vm.textTertiary)
+                                    .foregroundColor(Color.thresh.textTertiary)
                                     .font(.system(size: 16))
                                 
                                 Text("Write as if telling a friend about this moment.")
-                                    .foregroundColor(Color.vm.textTertiary.opacity(0.7))
+                                    .foregroundColor(Color.thresh.textTertiary.opacity(0.7))
                                     .font(.system(size: 14))
                             }
                             .padding(.top, 8)
@@ -86,7 +86,7 @@ struct NewReflectionScreen: View {
                         }
                         
                         TextEditor(text: $captureText)
-                            .foregroundColor(Color.vm.textPrimary)
+                            .foregroundColor(Color.thresh.textPrimary)
                             .font(.system(size: 16))
                             .scrollContentBackground(.hidden)
                             .frame(minHeight: 300)
@@ -94,7 +94,7 @@ struct NewReflectionScreen: View {
                     .padding(16)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.vm.surface)
+                            .fill(Color.thresh.surface)
                     )
                     .padding(.horizontal, 20)
                     
@@ -113,7 +113,7 @@ struct NewReflectionScreen: View {
                 theme: .blue
             )
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
         .overlay {
             if isExtracting {
                 Color.black.opacity(0.3)
@@ -122,15 +122,15 @@ struct NewReflectionScreen: View {
                         VStack(spacing: 16) {
                             ProgressView()
                                 .scaleEffect(1.5)
-                                .tint(Color.vm.synthesis)
+                                .tint(Color.thresh.synthesis)
                             Text("Finding stories, ideas & questions...")
                                 .font(.subheadline)
-                                .foregroundStyle(Color.vm.textPrimary)
+                                .foregroundStyle(Color.thresh.textPrimary)
                         }
                         .padding(24)
                         .background(
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.vm.surface)
+                                .fill(Color.thresh.surface)
                         )
                     }
             }
@@ -150,12 +150,9 @@ struct NewReflectionScreen: View {
     }
     
     private func saveCapture() {
-        print("🔴 DEBUG: Save button pressed")
-
         let trimmedText = captureText.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard !trimmedText.isEmpty else {
-            print("🔴 DEBUG: Text is empty, not saving")
             return
         }
 
@@ -167,19 +164,13 @@ struct NewReflectionScreen: View {
             modeBalance: .captureOnly
         )
 
-        print("🔴 DEBUG: Created reflection with ID: \(newReflection.id)")
-
         // INSERT INTO SWIFTDATA
         modelContext.insert(newReflection)
-
-        print("🔴 DEBUG: Inserted into modelContext")
 
         // SAVE TO DATABASE
         do {
             try modelContext.save()
-            print("✅ SUCCESS: Reflection saved to database!")
         } catch {
-            print("❌ ERROR: Failed to save - \(error.localizedDescription)")
             dismiss()
             return
         }
@@ -196,18 +187,15 @@ struct NewReflectionScreen: View {
                     await MainActor.run {
                         isExtracting = false
                         if !result.isEmpty {
-                            print("✅ Extracted \(result.totalCount) items from reflection")
                             extractionResult = result
                             showExtractionModal = true
                         } else {
-                            print("ℹ️ No items extracted from reflection")
                             dismiss()
                         }
                     }
                 } catch {
                     await MainActor.run {
                         isExtracting = false
-                        print("❌ Extraction failed: \(error.localizedDescription)")
                         dismiss()
                     }
                 }

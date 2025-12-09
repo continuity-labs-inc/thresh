@@ -16,31 +16,31 @@ struct TabButton: View {
                     Text("\(count)")
                         .font(.caption2)
                         .fontWeight(.bold)
-                        .foregroundStyle(isSelected ? .white : Color.vm.textSecondary)
+                        .foregroundStyle(isSelected ? .white : Color.thresh.textSecondary)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .background(
                             isSelected
-                                ? Color.vm.capture
-                                : Color.vm.surfaceSecondary
+                                ? Color.thresh.capture
+                                : Color.thresh.surfaceSecondary
                         )
                         .clipShape(Capsule())
                 }
             }
             .font(.subheadline)
-            .foregroundStyle(isSelected ? Color.vm.capture : Color.vm.textPrimary)
+            .foregroundStyle(isSelected ? Color.thresh.capture : Color.thresh.textPrimary)
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .background(
                 isSelected
-                    ? Color.vm.capture.opacity(0.12)
-                    : Color.vm.surface
+                    ? Color.thresh.capture.opacity(0.12)
+                    : Color.thresh.surface
             )
             .clipShape(Capsule())
             .overlay(
                 Capsule()
                     .stroke(
-                        isSelected ? Color.vm.capture : Color.vm.textTertiary.opacity(0.6),
+                        isSelected ? Color.thresh.capture : Color.thresh.textTertiary.opacity(0.6),
                         lineWidth: 1
                     )
             )
@@ -56,5 +56,5 @@ struct TabButton: View {
         TabButton(title: "Ideas", count: 0, isSelected: false, action: {})
     }
     .padding()
-    .background(Color.vm.background)
+    .background(Color.thresh.background)
 }

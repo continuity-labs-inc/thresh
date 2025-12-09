@@ -31,9 +31,9 @@ struct EntryTypeBadge: View {
 
     private var color: Color {
         switch type {
-        case .pureCapture: return Color.vm.capture
-        case .groundedReflection: return Color.vm.reflect
-        case .synthesis: return Color.vm.synthesis
+        case .pureCapture: return Color.thresh.capture
+        case .groundedReflection: return Color.thresh.reflect
+        case .synthesis: return Color.thresh.synthesis
         }
     }
 }

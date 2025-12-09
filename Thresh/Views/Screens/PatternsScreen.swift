@@ -19,7 +19,7 @@ struct PatternsScreen: View {
             }
             .padding()
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
         .navigationTitle("Patterns")
         .navigationBarTitleDisplayMode(.large)
     }
@@ -30,19 +30,19 @@ struct PatternsScreen: View {
         VStack(alignment: .leading, spacing: 12) {
             Label("Holding", systemImage: "hand.raised.fill")
                 .font(.headline)
-                .foregroundStyle(Color.vm.synthesis)
+                .foregroundStyle(Color.thresh.synthesis)
 
             Text("Things you're sitting with")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
 
             if marinatingReflections.isEmpty {
                 Text("Nothing marinating. Long-press a reflection to hold it.")
                     .font(.subheadline)
-                    .foregroundStyle(Color.vm.textTertiary)
+                    .foregroundStyle(Color.thresh.textTertiary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                    .background(Color.vm.surface)
+                    .background(Color.thresh.surface)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             } else {
                 ForEach(marinatingReflections) { reflection in
@@ -50,17 +50,17 @@ struct PatternsScreen: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(reflection.captureContent.prefix(100) + (reflection.captureContent.count > 100 ? "..." : ""))
                                 .font(.subheadline)
-                                .foregroundStyle(Color.vm.textPrimary)
+                                .foregroundStyle(Color.thresh.textPrimary)
                                 .lineLimit(2)
                                 .multilineTextAlignment(.leading)
 
                             Text(reflection.createdAt.relativeFormatted)
                                 .font(.caption)
-                                .foregroundStyle(Color.vm.textTertiary)
+                                .foregroundStyle(Color.thresh.textTertiary)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
-                        .background(Color.vm.surface)
+                        .background(Color.thresh.surface)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
                     .buttonStyle(.plain)
@@ -75,18 +75,18 @@ struct PatternsScreen: View {
         VStack(alignment: .leading, spacing: 12) {
             Label("Connections", systemImage: "link")
                 .font(.headline)
-                .foregroundStyle(Color.vm.synthesis)
+                .foregroundStyle(Color.thresh.synthesis)
 
             Text("Patterns across your captures")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
 
             Text("Connections will appear as you add more captures.")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textTertiary)
+                .foregroundStyle(Color.thresh.textTertiary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
-                .background(Color.vm.surface)
+                .background(Color.thresh.surface)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }
@@ -97,26 +97,26 @@ struct PatternsScreen: View {
         VStack(alignment: .leading, spacing: 12) {
             Label("Questions", systemImage: "questionmark.circle.fill")
                 .font(.headline)
-                .foregroundStyle(Color.vm.question)
+                .foregroundStyle(Color.thresh.question)
 
             Text("Questions you're exploring")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
 
             if questions.isEmpty {
                 Text("No questions yet")
                     .font(.subheadline)
-                    .foregroundStyle(Color.vm.textTertiary)
+                    .foregroundStyle(Color.thresh.textTertiary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                    .background(Color.vm.surface)
+                    .background(Color.thresh.surface)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             } else {
                 ForEach(questions) { question in
                     HStack(alignment: .top, spacing: 8) {
                         Text(question.text)
                             .font(.subheadline)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.thresh.textPrimary)
                             .multilineTextAlignment(.leading)
 
                         Spacer()
@@ -124,12 +124,12 @@ struct PatternsScreen: View {
                         if question.source == .extractedFromReflection {
                             Text("↗")
                                 .font(.caption)
-                                .foregroundStyle(Color.vm.synthesis)
+                                .foregroundStyle(Color.thresh.synthesis)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                    .background(Color.vm.surface)
+                    .background(Color.thresh.surface)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
             }

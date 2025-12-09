@@ -29,15 +29,15 @@ struct IdeaDetailScreen: View {
                     }
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundStyle(Color.vm.idea)
+                    .foregroundStyle(Color.thresh.idea)
 
                     if !isEditing, let category = idea.category {
                         Text(category)
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
-                            .background(Color.vm.surfaceSecondary)
+                            .background(Color.thresh.surfaceSecondary)
                             .clipShape(Capsule())
                     }
 
@@ -49,15 +49,15 @@ struct IdeaDetailScreen: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Category (optional)")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                         TextField("Category", text: $editedCategory)
                             .font(.subheadline)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.thresh.textPrimary)
                             .textFieldStyle(.plain)
                             .padding(12)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.vm.surface)
+                                    .fill(Color.thresh.surface)
                             )
                     }
                 }
@@ -67,18 +67,18 @@ struct IdeaDetailScreen: View {
                     TextField("Title", text: $editedTitle)
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textFieldStyle(.plain)
                         .padding(12)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.vm.surface)
+                                .fill(Color.thresh.surface)
                         )
                 } else {
                     Text(idea.title)
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textSelection(.enabled)
                         .contextMenu {
                             Button(action: { copyText(idea.title) }) {
@@ -91,18 +91,18 @@ struct IdeaDetailScreen: View {
                 if isEditing {
                     TextField("Details", text: $editedDetails, axis: .vertical)
                         .font(.body)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textFieldStyle(.plain)
                         .padding(12)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.vm.surface)
+                                .fill(Color.thresh.surface)
                         )
                 } else {
                     Text(idea.details)
                         .font(.body)
                         .lineSpacing(4)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textSelection(.enabled)
                         .contextMenu {
                             Button(action: { copyText(idea.details) }) {
@@ -119,8 +119,8 @@ struct IdeaDetailScreen: View {
                                 .font(.caption)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 6)
-                                .background(Color.vm.ideaBackground)
-                                .foregroundStyle(Color.vm.idea)
+                                .background(Color.thresh.ideaBackground)
+                                .foregroundStyle(Color.thresh.idea)
                                 .clipShape(Capsule())
                         }
                     }
@@ -133,12 +133,12 @@ struct IdeaDetailScreen: View {
                             Text("Cancel")
                                 .font(.subheadline)
                                 .fontWeight(.medium)
-                                .foregroundStyle(Color.vm.textSecondary)
+                                .foregroundStyle(Color.thresh.textSecondary)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.vm.surface)
+                                        .fill(Color.thresh.surface)
                                 )
                         }
 
@@ -151,7 +151,7 @@ struct IdeaDetailScreen: View {
                                 .padding(.vertical, 12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.vm.idea)
+                                        .fill(Color.thresh.idea)
                                 )
                         }
                     }
@@ -162,19 +162,19 @@ struct IdeaDetailScreen: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Created \(idea.createdAt.relativeFormattedFull)")
                         .font(.caption)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
 
                     if idea.updatedAt != idea.createdAt {
                         Text("Updated \(idea.updatedAt.relativeFormattedFull)")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                     }
                 }
                 .padding(.top, 16)
             }
             .padding()
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
         .navigationTitle("Idea")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -255,9 +255,8 @@ struct IdeaDetailScreen: View {
 
         do {
             try modelContext.save()
-            print("Idea updated successfully")
         } catch {
-            print("Failed to save idea: \(error)")
+            // Handle save error silently
         }
 
         isEditing = false
@@ -270,9 +269,8 @@ struct IdeaDetailScreen: View {
 
         do {
             try modelContext.save()
-            print("Idea moved to Recently Deleted")
         } catch {
-            print("Failed to delete idea: \(error)")
+            // Handle save error silently
         }
 
         dismiss()

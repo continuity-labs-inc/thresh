@@ -29,7 +29,7 @@ struct QuestionDetailScreen: View {
                     }
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundStyle(Color.vm.question)
+                    .foregroundStyle(Color.thresh.question)
 
                     if question.isAnswered {
                         Text("ANSWERED")
@@ -37,8 +37,8 @@ struct QuestionDetailScreen: View {
                             .fontWeight(.medium)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
-                            .background(Color.vm.questionAnswered.opacity(0.15))
-                            .foregroundStyle(Color.vm.questionAnswered)
+                            .background(Color.thresh.questionAnswered.opacity(0.15))
+                            .foregroundStyle(Color.thresh.questionAnswered)
                             .clipShape(Capsule())
                     }
 
@@ -50,18 +50,18 @@ struct QuestionDetailScreen: View {
                     TextField("Question", text: $editedText, axis: .vertical)
                         .font(.title2)
                         .fontWeight(.semibold)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textFieldStyle(.plain)
                         .padding(12)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.vm.surface)
+                                .fill(Color.thresh.surface)
                         )
                 } else {
                     Text(question.text)
                         .font(.title2)
                         .fontWeight(.semibold)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textSelection(.enabled)
                         .contextMenu {
                             Button(action: { copyText(question.text) }) {
@@ -75,30 +75,30 @@ struct QuestionDetailScreen: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Context (optional)")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
 
                         TextField("Context", text: $editedContext, axis: .vertical)
                             .font(.body)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.thresh.textPrimary)
                             .textFieldStyle(.plain)
                             .padding(12)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.vm.surface)
+                                    .fill(Color.thresh.surface)
                             )
                     }
                 } else if let context = question.context, !context.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Context")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
 
                         Text(context)
                             .font(.body)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.thresh.textPrimary)
                             .textSelection(.enabled)
                             .padding()
-                            .background(Color.vm.surfaceSecondary)
+                            .background(Color.thresh.surfaceSecondary)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                             .contextMenu {
                                 Button(action: { copyText(context) }) {
@@ -115,12 +115,12 @@ struct QuestionDetailScreen: View {
                             Text("Cancel")
                                 .font(.subheadline)
                                 .fontWeight(.medium)
-                                .foregroundStyle(Color.vm.textSecondary)
+                                .foregroundStyle(Color.thresh.textSecondary)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.vm.surface)
+                                        .fill(Color.thresh.surface)
                                 )
                         }
 
@@ -133,7 +133,7 @@ struct QuestionDetailScreen: View {
                                 .padding(.vertical, 12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.vm.question)
+                                        .fill(Color.thresh.question)
                                 )
                         }
                     }
@@ -145,16 +145,16 @@ struct QuestionDetailScreen: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Your Answer")
                             .font(.headline)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.thresh.textPrimary)
 
                         if let answer = question.answer, !answer.isEmpty {
                             Text(answer)
                                 .font(.body)
                                 .lineSpacing(4)
-                                .foregroundStyle(Color.vm.textPrimary)
+                                .foregroundStyle(Color.thresh.textPrimary)
                                 .textSelection(.enabled)
                                 .padding()
-                                .background(Color.vm.surface)
+                                .background(Color.thresh.surface)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .contextMenu {
                                     Button(action: { copyText(answer) }) {
@@ -165,7 +165,7 @@ struct QuestionDetailScreen: View {
                             TextEditor(text: $answerText)
                                 .frame(minHeight: 120)
                                 .padding(8)
-                                .background(Color.vm.surface)
+                                .background(Color.thresh.surface)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
 
                             Button(action: saveAnswer) {
@@ -175,8 +175,8 @@ struct QuestionDetailScreen: View {
                                     .padding()
                                     .background(
                                         answerText.isEmpty
-                                            ? Color.vm.surfaceSecondary
-                                            : Color.vm.question
+                                            ? Color.thresh.surfaceSecondary
+                                            : Color.thresh.question
                                     )
                                     .foregroundStyle(answerText.isEmpty ? Color.secondary : Color.white)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -190,19 +190,19 @@ struct QuestionDetailScreen: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Created \(question.createdAt.relativeFormattedFull)")
                         .font(.caption)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
 
                     if question.updatedAt != question.createdAt {
                         Text("Updated \(question.updatedAt.relativeFormattedFull)")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                     }
                 }
                 .padding(.top, 16)
             }
             .padding()
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
         .navigationTitle("Question")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -282,9 +282,8 @@ struct QuestionDetailScreen: View {
 
         do {
             try modelContext.save()
-            print("Question updated successfully")
         } catch {
-            print("Failed to save question: \(error)")
+            // Handle save error silently
         }
 
         isEditing = false
@@ -297,9 +296,8 @@ struct QuestionDetailScreen: View {
 
         do {
             try modelContext.save()
-            print("Answer saved successfully")
         } catch {
-            print("Failed to save answer: \(error)")
+            // Handle save error silently
         }
     }
 
@@ -310,9 +308,8 @@ struct QuestionDetailScreen: View {
 
         do {
             try modelContext.save()
-            print("Question moved to Recently Deleted")
         } catch {
-            print("Failed to delete question: \(error)")
+            // Handle save error silently
         }
 
         dismiss()

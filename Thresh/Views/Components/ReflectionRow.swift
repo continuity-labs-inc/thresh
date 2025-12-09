@@ -11,21 +11,21 @@ struct ReflectionRow: View {
                     EntryTypeBadge(type: reflection.entryType)
                     Text(reflection.tier.rawValue.uppercased())
                         .font(.caption2)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                     Spacer()
                     Text(reflection.createdAt.relativeFormatted)
                         .font(.caption)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                 }
 
                 // Capture content preview
                 Text(previewText)
                     .font(.subheadline)
                     .lineLimit(2)
-                    .foregroundStyle(Color.vm.textPrimary)
+                    .foregroundStyle(Color.thresh.textPrimary)
             }
             .padding()
-            .background(Color.vm.surface)
+            .background(Color.thresh.surface)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)

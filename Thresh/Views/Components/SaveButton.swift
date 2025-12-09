@@ -11,19 +11,19 @@ struct SaveButton: View {
         
         var enabledBackground: Color {
             switch self {
-            case .blue: return Color.vm.capture
-            case .green: return Color.vm.story
-            case .pink: return Color.vm.question
-            case .orange: return Color.vm.idea
+            case .blue: return Color.thresh.capture
+            case .green: return Color.thresh.story
+            case .pink: return Color.thresh.question
+            case .orange: return Color.thresh.idea
             }
         }
         
         var disabledBackground: Color {
-            Color.vm.surfaceSecondary
+            Color.thresh.surfaceSecondary
         }
         
         var disabledText: Color {
-            Color.vm.textTertiary
+            Color.thresh.textTertiary
         }
     }
     
@@ -41,7 +41,7 @@ struct SaveButton: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 28)
                         .strokeBorder(
-                            isEnabled ? Color.clear : Color.vm.textTertiary.opacity(0.3),
+                            isEnabled ? Color.clear : Color.thresh.textTertiary.opacity(0.3),
                             lineWidth: 1
                         )
                 )

@@ -31,16 +31,16 @@ struct QuarterlyReflectionScreen: View {
                 Button(action: { dismiss() }) {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .frame(width: 44, height: 44)
-                        .background(Circle().fill(Color.vm.surface))
+                        .background(Circle().fill(Color.thresh.surface))
                 }
                 
                 Spacer()
                 
                 Text("Quarterly Reflection")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color.vm.textSecondary)
+                    .foregroundColor(Color.thresh.textSecondary)
                 
                 Spacer()
                 
@@ -54,15 +54,15 @@ struct QuarterlyReflectionScreen: View {
             HStack {
                 Image(systemName: "calendar")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.vm.idea)
+                    .foregroundColor(Color.thresh.idea)
                 
                 Text("SEASONAL SYNTHESIS")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.vm.idea)
+                    .foregroundColor(Color.thresh.idea)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            .background(Capsule().fill(Color.vm.idea.opacity(0.1)))
+            .background(Capsule().fill(Color.thresh.idea.opacity(0.1)))
             .padding(.bottom, 24)
             
             // Step Indicators
@@ -77,7 +77,7 @@ struct QuarterlyReflectionScreen: View {
                 refineStep
             }
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
     }
     
     // MARK: - Step Indicator
@@ -97,18 +97,18 @@ struct QuarterlyReflectionScreen: View {
     private func stepDot(number: Int, label: String, isActive: Bool) -> some View {
         HStack(spacing: 8) {
             Circle()
-                .fill(isActive ? Color.vm.idea : Color.vm.surfaceSecondary)
+                .fill(isActive ? Color.thresh.idea : Color.thresh.surfaceSecondary)
                 .frame(width: 40, height: 40)
                 .overlay(
                     Text("\(number)")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(isActive ? .white : Color.vm.textTertiary)
+                        .foregroundColor(isActive ? .white : Color.thresh.textTertiary)
                 )
             
             if currentStep == number {
                 Text(label)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.vm.idea)
+                    .foregroundColor(Color.thresh.idea)
             }
         }
     }
@@ -126,11 +126,11 @@ struct QuarterlyReflectionScreen: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Select weekly syntheses to include")
                                 .font(.system(size: 18, weight: .semibold))
-                                .foregroundColor(Color.vm.textPrimary)
+                                .foregroundColor(Color.thresh.textPrimary)
                             
                             Text("A season has passed. Choose the weeks that feel significant or connected.")
                                 .font(.system(size: 14))
-                                .foregroundColor(Color.vm.textSecondary)
+                                .foregroundColor(Color.thresh.textSecondary)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 20)
@@ -168,16 +168,16 @@ struct QuarterlyReflectionScreen: View {
             
             Image(systemName: "calendar")
                 .font(.system(size: 60))
-                .foregroundColor(Color.vm.textTertiary)
+                .foregroundColor(Color.thresh.textTertiary)
                 .padding(.vertical, 20)
             
             Text("No weekly syntheses yet")
                 .font(.system(size: 20, weight: .semibold))
-                .foregroundColor(Color.vm.textPrimary)
+                .foregroundColor(Color.thresh.textPrimary)
             
             Text("Quarterly reflection builds on weekly syntheses. Create weekly reflections first to have material for deeper seasonal patterns.")
                 .font(.system(size: 16))
-                .foregroundColor(Color.vm.textSecondary)
+                .foregroundColor(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
             
@@ -189,7 +189,7 @@ struct QuarterlyReflectionScreen: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 56)
-                    .background(RoundedRectangle(cornerRadius: 28).fill(Color.vm.capture))
+                    .background(RoundedRectangle(cornerRadius: 28).fill(Color.thresh.capture))
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 20)
@@ -207,26 +207,26 @@ struct QuarterlyReflectionScreen: View {
                         HStack {
                             Image(systemName: "calendar")
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(Color.vm.idea)
+                                .foregroundColor(Color.thresh.idea)
                             
                             Text("SEASONAL SYNTHESIS PROMPT")
                                 .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(Color.vm.idea)
+                                .foregroundColor(Color.thresh.idea)
                         }
                         
                         Text("If this season were a chapter in your life, what would it be called? What question or tension does it contain?")
                             .font(.system(size: 16))
-                            .foregroundColor(Color.vm.textSecondary)
+                            .foregroundColor(Color.thresh.textSecondary)
                             .italic()
                     }
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.vm.idea.opacity(0.1))
+                            .fill(Color.thresh.idea.opacity(0.1))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .strokeBorder(Color.vm.idea.opacity(0.3), lineWidth: 1)
+                                    .strokeBorder(Color.thresh.idea.opacity(0.3), lineWidth: 1)
                             )
                     )
                     .padding(.horizontal, 20)
@@ -237,11 +237,11 @@ struct QuarterlyReflectionScreen: View {
                         if synthesisText.isEmpty {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Write your quarterly synthesis...")
-                                    .foregroundColor(Color.vm.textTertiary)
+                                    .foregroundColor(Color.thresh.textTertiary)
                                     .font(.system(size: 16))
                                 
                                 Text("What's the arc of this season? What's shifting?")
-                                    .foregroundColor(Color.vm.textTertiary.opacity(0.7))
+                                    .foregroundColor(Color.thresh.textTertiary.opacity(0.7))
                                     .font(.system(size: 14))
                             }
                             .padding(.top, 8)
@@ -249,13 +249,13 @@ struct QuarterlyReflectionScreen: View {
                         }
                         
                         TextEditor(text: $synthesisText)
-                            .foregroundColor(Color.vm.textPrimary)
+                            .foregroundColor(Color.thresh.textPrimary)
                             .font(.system(size: 16))
                             .scrollContentBackground(.hidden)
                             .frame(minHeight: 300)
                     }
                     .padding(16)
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surface))
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.thresh.surface))
                     .padding(.horizontal, 20)
                     
                     Color.clear.frame(height: 100)
@@ -269,12 +269,12 @@ struct QuarterlyReflectionScreen: View {
                 Button(action: { withAnimation { currentStep = 1 } }) {
                     Text("Back")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .frame(maxWidth: .infinity)
                         .frame(height: 56)
                         .background(
                             RoundedRectangle(cornerRadius: 28)
-                                .strokeBorder(Color.vm.textPrimary, lineWidth: 2)
+                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 2)
                         )
                 }
                 
@@ -299,11 +299,11 @@ struct QuarterlyReflectionScreen: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Optional: Cultural framing")
                             .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(Color.vm.textPrimary)
+                            .foregroundColor(Color.thresh.textPrimary)
                         
                         Text("You can save now, or add an autoethnographic layer by exploring how larger cultural patterns shaped this season.")
                             .font(.system(size: 14))
-                            .foregroundColor(Color.vm.textSecondary)
+                            .foregroundColor(Color.thresh.textSecondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20)
@@ -322,7 +322,7 @@ struct QuarterlyReflectionScreen: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 48)
-                            .background(RoundedRectangle(cornerRadius: 24).fill(Color.vm.reflect))
+                            .background(RoundedRectangle(cornerRadius: 24).fill(Color.thresh.reflect))
                         }
                         .padding(.horizontal, 20)
                     }
@@ -333,26 +333,26 @@ struct QuarterlyReflectionScreen: View {
                             HStack {
                                 Image(systemName: "globe")
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(Color.vm.reflect)
+                                    .foregroundColor(Color.thresh.reflect)
                                 
                                 Text("AUTOETHNOGRAPHIC PROMPT")
                                     .font(.system(size: 12, weight: .bold))
-                                    .foregroundColor(Color.vm.reflect)
+                                    .foregroundColor(Color.thresh.reflect)
                             }
                             
                             Text("What larger patterns—cultural, professional, generational—does this quarter illuminate? How is your experience shaped by forces beyond yourself?")
                                 .font(.system(size: 16))
-                                .foregroundColor(Color.vm.textSecondary)
+                                .foregroundColor(Color.thresh.textSecondary)
                                 .italic()
                         }
                         .padding(16)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.vm.reflect.opacity(0.1))
+                                .fill(Color.thresh.reflect.opacity(0.1))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
-                                        .strokeBorder(Color.vm.reflect.opacity(0.3), lineWidth: 1)
+                                        .strokeBorder(Color.thresh.reflect.opacity(0.3), lineWidth: 1)
                                 )
                         )
                         .padding(.horizontal, 20)
@@ -361,20 +361,20 @@ struct QuarterlyReflectionScreen: View {
                         ZStack(alignment: .topLeading) {
                             if culturalFramingText.isEmpty {
                                 Text("Explore the cultural context...")
-                                    .foregroundColor(Color.vm.textTertiary)
+                                    .foregroundColor(Color.thresh.textTertiary)
                                     .font(.system(size: 16))
                                     .padding(.top, 8)
                                     .padding(.leading, 5)
                             }
                             
                             TextEditor(text: $culturalFramingText)
-                                .foregroundColor(Color.vm.textPrimary)
+                                .foregroundColor(Color.thresh.textPrimary)
                                 .font(.system(size: 16))
                                 .scrollContentBackground(.hidden)
                                 .frame(minHeight: 200)
                         }
                         .padding(16)
-                        .background(RoundedRectangle(cornerRadius: 12).fill(Color.vm.surface))
+                        .background(RoundedRectangle(cornerRadius: 12).fill(Color.thresh.surface))
                         .padding(.horizontal, 20)
                     }
                     
@@ -389,12 +389,12 @@ struct QuarterlyReflectionScreen: View {
                 Button(action: { withAnimation { currentStep = 2 } }) {
                     Text("Back")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color.vm.textPrimary)
+                        .foregroundColor(Color.thresh.textPrimary)
                         .frame(maxWidth: .infinity)
                         .frame(height: 56)
                         .background(
                             RoundedRectangle(cornerRadius: 28)
-                                .strokeBorder(Color.vm.textPrimary, lineWidth: 2)
+                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 2)
                         )
                 }
                 
@@ -454,10 +454,9 @@ struct QuarterlyReflectionScreen: View {
         
         do {
             try modelContext.save()
-            print("✅ Quarterly synthesis saved!")
             dismiss()
         } catch {
-            print("❌ Error saving: \(error)")
+            // Handle save error silently
         }
     }
 }
@@ -485,8 +484,8 @@ struct WeeklySynthesisRow: View {
             HStack(spacing: 12) {
                 // Checkbox
                 Circle()
-                    .strokeBorder(isSelected ? Color.vm.idea : Color.vm.textTertiary, lineWidth: 2)
-                    .background(Circle().fill(isSelected ? Color.vm.idea : Color.clear))
+                    .strokeBorder(isSelected ? Color.thresh.idea : Color.thresh.textTertiary, lineWidth: 2)
+                    .background(Circle().fill(isSelected ? Color.thresh.idea : Color.clear))
                     .frame(width: 24, height: 24)
                     .overlay(
                         Image(systemName: "checkmark")
@@ -499,24 +498,24 @@ struct WeeklySynthesisRow: View {
                     HStack {
                         Text(weekRange)
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(Color.vm.textPrimary)
+                            .foregroundColor(Color.thresh.textPrimary)
                         
                         Spacer()
                         
                         Text("WEEKLY")
                             .font(.system(size: 10, weight: .bold))
-                            .foregroundColor(Color.vm.synthesis)
+                            .foregroundColor(Color.thresh.synthesis)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(
-                                Capsule().fill(Color.vm.synthesis.opacity(0.1))
+                                Capsule().fill(Color.thresh.synthesis.opacity(0.1))
                             )
                     }
                     
                     if let synthesis = reflection.synthesisContent {
                         Text(synthesis)
                             .font(.system(size: 14))
-                            .foregroundColor(Color.vm.textSecondary)
+                            .foregroundColor(Color.thresh.textSecondary)
                             .lineLimit(2)
                     }
                 }
@@ -526,11 +525,11 @@ struct WeeklySynthesisRow: View {
             .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.vm.surface)
+                    .fill(Color.thresh.surface)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .strokeBorder(
-                                isSelected ? Color.vm.idea.opacity(0.4) : Color.clear,
+                                isSelected ? Color.thresh.idea.opacity(0.4) : Color.clear,
                                 lineWidth: 2
                             )
                     )

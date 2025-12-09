@@ -48,7 +48,7 @@ struct ExtractionReviewModal: View {
                         extractionSection(
                             title: "Stories",
                             icon: "book.fill",
-                            color: Color.vm.story,
+                            color: Color.thresh.story,
                             items: extractionResult.stories,
                             selectedIds: $selectedStories
                         )
@@ -59,7 +59,7 @@ struct ExtractionReviewModal: View {
                         extractionSection(
                             title: "Ideas",
                             icon: "lightbulb.fill",
-                            color: Color.vm.idea,
+                            color: Color.thresh.idea,
                             items: extractionResult.ideas,
                             selectedIds: $selectedIdeas
                         )
@@ -70,7 +70,7 @@ struct ExtractionReviewModal: View {
                         extractionSection(
                             title: "Questions",
                             icon: "questionmark.circle.fill",
-                            color: Color.vm.question,
+                            color: Color.thresh.question,
                             items: extractionResult.questions,
                             selectedIds: $selectedQuestions
                         )
@@ -80,7 +80,7 @@ struct ExtractionReviewModal: View {
                 }
                 .padding()
             }
-            .background(Color.vm.background)
+            .background(Color.thresh.background)
             .navigationTitle("We noticed something")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -89,7 +89,7 @@ struct ExtractionReviewModal: View {
                         dismiss()
                         onComplete()
                     }
-                    .foregroundStyle(Color.vm.textSecondary)
+                    .foregroundStyle(Color.thresh.textSecondary)
                 }
             }
             .safeAreaInset(edge: .bottom) {
@@ -104,15 +104,15 @@ struct ExtractionReviewModal: View {
         VStack(spacing: 12) {
             Image(systemName: "sparkles")
                 .font(.largeTitle)
-                .foregroundStyle(Color.vm.synthesis)
+                .foregroundStyle(Color.thresh.synthesis)
 
             Text("These emerged from your reflection")
                 .font(.headline)
-                .foregroundStyle(Color.vm.textPrimary)
+                .foregroundStyle(Color.thresh.textPrimary)
 
             Text("Keep what resonates. Extracted items link back to this reflection.")
                 .font(.subheadline)
-                .foregroundStyle(Color.vm.textSecondary)
+                .foregroundStyle(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .padding(.vertical, 8)
@@ -233,7 +233,7 @@ struct ExtractionReviewModal: View {
                 // Selection count
                 Text("\(totalSelected) selected")
                     .font(.subheadline)
-                    .foregroundStyle(Color.vm.textSecondary)
+                    .foregroundStyle(Color.thresh.textSecondary)
 
                 Spacer()
 
@@ -253,13 +253,13 @@ struct ExtractionReviewModal: View {
                     .foregroundStyle(.white)
                     .padding(.horizontal, 24)
                     .padding(.vertical, 12)
-                    .background(Color.vm.synthesis)
+                    .background(Color.thresh.synthesis)
                     .clipShape(Capsule())
                 }
                 .disabled(isSaving)
             }
             .padding()
-            .background(Color.vm.cardBackground)
+            .background(Color.thresh.cardBackground)
         }
     }
 
@@ -303,9 +303,8 @@ struct ExtractionReviewModal: View {
         // Save context
         do {
             try modelContext.save()
-            print("✅ Saved \(totalSelected) extracted items")
         } catch {
-            print("❌ Error saving extracted items: \(error)")
+            // Handle save error silently
         }
 
         isSaving = false
@@ -329,7 +328,7 @@ struct ExtractionItemRow: View {
                 // Checkbox
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.title3)
-                    .foregroundStyle(isSelected ? color : Color.vm.textTertiary)
+                    .foregroundStyle(isSelected ? color : Color.thresh.textTertiary)
 
                 // Content
                 VStack(alignment: .leading, spacing: 4) {
@@ -337,19 +336,19 @@ struct ExtractionItemRow: View {
                         Text(title)
                             .font(.subheadline)
                             .fontWeight(.medium)
-                            .foregroundStyle(Color.vm.textPrimary)
+                            .foregroundStyle(Color.thresh.textPrimary)
                     }
 
                     Text(content)
                         .font(.subheadline)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                         .lineLimit(3)
                 }
 
                 Spacer()
             }
             .padding()
-            .background(isSelected ? color.opacity(0.12) : Color.vm.surface)
+            .background(isSelected ? color.opacity(0.12) : Color.thresh.surface)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .overlay(
                 RoundedRectangle(cornerRadius: 12)

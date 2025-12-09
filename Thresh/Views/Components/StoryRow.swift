@@ -14,29 +14,29 @@ struct StoryRow: View {
                     }
                     .font(.caption2)
                     .fontWeight(.semibold)
-                    .foregroundStyle(Color.vm.story)
+                    .foregroundStyle(Color.thresh.story)
 
                     Spacer()
 
                     Text(story.createdAt.relativeFormatted)
                         .font(.caption)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                 }
 
                 // Title
                 Text(story.title)
                     .font(.headline)
                     .lineLimit(1)
-                    .foregroundStyle(Color.vm.textPrimary)
+                    .foregroundStyle(Color.thresh.textPrimary)
 
                 // Content preview
                 Text(previewText)
                     .font(.subheadline)
                     .lineLimit(2)
-                    .foregroundStyle(Color.vm.textSecondary)
+                    .foregroundStyle(Color.thresh.textSecondary)
             }
             .padding()
-            .background(Color.vm.surface)
+            .background(Color.thresh.surface)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)

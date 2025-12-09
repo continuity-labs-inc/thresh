@@ -14,15 +14,15 @@ struct IdeaRow: View {
                     }
                     .font(.caption2)
                     .fontWeight(.semibold)
-                    .foregroundStyle(Color.vm.idea)
+                    .foregroundStyle(Color.thresh.idea)
 
                     if let category = idea.category {
                         Text(category)
                             .font(.caption2)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
-                            .background(Color.vm.surfaceSecondary)
+                            .background(Color.thresh.surfaceSecondary)
                             .clipShape(Capsule())
                     }
 
@@ -30,23 +30,23 @@ struct IdeaRow: View {
 
                     Text(idea.createdAt.relativeFormatted)
                         .font(.caption)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                 }
 
                 // Title
                 Text(idea.title)
                     .font(.headline)
                     .lineLimit(1)
-                    .foregroundStyle(Color.vm.textPrimary)
+                    .foregroundStyle(Color.thresh.textPrimary)
 
                 // Description preview
                 Text(previewText)
                     .font(.subheadline)
                     .lineLimit(2)
-                    .foregroundStyle(Color.vm.textSecondary)
+                    .foregroundStyle(Color.thresh.textSecondary)
             }
             .padding()
-            .background(Color.vm.surface)
+            .background(Color.thresh.surface)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .buttonStyle(.plain)

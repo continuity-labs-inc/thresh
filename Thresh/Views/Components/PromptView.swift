@@ -11,18 +11,18 @@ struct PromptView: View {
             Text(prompt.text)
                 .font(.title3)
                 .fontWeight(.medium)
-                .foregroundStyle(Color.vm.textPrimary)
+                .foregroundStyle(Color.thresh.textPrimary)
 
             // Guidance text
             if !prompt.guidance.isEmpty {
                 HStack(alignment: .top, spacing: 8) {
                     Image(systemName: "lightbulb")
                         .font(.caption)
-                        .foregroundStyle(mode == .capture ? Color.vm.capture : Color.vm.synthesis)
+                        .foregroundStyle(mode == .capture ? Color.thresh.capture : Color.thresh.synthesis)
 
                     Text(prompt.guidance)
                         .font(.subheadline)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
                         .italic()
                 }
             }
@@ -31,11 +31,11 @@ struct PromptView: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill((mode == .capture ? Color.vm.capture : Color.vm.synthesis).opacity(0.08))
+                .fill((mode == .capture ? Color.thresh.capture : Color.thresh.synthesis).opacity(0.08))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke((mode == .capture ? Color.vm.capture : Color.vm.synthesis).opacity(0.2), lineWidth: 1)
+                .stroke((mode == .capture ? Color.thresh.capture : Color.thresh.synthesis).opacity(0.2), lineWidth: 1)
         )
     }
 }

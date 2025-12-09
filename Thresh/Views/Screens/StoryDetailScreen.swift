@@ -28,7 +28,7 @@ struct StoryDetailScreen: View {
                     }
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundStyle(Color.vm.story)
+                    .foregroundStyle(Color.thresh.story)
 
                     Spacer()
                 }
@@ -38,18 +38,18 @@ struct StoryDetailScreen: View {
                     TextField("Title", text: $editedTitle)
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textFieldStyle(.plain)
                         .padding(12)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.vm.surface)
+                                .fill(Color.thresh.surface)
                         )
                 } else {
                     Text(story.title)
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textSelection(.enabled)
                         .contextMenu {
                             Button(action: { copyText(story.title) }) {
@@ -62,18 +62,18 @@ struct StoryDetailScreen: View {
                 if isEditing {
                     TextField("Content", text: $editedContent, axis: .vertical)
                         .font(.body)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textFieldStyle(.plain)
                         .padding(12)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.vm.surface)
+                                .fill(Color.thresh.surface)
                         )
                 } else {
                     Text(story.content)
                         .font(.body)
                         .lineSpacing(4)
-                        .foregroundStyle(Color.vm.textPrimary)
+                        .foregroundStyle(Color.thresh.textPrimary)
                         .textSelection(.enabled)
                         .contextMenu {
                             Button(action: { copyText(story.content) }) {
@@ -90,8 +90,8 @@ struct StoryDetailScreen: View {
                                 .font(.caption)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 6)
-                                .background(Color.vm.storyBackground)
-                                .foregroundStyle(Color.vm.story)
+                                .background(Color.thresh.storyBackground)
+                                .foregroundStyle(Color.thresh.story)
                                 .clipShape(Capsule())
                         }
                     }
@@ -104,12 +104,12 @@ struct StoryDetailScreen: View {
                             Text("Cancel")
                                 .font(.subheadline)
                                 .fontWeight(.medium)
-                                .foregroundStyle(Color.vm.textSecondary)
+                                .foregroundStyle(Color.thresh.textSecondary)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.vm.surface)
+                                        .fill(Color.thresh.surface)
                                 )
                         }
 
@@ -122,7 +122,7 @@ struct StoryDetailScreen: View {
                                 .padding(.vertical, 12)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color.vm.story)
+                                        .fill(Color.thresh.story)
                                 )
                         }
                     }
@@ -133,19 +133,19 @@ struct StoryDetailScreen: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Created \(story.createdAt.relativeFormattedFull)")
                         .font(.caption)
-                        .foregroundStyle(Color.vm.textSecondary)
+                        .foregroundStyle(Color.thresh.textSecondary)
 
                     if story.updatedAt != story.createdAt {
                         Text("Updated \(story.updatedAt.relativeFormattedFull)")
                             .font(.caption)
-                            .foregroundStyle(Color.vm.textSecondary)
+                            .foregroundStyle(Color.thresh.textSecondary)
                     }
                 }
                 .padding(.top, 16)
             }
             .padding()
         }
-        .background(Color.vm.background)
+        .background(Color.thresh.background)
         .navigationTitle("Story")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -222,9 +222,8 @@ struct StoryDetailScreen: View {
 
         do {
             try modelContext.save()
-            print("Story updated successfully")
         } catch {
-            print("Failed to save story: \(error)")
+            // Handle save error silently
         }
 
         isEditing = false
@@ -237,9 +236,8 @@ struct StoryDetailScreen: View {
 
         do {
             try modelContext.save()
-            print("Story moved to Recently Deleted")
         } catch {
-            print("Failed to delete story: \(error)")
+            // Handle save error silently
         }
 
         dismiss()
