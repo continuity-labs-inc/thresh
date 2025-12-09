@@ -40,7 +40,7 @@ actor AIService {
     /// Shared instance for app-wide access
     static let shared = AIService()
 
-    private let apiKey = "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"
+    private let apiKey = Secrets.anthropicAPIKey
     private let model = "claude-sonnet-4-20250514"
     private let apiURL = URL(string: "https://api.anthropic.com/v1/messages")!
 
