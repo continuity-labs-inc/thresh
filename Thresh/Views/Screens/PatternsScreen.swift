@@ -5,6 +5,8 @@ struct PatternsScreen: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Reflection.createdAt, order: .reverse) private var allReflections: [Reflection]
     @Query(sort: \Question.createdAt, order: .reverse) private var questions: [Question]
+    @State private var connections: [Connection] = []
+    @State private var showPatternsTooltip = true
 
     private var marinatingReflections: [Reflection] {
         allReflections.filter { $0.marinating && !$0.isArchived }
@@ -22,6 +24,15 @@ struct PatternsScreen: View {
         .background(Color.thresh.background)
         .navigationTitle("Patterns")
         .navigationBarTitleDisplayMode(.large)
+        .task {
+            connections = await AIService.shared.detectConnections(in: allReflections)
+        }
+        .featureTooltip(
+            title: "Patterns",
+            message: "This is where things connect. Items you're marinating, questions that emerged from your writing, and thematic connections between entries.",
+            featureKey: "patterns_screen",
+            isPresented: $showPatternsTooltip
+        )
     }
 
     // MARK: - Holding Section
@@ -81,14 +92,73 @@ struct PatternsScreen: View {
                 .font(.subheadline)
                 .foregroundStyle(Color.thresh.textSecondary)
 
-            Text("Connections will appear as you add more captures.")
-                .font(.subheadline)
-                .foregroundStyle(Color.thresh.textTertiary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-                .background(Color.thresh.surface)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+            if connections.isEmpty {
+                Text("Connections will appear as you add more captures.")
+                    .font(.subheadline)
+                    .foregroundStyle(Color.thresh.textTertiary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(Color.thresh.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            } else {
+                ForEach(connections) { connection in
+                    connectionCard(for: connection)
+                }
+            }
         }
+    }
+
+    private func connectionCard(for connection: Connection) -> some View {
+        let sourceReflection = allReflections.first { $0.id == connection.sourceReflectionId }
+        let targetReflection = allReflections.first { $0.id == connection.targetReflectionId }
+
+        return VStack(alignment: .leading, spacing: 12) {
+            // Connection type header with confidence
+            HStack(spacing: 6) {
+                Image(systemName: connection.connectionType.systemImage)
+                    .font(.caption)
+                Text(connection.connectionType.displayName)
+                    .font(.caption)
+                    .fontWeight(.medium)
+                Spacer()
+                ConfidenceIndicator(confidence: connection.confidence)
+            }
+            .foregroundStyle(Color.thresh.synthesis)
+
+            // Source reflection snippet
+            if let source = sourceReflection {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("From:")
+                        .font(.caption2)
+                        .foregroundStyle(Color.thresh.textTertiary)
+                    Text(source.captureContent.prefix(80) + (source.captureContent.count > 80 ? "..." : ""))
+                        .font(.caption)
+                        .foregroundStyle(Color.thresh.textSecondary)
+                        .lineLimit(2)
+                }
+            }
+
+            // Target reflection snippet
+            if let target = targetReflection {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("To:")
+                        .font(.caption2)
+                        .foregroundStyle(Color.thresh.textTertiary)
+                    Text(target.captureContent.prefix(80) + (target.captureContent.count > 80 ? "..." : ""))
+                        .font(.caption)
+                        .foregroundStyle(Color.thresh.textSecondary)
+                        .lineLimit(2)
+                }
+            }
+
+            // Connection description
+            Text(connection.description)
+                .font(.subheadline)
+                .foregroundStyle(Color.thresh.textPrimary)
+        }
+        .padding()
+        .background(Color.thresh.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
     // MARK: - Questions Section

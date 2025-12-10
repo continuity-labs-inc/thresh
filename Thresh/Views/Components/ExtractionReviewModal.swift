@@ -16,6 +16,7 @@ struct ExtractionReviewModal: View {
     @State private var selectedIdeas: Set<UUID>
     @State private var selectedQuestions: Set<UUID>
     @State private var isSaving = false
+    @State private var showExtractionTooltip = true
 
     init(extractionResult: ExtractionResult, sourceReflection: Reflection, onComplete: @escaping () -> Void) {
         self.extractionResult = extractionResult
@@ -95,6 +96,12 @@ struct ExtractionReviewModal: View {
             .safeAreaInset(edge: .bottom) {
                 bottomBar
             }
+            .featureTooltip(
+                title: "We Found Something",
+                message: "We noticed stories, ideas, or questions in your reflection. Select the ones worth keeping — they'll be saved as separate entries linked back to the source.",
+                featureKey: "extraction_review",
+                isPresented: $showExtractionTooltip
+            )
         }
     }
 
@@ -273,7 +280,8 @@ struct ExtractionReviewModal: View {
             let story = Story(
                 title: item.title,
                 content: item.content,
-                linkedReflectionIds: [sourceReflection.id]
+                linkedReflectionIds: [sourceReflection.id],
+                source: .extractedFromReflection
             )
             modelContext.insert(story)
         }
@@ -284,7 +292,8 @@ struct ExtractionReviewModal: View {
                 title: item.title,
                 details: item.details,
                 category: item.category,
-                linkedReflectionIds: [sourceReflection.id]
+                linkedReflectionIds: [sourceReflection.id],
+                source: .extractedFromReflection
             )
             modelContext.insert(idea)
         }

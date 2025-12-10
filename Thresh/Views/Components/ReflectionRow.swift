@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ReflectionRow: View {
     @Bindable var reflection: Reflection
+    @State private var showMarinatingTooltip = false
 
     var body: some View {
         NavigationLink(destination: ReflectionDetailScreen(reflection: reflection)) {
@@ -38,7 +39,12 @@ struct ReflectionRow: View {
         .buttonStyle(.plain)
         .contextMenu {
             Button {
+                let wasMarinating = reflection.marinating
                 reflection.marinating.toggle()
+                // Show tooltip when user first marinates something
+                if !wasMarinating && reflection.marinating {
+                    showMarinatingTooltip = true
+                }
             } label: {
                 Label(
                     reflection.marinating ? "Stop Marinating" : "Marinate This",
@@ -55,6 +61,12 @@ struct ReflectionRow: View {
                 Label("Delete", systemImage: "trash")
             }
         }
+        .featureTooltip(
+            title: "Marinating",
+            message: "You've flagged this to sit with. It's not a to-do — it means 'this feels important but I don't know why yet.' Find marinating items in Patterns (sparkles button).",
+            featureKey: "marinating",
+            isPresented: $showMarinatingTooltip
+        )
     }
 
     private var previewText: String {

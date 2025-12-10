@@ -11,6 +11,7 @@ final class Idea {
     var updatedAt: Date
     var tags: [String]
     var linkedReflectionIds: [UUID]
+    var source: QuestionSource
 
     // Soft delete support (photo-like deletion)
     var deletedAt: Date?
@@ -24,6 +25,7 @@ final class Idea {
         updatedAt: Date = Date(),
         tags: [String] = [],
         linkedReflectionIds: [UUID] = [],
+        source: QuestionSource = .userCreated,
         deletedAt: Date? = nil
     ) {
         self.id = id
@@ -34,6 +36,7 @@ final class Idea {
         self.updatedAt = updatedAt
         self.tags = tags
         self.linkedReflectionIds = linkedReflectionIds
+        self.source = source
         self.deletedAt = deletedAt
     }
 }

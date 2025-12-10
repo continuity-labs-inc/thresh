@@ -55,6 +55,7 @@
 		B3000025238F5E0000000001 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000026238F5E0000000001 /* EmptyStateView.swift */; };
 		B3000027238F5E0000000001 /* DesignNotesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3000028238F5E0000000001 /* DesignNotesService.swift */; };
 		C1000001238F5E0000000001 /* ExtractionReviewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1000002238F5E0000000001 /* ExtractionReviewModal.swift */; };
+		I1000001238F5E0000000001 /* FeatureTooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = I1000002238F5E0000000001 /* FeatureTooltip.swift */; };
 		D1000001238F5E0000000001 /* RecentlyDeletedScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */; };
 		E1000001238F5E0000000001 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1000002238F5E0000000001 /* AboutScreen.swift */; };
 		F1000001238F5E0000000001 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000002238F5E0000000001 /* Secrets.swift */; };
@@ -115,6 +116,7 @@
 		B3000026238F5E0000000001 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		B3000028238F5E0000000001 /* DesignNotesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignNotesService.swift; sourceTree = "<group>"; };
 		C1000002238F5E0000000001 /* ExtractionReviewModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractionReviewModal.swift; sourceTree = "<group>"; };
+		I1000002238F5E0000000001 /* FeatureTooltip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureTooltip.swift; sourceTree = "<group>"; };
 		D1000002238F5E0000000001 /* RecentlyDeletedScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyDeletedScreen.swift; sourceTree = "<group>"; };
 		E1000002238F5E0000000001 /* AboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutScreen.swift; sourceTree = "<group>"; };
 		F1000002238F5E0000000001 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				B3000026238F5E0000000001 /* EmptyStateView.swift */,
 				2EAD3D4E2EDFF089004929DF /* EntryTypeBadge.swift */,
 				C1000002238F5E0000000001 /* ExtractionReviewModal.swift */,
+				I1000002238F5E0000000001 /* FeatureTooltip.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -466,6 +469,7 @@
 				B3000017238F5E0000000001 /* QuestionDetailScreen.swift in Sources */,
 				2E7B672C2EE1755100EEF8B2 /* PatternsScreen.swift in Sources */,
 				C1000001238F5E0000000001 /* ExtractionReviewModal.swift in Sources */,
+				I1000001238F5E0000000001 /* FeatureTooltip.swift in Sources */,
 				E1000001238F5E0000000001 /* AboutScreen.swift in Sources */,
 				F1000001238F5E0000000001 /* Secrets.swift in Sources */,
 				G1000001238F5E0000000001 /* SearchScreen.swift in Sources */,

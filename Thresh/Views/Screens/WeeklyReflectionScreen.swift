@@ -17,6 +17,7 @@ struct WeeklyReflectionScreen: View {
     @State private var synthesisText = ""
     @State private var bakhtinianText = ""
     @State private var showBakhtinianPrompt = false
+    @State private var showWeeklyTooltip = true
     @FocusState private var isTextEditorFocused: Bool
     
     // Get reflections from last 7 days
@@ -63,6 +64,12 @@ struct WeeklyReflectionScreen: View {
         .onTapGesture {
             isTextEditorFocused = false
         }
+        .featureTooltip(
+            title: "Weekly Synthesis",
+            message: "Select captures that feel connected, then write about the thread between them. This isn't a summary — it's finding what the moments mean together.",
+            featureKey: "weekly_synthesis",
+            isPresented: $showWeeklyTooltip
+        )
     }
     
     // MARK: - Header

@@ -16,13 +16,10 @@ struct IdeaRow: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(Color.thresh.idea)
 
-                    if !idea.linkedReflectionIds.isEmpty {
-                        HStack(spacing: 2) {
-                            Image(systemName: "arrow.up.right")
-                            Text("Extracted")
-                        }
-                        .font(.caption2)
-                        .foregroundStyle(Color.thresh.textSecondary)
+                    if idea.source == .extractedFromReflection {
+                        Text("↗")
+                            .font(.caption)
+                            .foregroundStyle(Color.thresh.synthesis)
                     }
 
                     if let category = idea.category {
