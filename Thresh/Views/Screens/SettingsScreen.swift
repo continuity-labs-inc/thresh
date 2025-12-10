@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 
 struct SettingsScreen: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppState.self) private var appState
     @Query private var reflections: [Reflection]
     @Query private var stories: [Story]
     @Query private var ideas: [Idea]
@@ -86,6 +87,19 @@ struct SettingsScreen: View {
                         Image(systemName: "trash")
                             .foregroundStyle(Color.thresh.textSecondary)
                         Text("Recently Deleted")
+                    }
+                }
+            }
+
+            Section {
+                Button {
+                    appState.hasCompletedOnboarding = false
+                } label: {
+                    HStack {
+                        Image(systemName: "info.circle")
+                            .foregroundStyle(Color.thresh.textSecondary)
+                        Text("View Onboarding Again")
+                            .foregroundStyle(Color.thresh.textPrimary)
                     }
                 }
             }
@@ -215,5 +229,6 @@ struct ShareSheet: UIViewControllerRepresentable {
     NavigationStack {
         SettingsScreen()
     }
+    .environment(AppState())
     .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self], inMemory: true)
 }

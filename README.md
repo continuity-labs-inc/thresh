@@ -19,17 +19,36 @@ These aren't levels—they're different cognitive activities. The app trains bot
 
 ## Current State
 
-The app is ~95% functionally complete in Swift/SwiftUI with:
-- Core reflection capture system (daily → weekly → monthly → quarterly → yearly)
+**v1.0 Feature Set: Complete**
+
+The app is fully functional in Swift/SwiftUI with:
+
+### Core Features
+- Reflection capture system (daily → weekly → monthly → quarterly → yearly)
 - 11 focus types for categorizing entries
 - Prompt library with 150+ narrative-focused prompts
-- AI question extraction (extracts, never writes)
-- Stacked aggregation flows
+- Marinating system (flag reflections to revisit later)
+- Four content lenses: Reflections, Stories, Ideas, Questions
 
-**Critical Issues:**
-- Date serialization bug (Date → String after persistence)
-- Inconsistent error handling for AI features
-- Code duplication in aggregation components
+### AI Features
+- **AI Extraction** - Claude-powered extraction of stories, ideas, and questions from reflection text
+- **Connection Detection** - Hybrid approach using keyword matching + on-device NLP embeddings (Apple NaturalLanguage framework)
+- **Semantic Similarity** - Detects thematic connections even when entries share no keywords
+
+### Patterns & Synthesis
+- **Patterns Screen** - View AI-detected connections between reflections
+- **Weekly Synthesis** - AI-powered pattern detection during synthesis flow
+- **Quarterly Synthesis** - Long-term pattern aggregation
+
+### User Experience
+- **First-Launch Onboarding** - 5-page swipeable introduction to app philosophy
+- **Feature Tooltips** - Dismissible education system for feature discovery
+- **Source Tracking** - All content types (Story, Idea, Question) track origin (user-created vs extracted)
+
+### Data Management
+- **Export** - Full JSON backup of all data
+- **Import** - Restore from backup with duplicate detection
+- **Recently Deleted** - 30-day soft delete with recovery option
 
 ## Technical Stack
 
@@ -37,7 +56,7 @@ The app is ~95% functionally complete in Swift/SwiftUI with:
 SwiftUI + SwiftData
 ├── State: @Observable / Observation framework
 ├── Persistence: SwiftData + CloudKit (future)
-├── AI: OpenAI GPT-4o (question extraction only)
+├── AI: Claude Sonnet 4 (extraction) + Apple NaturalLanguage (on-device NLP)
 ├── Concurrency: Swift async/await
 └── UI: Native SwiftUI components
 ```
@@ -147,19 +166,27 @@ Quick actions + content tabs:
 - [x] Prompt library
 - [x] Design notes system
 
-### Phase 2: Core Screens ✓  
+### Phase 2: Core Screens ✓
 - [x] Home screen
 - [x] Daily capture-first flow
 - [x] Weekly synthesis flow
 
-### Phase 3: AI Integration (In Progress)
-- [ ] Question extraction service
-- [ ] Connection detection
-- [ ] Capture quality assessment
+### Phase 3: AI Integration ✓
+- [x] Story/Idea/Question extraction (Claude API)
+- [x] Connection detection (keyword + semantic)
+- [x] On-device NLP embeddings (NaturalLanguage framework)
+- [x] Extraction review modal with accept/reject
 
-### Phase 4: Enhancements
-- [ ] Quick Capture mode
-- [ ] Context Panel
+### Phase 4: Polish ✓
+- [x] First-launch onboarding
+- [x] Feature tooltips for discovery
+- [x] Export/Import functionality
+- [x] Source tracking on all content types
+- [x] Marinating system for reflections
+
+### Phase 5: Future Enhancements
+- [ ] Quick Capture widget
+- [ ] CloudKit sync
 - [ ] Theme Navigator
 - [ ] Writing Growth Portrait
 
@@ -236,28 +263,27 @@ Thresh/
     └── Assets.xcassets
 ```
 
-## Additional Documentation
+## Recent Updates (December 2024)
 
-For complete details, see project knowledge files:
-- **`Thresh_-_TECHNICAL___STRATEGIC_SPECIFICATION.md`** - Full product spec
-- **`Thresh_Enhancement_Specification.md`** - Research-based enhancements
-- **`Thresh_-_TICKET_INDEX.md`** - Implementation tickets
-- **`Reflection_as_Cognitive_Architecture.md`** - Research foundation
+- **On-Device NLP** - Added Apple NaturalLanguage framework for semantic similarity detection
+- **Hybrid Connection Detection** - Combines keyword matching with NLP embeddings for better thematic connections
+- **JSON Import** - Restore from backups with automatic duplicate detection
+- **Feature Tooltips** - Dismissible education system at key discovery moments
+- **First-Launch Onboarding** - 5-page introduction explaining Two Modes philosophy
+- **Source Tracking** - Stories, Ideas, Questions now track whether user-created or AI-extracted
 
-## Known Gaps
+## Known Limitations
 
-1. **No editing/deleting** - Entries can't be modified after creation
-2. **No search** - Can't find entries by keyword  
-3. **Limited aggregation access** - Weekly/Monthly not reachable from Home
-4. **AI error handling** - Inconsistent error states
+1. **No search** - Can't find entries by keyword (future enhancement)
+2. **No CloudKit sync** - Data lives on device only (planned for future)
+3. **English-only NLP** - Semantic similarity requires English text
 
 ## Development Workflow
 
 1. Open Xcode project in Claude Code
 2. Reference this README for context
-3. Check TICKET_INDEX for specific tasks
-4. Use Enhancement Spec for research-based features
-5. Maintain Two Modes framework in all changes
+3. Maintain Two Modes framework in all changes
+4. Build with: `xcodebuild -scheme "Thresh Life" -destination 'platform=iOS Simulator,name=iPhone 17' build`
 
 ## One-Sentence Summary
 

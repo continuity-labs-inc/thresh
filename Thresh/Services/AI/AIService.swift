@@ -1,4 +1,5 @@
 import Foundation
+import NaturalLanguage
 
 /// Represents extracted items from a reflection
 struct ExtractionResult: Sendable {
@@ -178,32 +179,90 @@ actor AIService {
     }
 
     /// Detect connections between a set of reflections.
-    /// This is a simplified local implementation that looks for keyword overlap.
-    /// In production, this could use on-device ML or a backend API.
+    /// Uses a hybrid approach: keyword matching for obvious connections,
+    /// plus on-device NLP embeddings for semantic similarity.
     func detectConnections(in reflections: [Reflection]) async -> [Connection] {
         guard reflections.count >= 2 else { return [] }
 
         var connections: [Connection] = []
 
-        // Compare each pair of reflections
+        // Track which pairs have been connected by keywords
+        var connectedPairs: Set<String> = []
+
+        // First pass: keyword-based detection (fast)
         for i in 0..<reflections.count {
             for j in (i + 1)..<reflections.count {
                 let source = reflections[i]
                 let target = reflections[j]
+                let pairKey = "\(source.id)-\(target.id)"
 
                 // Check for thematic connections (shared words)
                 if let thematicConnection = detectThematicConnection(source: source, target: target) {
                     connections.append(thematicConnection)
+                    connectedPairs.insert(pairKey)
                 }
 
                 // Check for question-answer patterns
                 if let qaConnection = detectQuestionAnswerConnection(source: source, target: target) {
                     connections.append(qaConnection)
+                    connectedPairs.insert(pairKey)
                 }
 
                 // Check for evolution patterns (similar topics with progression)
                 if let evolutionConnection = detectEvolutionConnection(source: source, target: target) {
                     connections.append(evolutionConnection)
+                    connectedPairs.insert(pairKey)
+                }
+            }
+        }
+
+        // Second pass: semantic similarity using NLP embeddings
+        // Only for recent reflections (last 90 days) to optimize performance
+        let recentCutoff = Calendar.current.date(byAdding: .day, value: -90, to: Date()) ?? Date()
+        let recentReflections = reflections.filter { $0.createdAt > recentCutoff }
+
+        guard recentReflections.count >= 2 else { return connections }
+
+        // Cache embeddings to avoid recomputing
+        var embeddingCache: [UUID: [Double]?] = [:]
+        for reflection in recentReflections {
+            embeddingCache[reflection.id] = computeEmbedding(for: reflection.captureContent)
+        }
+
+        // Check pairs that weren't already connected by keywords
+        let semanticThreshold = 0.65
+
+        for i in 0..<recentReflections.count {
+            for j in (i + 1)..<recentReflections.count {
+                let r1 = recentReflections[i]
+                let r2 = recentReflections[j]
+                let pairKey = "\(r1.id)-\(r2.id)"
+                let reversePairKey = "\(r2.id)-\(r1.id)"
+
+                // Skip if already connected by keywords
+                if connectedPairs.contains(pairKey) || connectedPairs.contains(reversePairKey) {
+                    continue
+                }
+
+                // Compute semantic similarity
+                guard let emb1 = embeddingCache[r1.id] ?? nil,
+                      let emb2 = embeddingCache[r2.id] ?? nil else {
+                    continue
+                }
+
+                let similarity = cosineSimilarity(emb1, emb2)
+
+                if similarity >= semanticThreshold {
+                    let connection = Connection(
+                        id: UUID(),
+                        sourceReflectionId: r1.id,
+                        targetReflectionId: r2.id,
+                        connectionType: .thematic,
+                        description: "These reflections share similar themes",
+                        confidence: similarity,
+                        isUserCreated: false
+                    )
+                    connections.append(connection)
                 }
             }
         }
@@ -323,5 +382,73 @@ actor AIService {
             .filter { $0.count > 2 && !stopWords.contains($0) }
 
         return Set(words)
+    }
+
+    // MARK: - Semantic Similarity (NLP)
+
+    /// Computes a sentence embedding by averaging word embeddings.
+    /// Returns nil if embedding fails (e.g., non-English text, embedding unavailable).
+    private func computeEmbedding(for text: String) -> [Double]? {
+        // Get the English word embedding model
+        guard let embedding = NLEmbedding.wordEmbedding(for: .english) else {
+            return nil
+        }
+
+        // Tokenize the text into words
+        let tokenizer = NLTokenizer(unit: .word)
+        let lowercasedText = text.lowercased()
+        tokenizer.string = lowercasedText
+
+        var vectors: [[Double]] = []
+
+        tokenizer.enumerateTokens(in: lowercasedText.startIndex..<lowercasedText.endIndex) { range, _ in
+            let word = String(lowercasedText[range])
+
+            // Get the embedding vector for this word (dimension is typically 512)
+            if let vector = embedding.vector(for: word) {
+                vectors.append(vector)
+            }
+            return true // continue enumeration
+        }
+
+        // If no words had embeddings, return nil
+        guard !vectors.isEmpty else { return nil }
+
+        // Average all word vectors to get a sentence vector
+        let dimension = vectors[0].count
+        var averaged = [Double](repeating: 0.0, count: dimension)
+
+        for vector in vectors {
+            for i in 0..<dimension {
+                averaged[i] += vector[i]
+            }
+        }
+
+        for i in 0..<dimension {
+            averaged[i] /= Double(vectors.count)
+        }
+
+        return averaged
+    }
+
+    /// Computes cosine similarity between two vectors. Returns value between -1 and 1.
+    /// Higher values indicate more similar texts.
+    private func cosineSimilarity(_ a: [Double], _ b: [Double]) -> Double {
+        guard a.count == b.count, !a.isEmpty else { return 0.0 }
+
+        var dotProduct = 0.0
+        var magnitudeA = 0.0
+        var magnitudeB = 0.0
+
+        for i in 0..<a.count {
+            dotProduct += a[i] * b[i]
+            magnitudeA += a[i] * a[i]
+            magnitudeB += b[i] * b[i]
+        }
+
+        let magnitude = sqrt(magnitudeA) * sqrt(magnitudeB)
+        guard magnitude > 0 else { return 0.0 }
+
+        return dotProduct / magnitude
     }
 }
