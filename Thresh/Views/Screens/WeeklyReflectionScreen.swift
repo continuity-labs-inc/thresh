@@ -18,6 +18,8 @@ struct WeeklyReflectionScreen: View {
     @State private var bakhtinianText = ""
     @State private var showBakhtinianPrompt = false
     @State private var showWeeklyTooltip = true
+    @State private var suggestedConnections: [Connection] = []
+    @State private var isAnalyzing = false
     @FocusState private var isTextEditorFocused: Bool
     
     // Get reflections from last 7 days
@@ -185,7 +187,15 @@ struct WeeklyReflectionScreen: View {
             SaveButton(
                 title: "Continue to Write (\(selectedReflections.count))",
                 isEnabled: !selectedReflections.isEmpty,
-                action: { withAnimation { currentStep = 2 } },
+                action: {
+                    Task {
+                        isAnalyzing = true
+                        withAnimation { currentStep = 2 }
+                        let selected = recentReflections.filter { selectedReflections.contains($0.id) }
+                        suggestedConnections = await AIService.shared.detectConnections(in: selected)
+                        isAnalyzing = false
+                    }
+                },
                 theme: .orange
             )
             .padding(.horizontal, 24)
@@ -234,6 +244,44 @@ struct WeeklyReflectionScreen: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: 16) {
+                        // Loading state while analyzing patterns
+                        if isAnalyzing {
+                            HStack(spacing: 8) {
+                                ProgressView()
+                                    .scaleEffect(0.8)
+                                Text("Looking for patterns...")
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color.thresh.textSecondary)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                        }
+
+                        // Patterns We Noticed section
+                        if !isAnalyzing && !suggestedConnections.isEmpty && !isTextEditorFocused {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text("Patterns We Noticed")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Color.thresh.synthesis)
+
+                                ForEach(suggestedConnections) { connection in
+                                    HStack(alignment: .top, spacing: 8) {
+                                        Image(systemName: "link")
+                                            .font(.caption)
+                                            .foregroundStyle(Color.thresh.synthesis)
+                                        Text(connection.description)
+                                            .font(.callout)
+                                            .foregroundStyle(Color.thresh.textSecondary)
+                                    }
+                                }
+                            }
+                            .padding()
+                            .background(Color.thresh.synthesis.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .padding(.horizontal, 20)
+                        }
+
                         // Synthesis Prompt - only show when keyboard not focused
                         if !isTextEditorFocused {
                             VStack(alignment: .leading, spacing: 8) {

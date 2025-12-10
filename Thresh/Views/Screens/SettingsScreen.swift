@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
 struct SettingsScreen: View {
     @Environment(\.modelContext) private var modelContext
@@ -12,6 +13,12 @@ struct SettingsScreen: View {
     @State private var exportURL: URL?
     @State private var isExporting = false
     @State private var showExportError = false
+
+    // Import state
+    @State private var showingImportPicker = false
+    @State private var showingImportResult = false
+    @State private var importResult: ImportResult?
+    @State private var importError: String?
 
     private var activeReflectionsCount: Int {
         reflections.filter { $0.deletedAt == nil }.count
@@ -47,10 +54,21 @@ struct SettingsScreen: View {
                     }
                 }
                 .disabled(isExporting)
+
+                Button {
+                    showingImportPicker = true
+                } label: {
+                    HStack {
+                        Image(systemName: "square.and.arrow.down")
+                            .foregroundStyle(Color.thresh.synthesis)
+                        Text("Import Data")
+                            .foregroundStyle(Color.thresh.textPrimary)
+                    }
+                }
             } header: {
                 Text("Backup")
             } footer: {
-                Text("Exports all reflections, stories, ideas, and questions as a JSON file.")
+                Text("Export saves all your data as JSON. Import restores from a backup file, skipping duplicates.")
             }
 
             Section {
@@ -84,6 +102,47 @@ struct SettingsScreen: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text("Unable to export data. Please try again.")
+        }
+        .fileImporter(
+            isPresented: $showingImportPicker,
+            allowedContentTypes: [.json],
+            allowsMultipleSelection: false
+        ) { result in
+            switch result {
+            case .success(let urls):
+                guard let url = urls.first else { return }
+
+                guard url.startAccessingSecurityScopedResource() else {
+                    importError = "Unable to access the selected file"
+                    showingImportResult = true
+                    return
+                }
+                defer { url.stopAccessingSecurityScopedResource() }
+
+                do {
+                    let data = try Data(contentsOf: url)
+                    importResult = try ExportService.shared.importData(from: data, into: modelContext)
+                    importError = nil
+                    showingImportResult = true
+                } catch {
+                    importError = error.localizedDescription
+                    importResult = nil
+                    showingImportResult = true
+                }
+
+            case .failure(let error):
+                importError = error.localizedDescription
+                showingImportResult = true
+            }
+        }
+        .alert("Import Complete", isPresented: $showingImportResult) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            if let error = importError {
+                Text("Import failed: \(error)")
+            } else if let result = importResult {
+                Text("Imported \(result.reflectionsImported) reflections, \(result.storiesImported) stories, \(result.ideasImported) ideas, \(result.questionsImported) questions. Skipped \(result.skipped) duplicates.")
+            }
         }
     }
 
