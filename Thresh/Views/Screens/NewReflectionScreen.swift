@@ -5,12 +5,18 @@ struct NewReflectionScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
+    @Query(sort: \ActiveHabit.order) private var habits: [ActiveHabit]
+    @Query private var allReflections: [Reflection]
+
     @State private var captureText = ""
     @State private var showingCamera = false
     @State private var isExtracting = false
     @State private var showExtractionModal = false
     @State private var extractionResult: ExtractionResult?
     @State private var savedReflection: Reflection?
+    @State private var showObservationPrompts = false
+    @State private var observationQuestions: [String] = []
+    @State private var isAnalyzingObservation = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -69,17 +75,19 @@ struct NewReflectionScreen: View {
             // WRAP CONTENT IN SCROLLVIEW TO FIX KEYBOARD BLOCKING
             ScrollView {
                 VStack(spacing: 16) {
+                    // Habit Pill
+                    if let habit = habits.first {
+                        HabitPillView(habit: habit)
+                            .padding(.horizontal, 20)
+                    }
+
                     // Text Input
                     ZStack(alignment: .topLeading) {
                         if captureText.isEmpty {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Describe what happened in complete sentences...")
+                                Text("What happened? Describe a specific moment - who was there, what was said, what you noticed.")
                                     .foregroundColor(Color.thresh.textTertiary)
                                     .font(.system(size: 16))
-                                
-                                Text("Write as if telling a friend about this moment.")
-                                    .foregroundColor(Color.thresh.textTertiary.opacity(0.7))
-                                    .font(.system(size: 14))
                             }
                             .padding(.top, 8)
                             .padding(.leading, 5)
@@ -147,6 +155,23 @@ struct NewReflectionScreen: View {
                 )
             }
         }
+        .sheet(isPresented: $showObservationPrompts) {
+            if let reflection = savedReflection {
+                ObservationPromptsView(
+                    questions: observationQuestions,
+                    onAddMore: { additionalContent in
+                        reflection.captureContent += "\n\n" + additionalContent
+                        reflection.updatedAt = Date()
+                        showObservationPrompts = false
+                        runExtraction(on: reflection.captureContent)
+                    },
+                    onSkip: {
+                        showObservationPrompts = false
+                        runExtraction(on: reflection.captureContent)
+                    }
+                )
+            }
+        }
     }
     
     private func saveCapture() {
@@ -156,12 +181,16 @@ struct NewReflectionScreen: View {
             return
         }
 
+        // ASSIGN NEXT REFLECTION NUMBER
+        let maxNumber = allReflections.map { $0.reflectionNumber }.max() ?? 0
+
         // CREATE NEW REFLECTION
         let newReflection = Reflection(
             captureContent: trimmedText,
             entryType: .pureCapture,
             tier: .active,
-            modeBalance: .captureOnly
+            modeBalance: .captureOnly,
+            reflectionNumber: maxNumber + 1
         )
 
         // INSERT INTO SWIFTDATA
@@ -178,25 +207,27 @@ struct NewReflectionScreen: View {
         // Store the reflection for linking extracted items
         savedReflection = newReflection
 
-        // Run AI extraction if text is long enough
+        // Run observation analysis if text is long enough
         if trimmedText.count >= 50 {
+            isAnalyzingObservation = true
             isExtracting = true
             Task {
                 do {
-                    let result = try await AIService.shared.extractFromReflection(trimmedText)
+                    let analysis = try await AIService.shared.analyzeForObservationGaps(trimmedText)
                     await MainActor.run {
-                        isExtracting = false
-                        if !result.isEmpty {
-                            extractionResult = result
-                            showExtractionModal = true
+                        isAnalyzingObservation = false
+                        if !analysis.isObservational && !analysis.followUpQuestions.isEmpty {
+                            isExtracting = false
+                            observationQuestions = analysis.followUpQuestions
+                            showObservationPrompts = true
                         } else {
-                            dismiss()
+                            runExtraction(on: trimmedText)
                         }
                     }
                 } catch {
                     await MainActor.run {
-                        isExtracting = false
-                        dismiss()
+                        isAnalyzingObservation = false
+                        runExtraction(on: trimmedText)
                     }
                 }
             }
@@ -204,9 +235,37 @@ struct NewReflectionScreen: View {
             dismiss()
         }
     }
+
+    private func runExtraction(on text: String) {
+        guard text.count >= 50 else {
+            dismiss()
+            return
+        }
+
+        isExtracting = true
+        Task {
+            do {
+                let result = try await AIService.shared.extractFromReflection(text)
+                await MainActor.run {
+                    isExtracting = false
+                    if !result.isEmpty {
+                        extractionResult = result
+                        showExtractionModal = true
+                    } else {
+                        dismiss()
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    isExtracting = false
+                    dismiss()
+                }
+            }
+        }
+    }
 }
 
 #Preview {
     NewReflectionScreen()
-        .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self])
+        .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self, ActiveHabit.self])
 }

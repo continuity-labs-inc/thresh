@@ -1,6 +1,13 @@
 import Foundation
 import NaturalLanguage
 
+/// Represents the analysis of a reflection for observational specificity
+struct ObservationAnalysis: Sendable {
+    let isObservational: Bool
+    let followUpQuestions: [String]
+    let detectedTopics: [String]
+}
+
 /// Represents extracted items from a reflection
 struct ExtractionResult: Sendable {
     struct ExtractedStory: Identifiable, Sendable {
@@ -178,6 +185,97 @@ actor AIService {
         return ExtractionResult(stories: stories, ideas: ideas, questions: questions)
     }
 
+    // MARK: - Observation Analysis
+
+    /// Analyze a reflection for observational specificity
+    /// Returns whether it's observational or interpretive/venting, with follow-up questions if needed
+    func analyzeForObservationGaps(_ content: String) async throws -> ObservationAnalysis {
+        // Skip short texts
+        guard content.count >= 50 else {
+            return ObservationAnalysis(isObservational: true, followUpQuestions: [], detectedTopics: [])
+        }
+
+        let prompt = """
+        You are analyzing a personal reflection for observational specificity.
+
+        Venting/interpretation includes: judgments ("unhealthy", "obsessive", "terrible"), emotions without context ("disappointing", "frustrating"), vague descriptions ("behaves poorly", "was mean"), generalizations ("always", "never").
+
+        Observation includes: specific quotes, concrete actions, timestamps, sensory details, who/what/where/when, specific moments, what someone actually said or did.
+
+        Given this reflection, return:
+        1. isObservational: true if mostly concrete observations, false if mostly interpretation/venting
+        2. followUpQuestions: If not observational, provide 2-3 questions asking for missing concrete details (what did they say? what specifically happened? what did you see/hear?)
+        3. detectedTopics: key themes/people/topics mentioned (2-4 words)
+
+        Return ONLY valid JSON, no markdown:
+        {"isObservational": true/false, "followUpQuestions": ["question1", "question2"], "detectedTopics": ["topic1", "topic2"]}
+
+        REFLECTION TEXT:
+        \(content)
+        """
+
+        let requestBody: [String: Any] = [
+            "model": model,
+            "max_tokens": 512,
+            "messages": [
+                ["role": "user", "content": prompt]
+            ]
+        ]
+
+        var request = URLRequest(url: apiURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            throw NSError(domain: "AIService", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "API request failed"])
+        }
+
+        // Parse Claude's response
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let content = json["content"] as? [[String: Any]],
+              let firstContent = content.first,
+              let textContent = firstContent["text"] as? String else {
+            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
+        }
+
+        return try parseObservationResponse(textContent)
+    }
+
+    private func parseObservationResponse(_ text: String) throws -> ObservationAnalysis {
+        // Clean up the text - remove any markdown code blocks if present
+        var cleanedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if cleanedText.hasPrefix("```json") {
+            cleanedText = String(cleanedText.dropFirst(7))
+        } else if cleanedText.hasPrefix("```") {
+            cleanedText = String(cleanedText.dropFirst(3))
+        }
+        if cleanedText.hasSuffix("```") {
+            cleanedText = String(cleanedText.dropLast(3))
+        }
+        cleanedText = cleanedText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard let jsonData = cleanedText.data(using: .utf8),
+              let json = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any] else {
+            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to parse observation JSON"])
+        }
+
+        let isObservational = json["isObservational"] as? Bool ?? true
+        let followUpQuestions = json["followUpQuestions"] as? [String] ?? []
+        let detectedTopics = json["detectedTopics"] as? [String] ?? []
+
+        return ObservationAnalysis(
+            isObservational: isObservational,
+            followUpQuestions: followUpQuestions,
+            detectedTopics: detectedTopics
+        )
+    }
+
     /// Detect connections between a set of reflections.
     /// Uses a hybrid approach: keyword matching for obvious connections,
     /// plus on-device NLP embeddings for semantic similarity.
@@ -282,13 +380,26 @@ actor AIService {
         guard sharedWords.count >= 2 else { return nil }
 
         let confidence = min(Double(sharedWords.count) / 5.0, 1.0)
-        let sharedList = Array(sharedWords.prefix(3)).joined(separator: ", ")
+
+        // Use NLP to extract better theme descriptions
+        let combinedText = source.captureContent + " " + target.captureContent
+        let themes = extractMeaningfulThemes(from: combinedText)
+
+        // Build description from meaningful themes, falling back to shared words
+        let description: String
+        if themes.isEmpty {
+            let sharedList = Array(sharedWords.prefix(3)).joined(separator: ", ")
+            description = "Shared themes: \(sharedList)"
+        } else {
+            let themeList = themes.prefix(3).joined(separator: ", ")
+            description = "Both touch on: \(themeList)"
+        }
 
         return Connection(
             sourceReflectionId: source.id,
             targetReflectionId: target.id,
             connectionType: .thematic,
-            description: "Shared themes: \(sharedList)",
+            description: description,
             confidence: confidence
         )
     }
@@ -358,7 +469,7 @@ actor AIService {
     }
 
     private func extractKeywords(from text: String) -> Set<String> {
-        // Common words to ignore
+        // Common words to ignore - expanded list for better theme extraction
         let stopWords: Set<String> = [
             "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for",
             "of", "with", "by", "from", "is", "are", "was", "were", "be", "been",
@@ -373,15 +484,77 @@ actor AIService {
             "between", "under", "again", "further", "then", "once", "here",
             "there", "any", "if", "because", "as", "until", "while", "out",
             "up", "down", "off", "over", "am", "been", "get", "got", "go",
-            "going", "make", "made", "know", "think", "feel", "really", "like"
+            "going", "make", "made", "know", "think", "feel", "really", "like",
+            "one", "two", "three", "don", "doesn", "didn", "won", "wouldn",
+            "thing", "things", "something", "anything", "nothing", "everything",
+            "way", "ways", "lot", "lots", "bit", "much", "many", "now", "today",
+            "yesterday", "tomorrow", "time", "times", "day", "days", "week", "month",
+            "year", "still", "also", "even", "though", "although", "however",
+            "yet", "already", "always", "never", "sometimes", "often", "usually",
+            "back", "around", "through", "away", "over", "first", "last", "next",
+            "new", "old", "good", "bad", "great", "little", "big", "small",
+            "long", "short", "own", "well", "right", "left", "came", "come",
+            "take", "took", "give", "gave", "put", "say", "said", "tell", "told",
+            "see", "saw", "seen", "look", "looked", "want", "wanted", "let",
+            "seem", "seemed", "seems", "ask", "asked", "try", "tried", "call",
+            "called", "keep", "kept", "start", "started", "end", "ended"
         ]
 
         let words = text
             .lowercased()
             .components(separatedBy: CharacterSet.alphanumerics.inverted)
-            .filter { $0.count > 2 && !stopWords.contains($0) }
+            .filter { $0.count > 3 && !stopWords.contains($0) }
 
         return Set(words)
+    }
+
+    /// Extracts meaningful themes from text using NLP analysis
+    /// Returns nouns, verbs, and adjectives that represent key concepts
+    private func extractMeaningfulThemes(from text: String) -> [String] {
+        let tagger = NLTagger(tagSchemes: [.lexicalClass, .nameType])
+        tagger.string = text
+
+        var themes: [String] = []
+        let stopWords: Set<String> = [
+            "have", "been", "would", "could", "should", "very", "really",
+            "just", "like", "thing", "things", "some", "that", "this",
+            "what", "when", "where", "which", "while", "don", "doesn",
+            "didn", "won", "wouldn", "support", "one", "two", "three"
+        ]
+
+        tagger.enumerateTags(
+            in: text.startIndex..<text.endIndex,
+            unit: .word,
+            scheme: .lexicalClass
+        ) { tag, range in
+            guard let tag = tag else { return true }
+            let word = String(text[range]).lowercased()
+
+            // Only keep nouns, verbs, adjectives that are meaningful
+            if (tag == .noun || tag == .verb || tag == .adjective) &&
+                word.count > 3 && !stopWords.contains(word) {
+                themes.append(word)
+            }
+            return true
+        }
+
+        // Also extract named entities (people, places, organizations)
+        tagger.enumerateTags(
+            in: text.startIndex..<text.endIndex,
+            unit: .word,
+            scheme: .nameType
+        ) { tag, range in
+            if tag == .personalName || tag == .placeName || tag == .organizationName {
+                let name = String(text[range])
+                if name.count > 2 {
+                    themes.append(name.lowercased())
+                }
+            }
+            return true
+        }
+
+        // Return unique themes, limited to top 5
+        return Array(Set(themes)).prefix(5).map { $0 }
     }
 
     // MARK: - Semantic Similarity (NLP)

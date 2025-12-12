@@ -62,6 +62,13 @@
 		G1000001238F5E0000000001 /* SearchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = G1000002238F5E0000000001 /* SearchScreen.swift */; };
 		H1000001238F5E0000000001 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = H1000002238F5E0000000001 /* SettingsScreen.swift */; };
 		H1000003238F5E0000000001 /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = H1000004238F5E0000000001 /* ExportService.swift */; };
+		J1000001238F5E0000000001 /* ActiveHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = J1000002238F5E0000000001 /* ActiveHabit.swift */; };
+		J1000003238F5E0000000001 /* HabitPillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = J1000004238F5E0000000001 /* HabitPillView.swift */; };
+		J1000005238F5E0000000001 /* ObservationPromptsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = J1000006238F5E0000000001 /* ObservationPromptsView.swift */; };
+		J1000007238F5E0000000001 /* HabitIntentionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = J1000008238F5E0000000001 /* HabitIntentionSheet.swift */; };
+		J1000009238F5E0000000001 /* HabitExpirationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = J100000A238F5E0000000001 /* HabitExpirationSheet.swift */; };
+		J100000B238F5E0000000001 /* EditHabitSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = J100000C238F5E0000000001 /* EditHabitSheet.swift */; };
+		K1000001238F5E0000000001 /* ConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = K1000002238F5E0000000001 /* ConnectionService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -123,6 +130,13 @@
 		G1000002238F5E0000000001 /* SearchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreen.swift; sourceTree = "<group>"; };
 		H1000002238F5E0000000001 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		H1000004238F5E0000000001 /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
+		J1000002238F5E0000000001 /* ActiveHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveHabit.swift; sourceTree = "<group>"; };
+		J1000004238F5E0000000001 /* HabitPillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitPillView.swift; sourceTree = "<group>"; };
+		J1000006238F5E0000000001 /* ObservationPromptsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationPromptsView.swift; sourceTree = "<group>"; };
+		J1000008238F5E0000000001 /* HabitIntentionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitIntentionSheet.swift; sourceTree = "<group>"; };
+		J100000A238F5E0000000001 /* HabitExpirationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitExpirationSheet.swift; sourceTree = "<group>"; };
+		J100000C238F5E0000000001 /* EditHabitSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHabitSheet.swift; sourceTree = "<group>"; };
+		K1000002238F5E0000000001 /* ConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +222,7 @@
 				B3000002238F5E0000000001 /* Question.swift */,
 				B3000004238F5E0000000001 /* Story.swift */,
 				B3000006238F5E0000000001 /* Idea.swift */,
+				J1000002238F5E0000000001 /* ActiveHabit.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -302,6 +317,11 @@
 				2EAD3D4E2EDFF089004929DF /* EntryTypeBadge.swift */,
 				C1000002238F5E0000000001 /* ExtractionReviewModal.swift */,
 				I1000002238F5E0000000001 /* FeatureTooltip.swift */,
+				J1000004238F5E0000000001 /* HabitPillView.swift */,
+				J1000006238F5E0000000001 /* ObservationPromptsView.swift */,
+				J1000008238F5E0000000001 /* HabitIntentionSheet.swift */,
+				J100000A238F5E0000000001 /* HabitExpirationSheet.swift */,
+				J100000C238F5E0000000001 /* EditHabitSheet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -324,6 +344,7 @@
 			isa = PBXGroup;
 			children = (
 				A200000A238F5E0000000001 /* AIService.swift */,
+				K1000002238F5E0000000001 /* ConnectionService.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -475,6 +496,13 @@
 				G1000001238F5E0000000001 /* SearchScreen.swift in Sources */,
 				H1000001238F5E0000000001 /* SettingsScreen.swift in Sources */,
 				H1000003238F5E0000000001 /* ExportService.swift in Sources */,
+				J1000001238F5E0000000001 /* ActiveHabit.swift in Sources */,
+				J1000003238F5E0000000001 /* HabitPillView.swift in Sources */,
+				J1000005238F5E0000000001 /* ObservationPromptsView.swift in Sources */,
+				J1000007238F5E0000000001 /* HabitIntentionSheet.swift in Sources */,
+				J1000009238F5E0000000001 /* HabitExpirationSheet.swift in Sources */,
+				J100000B238F5E0000000001 /* EditHabitSheet.swift in Sources */,
+				K1000001238F5E0000000001 /* ConnectionService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

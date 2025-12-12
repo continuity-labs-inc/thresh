@@ -7,9 +7,29 @@ struct PatternsScreen: View {
     @Query(sort: \Question.createdAt, order: .reverse) private var questions: [Question]
     @State private var connections: [Connection] = []
     @State private var showPatternsTooltip = true
+    @State private var isRegenerating = false
+    @State private var lastGenerated: Date?
 
     private var marinatingReflections: [Reflection] {
         allReflections.filter { $0.marinating && !$0.isArchived }
+    }
+
+    /// Deduplicated connections - removes self-connections and duplicate pairs
+    private var uniqueConnections: [Connection] {
+        var seen: Set<String> = []
+        return connections.filter { conn in
+            // Create canonical key (sorted IDs to handle both directions)
+            let ids = [conn.sourceReflectionId.uuidString, conn.targetReflectionId.uuidString].sorted()
+            let key = ids.joined(separator: "-")
+
+            // Skip self-connections
+            guard conn.sourceReflectionId != conn.targetReflectionId else { return false }
+
+            // Skip duplicates
+            guard !seen.contains(key) else { return false }
+            seen.insert(key)
+            return true
+        }
     }
 
     var body: some View {
@@ -25,7 +45,8 @@ struct PatternsScreen: View {
         .navigationTitle("Patterns")
         .navigationBarTitleDisplayMode(.large)
         .task {
-            connections = await AIService.shared.detectConnections(in: allReflections)
+            connections = await ConnectionService.shared.getConnections(for: allReflections)
+            lastGenerated = await ConnectionService.shared.lastGeneratedDate()
         }
         .featureTooltip(
             title: "Patterns",
@@ -84,15 +105,42 @@ struct PatternsScreen: View {
 
     private var connectionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Connections", systemImage: "link")
-                .font(.headline)
-                .foregroundStyle(Color.thresh.synthesis)
+            HStack {
+                Label("Connections", systemImage: "link")
+                    .font(.headline)
+                    .foregroundStyle(Color.thresh.synthesis)
 
-            Text("Patterns across your captures")
-                .font(.subheadline)
-                .foregroundStyle(Color.thresh.textSecondary)
+                Spacer()
 
-            if connections.isEmpty {
+                Button {
+                    regenerateConnections()
+                } label: {
+                    HStack(spacing: 4) {
+                        if isRegenerating {
+                            ProgressView()
+                                .scaleEffect(0.7)
+                        } else {
+                            Image(systemName: "arrow.clockwise")
+                        }
+                        Text("Refresh")
+                    }
+                    .font(.caption)
+                    .foregroundStyle(Color.thresh.synthesis)
+                }
+                .disabled(isRegenerating)
+            }
+
+            if let lastGen = lastGenerated {
+                Text("Last updated: \(lastGen.relativeFormatted)")
+                    .font(.caption)
+                    .foregroundStyle(Color.thresh.textTertiary)
+            } else {
+                Text("Patterns across your captures")
+                    .font(.subheadline)
+                    .foregroundStyle(Color.thresh.textSecondary)
+            }
+
+            if uniqueConnections.isEmpty {
                 Text("Connections will appear as you add more captures.")
                     .font(.subheadline)
                     .foregroundStyle(Color.thresh.textTertiary)
@@ -101,9 +149,20 @@ struct PatternsScreen: View {
                     .background(Color.thresh.surface)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             } else {
-                ForEach(connections) { connection in
+                ForEach(uniqueConnections) { connection in
                     connectionCard(for: connection)
                 }
+            }
+        }
+    }
+
+    private func regenerateConnections() {
+        isRegenerating = true
+        Task {
+            connections = await ConnectionService.shared.regenerateConnections(for: allReflections)
+            lastGenerated = await ConnectionService.shared.lastGeneratedDate()
+            await MainActor.run {
+                isRegenerating = false
             }
         }
     }
@@ -112,8 +171,16 @@ struct PatternsScreen: View {
         let sourceReflection = allReflections.first { $0.id == connection.sourceReflectionId }
         let targetReflection = allReflections.first { $0.id == connection.targetReflectionId }
 
+        // Use stored numbers if available, fallback to looking them up
+        let sourceNum = connection.sourceReflectionNumber > 0
+            ? connection.sourceReflectionNumber
+            : (sourceReflection?.reflectionNumber ?? 0)
+        let targetNum = connection.targetReflectionNumber > 0
+            ? connection.targetReflectionNumber
+            : (targetReflection?.reflectionNumber ?? 0)
+
         return VStack(alignment: .leading, spacing: 12) {
-            // Connection type header with confidence
+            // Connection type header with reflection numbers
             HStack(spacing: 6) {
                 Image(systemName: connection.connectionType.systemImage)
                     .font(.caption)
@@ -121,14 +188,17 @@ struct PatternsScreen: View {
                     .font(.caption)
                     .fontWeight(.medium)
                 Spacer()
-                ConfidenceIndicator(confidence: connection.confidence)
+                Text("#\(sourceNum) ↔ #\(targetNum)")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(Color.thresh.textSecondary)
             }
             .foregroundStyle(Color.thresh.synthesis)
 
             // Source reflection snippet
             if let source = sourceReflection {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("From:")
+                    Text("Reflection #\(sourceNum):")
                         .font(.caption2)
                         .foregroundStyle(Color.thresh.textTertiary)
                     Text(source.captureContent.prefix(80) + (source.captureContent.count > 80 ? "..." : ""))
@@ -141,7 +211,7 @@ struct PatternsScreen: View {
             // Target reflection snippet
             if let target = targetReflection {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("To:")
+                    Text("Reflection #\(targetNum):")
                         .font(.caption2)
                         .foregroundStyle(Color.thresh.textTertiary)
                     Text(target.captureContent.prefix(80) + (target.captureContent.count > 80 ? "..." : ""))

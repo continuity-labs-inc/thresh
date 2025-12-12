@@ -68,6 +68,7 @@ final class Reflection {
     var themes: [String]
     var isArchived: Bool
     var marinating: Bool
+    var reflectionNumber: Int
 
     // Soft delete support (photo-like deletion)
     var deletedAt: Date?
@@ -93,6 +94,7 @@ final class Reflection {
         themes: [String] = [],
         isArchived: Bool = false,
         marinating: Bool = false,
+        reflectionNumber: Int = 0,
         deletedAt: Date? = nil,
         revisionLayers: [RevisionLayer] = [],
         linkedReflections: [Reflection] = []
@@ -111,6 +113,7 @@ final class Reflection {
         self.themes = themes
         self.isArchived = isArchived
         self.marinating = marinating
+        self.reflectionNumber = reflectionNumber
         self.deletedAt = deletedAt
         self.revisionLayers = revisionLayers
         self.linkedReflections = linkedReflections

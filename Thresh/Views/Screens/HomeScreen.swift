@@ -7,6 +7,7 @@ struct HomeScreen: View {
     @Query(sort: \Story.createdAt, order: .reverse) private var allStories: [Story]
     @Query(sort: \Idea.createdAt, order: .reverse) private var allIdeas: [Idea]
     @Query(sort: \Question.createdAt, order: .reverse) private var allQuestions: [Question]
+    @Query(sort: \ActiveHabit.order) private var habits: [ActiveHabit]
 
     // Filter out deleted and archived items for display
     private var reflections: [Reflection] {
@@ -27,6 +28,7 @@ struct HomeScreen: View {
 
     @State private var selectedTab: ContentTab = .reflections
     @State private var showingAboutSheet = false
+    @State private var showHabitExpirationPrompt = false
 
     enum ContentTab: String, CaseIterable {
         case reflections, stories, ideas, questions
@@ -81,6 +83,24 @@ struct HomeScreen: View {
             .sheet(isPresented: $showingAboutSheet) {
                 AboutScreen()
             }
+            .sheet(isPresented: $showHabitExpirationPrompt) {
+                if let habit = habits.first, habit.isExpired {
+                    HabitExpirationSheet(
+                        isPresented: $showHabitExpirationPrompt,
+                        habit: habit,
+                        onDismiss: {}
+                    )
+                }
+            }
+            .onAppear {
+                checkHabitExpiration()
+            }
+        }
+    }
+
+    private func checkHabitExpiration() {
+        if let habit = habits.first, habit.isExpired {
+            showHabitExpirationPrompt = true
         }
     }
 
@@ -262,5 +282,5 @@ struct HomeScreen: View {
 
 #Preview {
     HomeScreen()
-        .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self], inMemory: true)
+        .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self, ActiveHabit.self], inMemory: true)
 }

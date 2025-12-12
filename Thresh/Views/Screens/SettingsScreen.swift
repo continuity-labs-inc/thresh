@@ -9,11 +9,15 @@ struct SettingsScreen: View {
     @Query private var stories: [Story]
     @Query private var ideas: [Idea]
     @Query private var questions: [Question]
+    @Query(sort: \ActiveHabit.order) private var habits: [ActiveHabit]
 
     @State private var showShareSheet = false
     @State private var exportURL: URL?
     @State private var isExporting = false
     @State private var showExportError = false
+    @State private var showAddHabitSheet = false
+    @State private var showEditHabitSheet = false
+    @State private var habitToEdit: ActiveHabit?
 
     // Import state
     @State private var showingImportPicker = false
@@ -79,6 +83,57 @@ struct SettingsScreen: View {
                 dataRow(label: "Questions", count: activeQuestionsCount)
             } header: {
                 Text("Your Data")
+            }
+
+            Section {
+                ForEach(habits) { habit in
+                    HStack {
+                        Image(systemName: "flame")
+                            .foregroundColor(.orange)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(habit.intention)
+                                .foregroundStyle(Color.thresh.textPrimary)
+                            if habit.isDefault {
+                                Text("Default")
+                                    .font(.caption)
+                                    .foregroundColor(Color.thresh.textTertiary)
+                            }
+                        }
+                        Spacer()
+                        Text("\(habit.daysRemaining) days left")
+                            .font(.caption)
+                            .foregroundColor(Color.thresh.textSecondary)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        habitToEdit = habit
+                        showEditHabitSheet = true
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            deleteHabit(habit)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
+                }
+
+                if habits.count < 2 {
+                    Button {
+                        showAddHabitSheet = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus.circle")
+                                .foregroundStyle(Color.thresh.capture)
+                            Text("Add Habit")
+                                .foregroundStyle(Color.thresh.textPrimary)
+                        }
+                    }
+                }
+            } header: {
+                Text("Habits")
+            } footer: {
+                Text("Your active intention shows at the top of each reflection to remind you what matters.")
             }
 
             Section {
@@ -158,6 +213,50 @@ struct SettingsScreen: View {
                 Text("Imported \(result.reflectionsImported) reflections, \(result.storiesImported) stories, \(result.ideasImported) ideas, \(result.questionsImported) questions. Skipped \(result.skipped) duplicates.")
             }
         }
+        .sheet(isPresented: $showAddHabitSheet) {
+            HabitIntentionSheet(
+                isPresented: $showAddHabitSheet,
+                onSave: { intention in
+                    addHabit(intention: intention)
+                }
+            )
+        }
+        .sheet(isPresented: $showEditHabitSheet) {
+            if let habit = habitToEdit {
+                EditHabitSheet(
+                    isPresented: $showEditHabitSheet,
+                    habit: habit
+                )
+            }
+        }
+    }
+
+    private func addHabit(intention: String) {
+        let newHabit = ActiveHabit(
+            intention: intention,
+            isDefault: false,
+            order: habits.count
+        )
+        modelContext.insert(newHabit)
+        do {
+            try modelContext.save()
+        } catch {}
+    }
+
+    private func deleteHabit(_ habit: ActiveHabit) {
+        modelContext.delete(habit)
+        // If no habits remain, create default
+        if habits.count <= 1 {
+            let defaultHabit = ActiveHabit(
+                intention: "Reflect 3 times this week",
+                isDefault: true,
+                order: 0
+            )
+            modelContext.insert(defaultHabit)
+        }
+        do {
+            try modelContext.save()
+        } catch {}
     }
 
     private func dataRow(label: String, count: Int) -> some View {
@@ -230,5 +329,5 @@ struct ShareSheet: UIViewControllerRepresentable {
         SettingsScreen()
     }
     .environment(AppState())
-    .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self], inMemory: true)
+    .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self, ActiveHabit.self], inMemory: true)
 }

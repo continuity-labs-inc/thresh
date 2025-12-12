@@ -11,6 +11,7 @@ struct ThreshApp: App {
             Story.self,
             Idea.self,
             Question.self,
+            ActiveHabit.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

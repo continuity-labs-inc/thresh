@@ -12,6 +12,12 @@ struct Connection: Identifiable, Hashable, Sendable {
     /// The second reflection in the connection
     let targetReflectionId: UUID
 
+    /// Reflection number of the source (for display)
+    let sourceReflectionNumber: Int
+
+    /// Reflection number of the target (for display)
+    let targetReflectionNumber: Int
+
     /// The type of connection detected
     let connectionType: ConnectionType
 
@@ -31,6 +37,8 @@ struct Connection: Identifiable, Hashable, Sendable {
         id: UUID = UUID(),
         sourceReflectionId: UUID,
         targetReflectionId: UUID,
+        sourceReflectionNumber: Int = 0,
+        targetReflectionNumber: Int = 0,
         connectionType: ConnectionType,
         description: String,
         confidence: Double = 1.0,
@@ -40,6 +48,8 @@ struct Connection: Identifiable, Hashable, Sendable {
         self.id = id
         self.sourceReflectionId = sourceReflectionId
         self.targetReflectionId = targetReflectionId
+        self.sourceReflectionNumber = sourceReflectionNumber
+        self.targetReflectionNumber = targetReflectionNumber
         self.connectionType = connectionType
         self.description = description
         self.confidence = confidence

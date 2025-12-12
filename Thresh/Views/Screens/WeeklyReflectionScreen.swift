@@ -4,14 +4,16 @@ import SwiftData
 struct WeeklyReflectionScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-    
+
     @Query(sort: \Reflection.createdAt, order: .reverse)
     private var allReflections: [Reflection]
-    
+
+    @Query(sort: \ActiveHabit.order) private var habits: [ActiveHabit]
+
     private var filteredReflections: [Reflection] {
         allReflections.filter { $0.tier == .daily || $0.tier == .active }
     }
-    
+
     @State private var currentStep = 1
     @State private var selectedReflections: Set<UUID> = []
     @State private var synthesisText = ""
@@ -20,6 +22,7 @@ struct WeeklyReflectionScreen: View {
     @State private var showWeeklyTooltip = true
     @State private var suggestedConnections: [Connection] = []
     @State private var isAnalyzing = false
+    @State private var showHabitPrompt = false
     @FocusState private var isTextEditorFocused: Bool
     
     // Get reflections from last 7 days
@@ -72,6 +75,21 @@ struct WeeklyReflectionScreen: View {
             featureKey: "weekly_synthesis",
             isPresented: $showWeeklyTooltip
         )
+        .sheet(isPresented: $showHabitPrompt) {
+            HabitIntentionSheet(
+                isPresented: $showHabitPrompt,
+                onSave: { intention in
+                    createNewHabit(with: intention)
+                    dismiss()
+                }
+            )
+        }
+        .onChange(of: showHabitPrompt) { _, newValue in
+            // If sheet was dismissed without saving (skipped), dismiss the screen
+            if !newValue && habits.first?.isDefault == true {
+                dismiss()
+            }
+        }
     }
     
     // MARK: - Header
@@ -153,12 +171,34 @@ struct WeeklyReflectionScreen: View {
             } else {
                 ScrollView {
                     VStack(spacing: 16) {
+                        // Habit check-in summary
+                        if let habit = habits.first {
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    Image(systemName: "flame")
+                                        .foregroundColor(.orange)
+                                    Text(habit.intention)
+                                        .font(.headline)
+                                        .foregroundStyle(Color.thresh.textPrimary)
+                                }
+                                Text("Checked in \(habit.checkInCountThisWeek) times this week")
+                                    .font(.subheadline)
+                                    .foregroundColor(Color.thresh.textSecondary)
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color.thresh.cardBackground)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .padding(.horizontal, 20)
+                            .padding(.top, 8)
+                        }
+
                         // Instructions
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Select captures to include")
                                 .font(.system(size: 18, weight: .semibold))
                                 .foregroundColor(Color.thresh.textPrimary)
-                            
+
                             Text("Choose the moments from this week that feel connected or worth synthesizing.")
                                 .font(.system(size: 14))
                                 .foregroundColor(Color.thresh.textSecondary)
@@ -166,7 +206,7 @@ struct WeeklyReflectionScreen: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 20)
                         .padding(.top, 8)
-                        
+
                         // Reflection List
                         ForEach(recentReflections) { reflection in
                             CaptureRow(
@@ -299,6 +339,15 @@ struct WeeklyReflectionScreen: View {
                                     .font(.system(size: 16))
                                     .foregroundColor(Color.thresh.textSecondary)
                                     .italic()
+
+                                // Habit prompt if exists
+                                if let habit = habits.first {
+                                    Text("How did '\(habit.intention)' go this week? What helped? What got in the way?")
+                                        .font(.system(size: 15))
+                                        .foregroundColor(Color.thresh.textSecondary)
+                                        .italic()
+                                        .padding(.top, 4)
+                                }
                             }
                             .padding(16)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -312,7 +361,7 @@ struct WeeklyReflectionScreen: View {
                             )
                             .padding(.horizontal, 20)
                         }
-                        
+
                         // Synthesis Text Editor
                         VStack(alignment: .leading, spacing: 8) {
                             if isTextEditorFocused {
@@ -570,26 +619,26 @@ struct WeeklyReflectionScreen: View {
     }
     
     // MARK: - Save Function
-    
+
     private func saveWeeklySynthesis() {
         let trimmedSynthesis = synthesisText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedSynthesis.isEmpty else { return }
-        
+
         // Get selected reflections
         let selected = recentReflections.filter { selectedReflections.contains($0.id) }
-        
+
         // Combine captures for context
         let combinedCaptures = selected
             .map { $0.captureContent }
             .joined(separator: "\n\n---\n\n")
-        
+
         // Add Bakhtinian content if present
         let finalSynthesis = if !bakhtinianText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             trimmedSynthesis + "\n\n[Alternative Perspective]\n" + bakhtinianText
         } else {
             trimmedSynthesis
         }
-        
+
         // Create weekly synthesis
         let weeklySynthesis = Reflection(
             captureContent: combinedCaptures,
@@ -599,14 +648,46 @@ struct WeeklyReflectionScreen: View {
             modeBalance: .synthesisOnly,
             linkedReflections: selected
         )
-        
+
         modelContext.insert(weeklySynthesis)
-        
+
         do {
             try modelContext.save()
-            dismiss()
+
+            // Trigger connection regeneration in background
+            Task {
+                _ = await ConnectionService.shared.regenerateConnections(for: Array(allReflections))
+            }
+
+            // Show habit prompt if user has only default habit or habit is expiring
+            if let habit = habits.first, (habit.isDefault || habit.isExpired) {
+                showHabitPrompt = true
+            } else {
+                dismiss()
+            }
         } catch {
             // Handle save error silently
+        }
+    }
+
+    private func createNewHabit(with intention: String) {
+        // Delete old habits
+        for habit in habits {
+            modelContext.delete(habit)
+        }
+
+        // Create new habit
+        let newHabit = ActiveHabit(
+            intention: intention,
+            isDefault: false,
+            order: 0
+        )
+        modelContext.insert(newHabit)
+
+        do {
+            try modelContext.save()
+        } catch {
+            // Silently fail
         }
     }
 }
@@ -689,5 +770,5 @@ struct CaptureRow: View {
 
 #Preview {
     WeeklyReflectionScreen()
-        .modelContainer(for: [Reflection.self], inMemory: true)
+        .modelContainer(for: [Reflection.self, ActiveHabit.self], inMemory: true)
 }

@@ -7,8 +7,15 @@ struct ReflectionRow: View {
     var body: some View {
         NavigationLink(destination: ReflectionDetailScreen(reflection: reflection)) {
             VStack(alignment: .leading, spacing: 8) {
-                // Entry type badge + tier + marinating + time
+                // Reflection number + entry type badge + tier + marinating + time
                 HStack {
+                    if reflection.reflectionNumber > 0 {
+                        Text("#\(reflection.reflectionNumber)")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.thresh.capture)
+                    }
+
                     EntryTypeBadge(type: reflection.entryType)
                     Text(reflection.tier.rawValue.uppercased())
                         .font(.caption2)

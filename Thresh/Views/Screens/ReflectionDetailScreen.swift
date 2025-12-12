@@ -21,8 +21,14 @@ struct ReflectionDetailScreen: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-                // Header with type and tier
+                // Header with reflection number, type and tier
                 HStack {
+                    if reflection.reflectionNumber > 0 {
+                        Text("Reflection #\(reflection.reflectionNumber)")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.thresh.capture)
+                    }
                     EntryTypeBadge(type: reflection.entryType)
                     Spacer()
                     TierBadge(tier: reflection.tier)
