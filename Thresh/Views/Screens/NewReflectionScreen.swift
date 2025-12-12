@@ -182,7 +182,7 @@ struct NewReflectionScreen: View {
         }
 
         // ASSIGN NEXT REFLECTION NUMBER
-        let maxNumber = allReflections.map { $0.reflectionNumber }.max() ?? 0
+        let maxNumber = allReflections.compactMap { $0.reflectionNumber }.max() ?? 0
 
         // CREATE NEW REFLECTION
         let newReflection = Reflection(

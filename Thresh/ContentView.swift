@@ -52,13 +52,14 @@ struct ContentView: View {
     private func migrateReflectionNumbers() {
         // Migrate existing reflections to have sequential numbers
         let unnumberedReflections = allReflections
-            .filter { $0.reflectionNumber == 0 }
+            .filter { ($0.reflectionNumber ?? 0) == 0 }
             .sorted { $0.createdAt < $1.createdAt }
 
         guard !unnumberedReflections.isEmpty else { return }
 
+        let maxExisting = allReflections.compactMap { $0.reflectionNumber }.max() ?? 0
         for (index, reflection) in unnumberedReflections.enumerated() {
-            reflection.reflectionNumber = index + 1
+            reflection.reflectionNumber = maxExisting + index + 1
         }
 
         do {

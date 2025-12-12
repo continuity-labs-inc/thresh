@@ -39,7 +39,7 @@ actor ConnectionService {
         let reflectionSummaries = activeReflections
             .sorted { $0.createdAt < $1.createdAt }
             .map { reflection -> String in
-                let number = reflection.reflectionNumber
+                let number = reflection.reflectionNumber ?? 0
                 let date = formatDate(reflection.createdAt)
                 let preview = String(reflection.captureContent.prefix(200))
                 return "Reflection #\(number) (\(date)):\n\(preview)"
@@ -170,7 +170,9 @@ actor ConnectionService {
         // Build a lookup by reflection number
         var reflectionByNumber: [Int: Reflection] = [:]
         for reflection in reflections {
-            reflectionByNumber[reflection.reflectionNumber] = reflection
+            if let number = reflection.reflectionNumber {
+                reflectionByNumber[number] = reflection
+            }
         }
 
         var connections: [Connection] = []

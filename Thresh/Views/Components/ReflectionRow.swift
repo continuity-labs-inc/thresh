@@ -9,8 +9,8 @@ struct ReflectionRow: View {
             VStack(alignment: .leading, spacing: 8) {
                 // Reflection number + entry type badge + tier + marinating + time
                 HStack {
-                    if reflection.reflectionNumber > 0 {
-                        Text("#\(reflection.reflectionNumber)")
+                    if let number = reflection.reflectionNumber, number > 0 {
+                        Text("#\(number)")
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.thresh.capture)

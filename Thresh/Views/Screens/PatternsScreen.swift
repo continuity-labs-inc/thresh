@@ -174,10 +174,10 @@ struct PatternsScreen: View {
         // Use stored numbers if available, fallback to looking them up
         let sourceNum = connection.sourceReflectionNumber > 0
             ? connection.sourceReflectionNumber
-            : (sourceReflection?.reflectionNumber ?? 0)
+            : (sourceReflection?.reflectionNumber ?? 0) ?? 0
         let targetNum = connection.targetReflectionNumber > 0
             ? connection.targetReflectionNumber
-            : (targetReflection?.reflectionNumber ?? 0)
+            : (targetReflection?.reflectionNumber ?? 0) ?? 0
 
         return VStack(alignment: .leading, spacing: 12) {
             // Connection type header with reflection numbers

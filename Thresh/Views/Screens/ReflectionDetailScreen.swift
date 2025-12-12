@@ -23,8 +23,8 @@ struct ReflectionDetailScreen: View {
             VStack(alignment: .leading, spacing: 24) {
                 // Header with reflection number, type and tier
                 HStack {
-                    if reflection.reflectionNumber > 0 {
-                        Text("Reflection #\(reflection.reflectionNumber)")
+                    if let number = reflection.reflectionNumber, number > 0 {
+                        Text("Reflection #\(number)")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.thresh.capture)
