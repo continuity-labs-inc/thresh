@@ -93,7 +93,7 @@ enum ImportError: LocalizedError {
 
 // MARK: - Export Service
 
-class ExportService {
+final class ExportService: @unchecked Sendable {
     static let shared = ExportService()
 
     private init() {}

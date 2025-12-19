@@ -51,8 +51,38 @@ enum SubscriptionProduct: String, CaseIterable {
 final class SubscriptionService {
     static let shared = SubscriptionService()
 
+    // MARK: - Debug Override (for testing Pro features in simulator)
+    #if DEBUG
+    @ObservationIgnored
+    private let debugOverrideKey = "debug_subscription_tier_override"
+
+    /// Debug override tier - set via Settings to test Pro/Plus features in simulator
+    var debugTierOverride: SubscriptionTier? {
+        get {
+            guard let rawValue = UserDefaults.standard.string(forKey: debugOverrideKey) else { return nil }
+            return SubscriptionTier(rawValue: rawValue)
+        }
+        set {
+            if let tier = newValue {
+                UserDefaults.standard.set(tier.rawValue, forKey: debugOverrideKey)
+            } else {
+                UserDefaults.standard.removeObject(forKey: debugOverrideKey)
+            }
+        }
+    }
+    #endif
+
     // MARK: - Published State
-    private(set) var currentTier: SubscriptionTier = .free
+    private(set) var _actualTier: SubscriptionTier = .free
+
+    var currentTier: SubscriptionTier {
+        #if DEBUG
+        return debugTierOverride ?? _actualTier
+        #else
+        return _actualTier
+        #endif
+    }
+
     private(set) var products: [Product] = []
     private(set) var purchasedProductIDs: Set<String> = []
     private(set) var isLoading = false
@@ -222,7 +252,7 @@ final class SubscriptionService {
         }
 
         purchasedProductIDs = purchased
-        currentTier = highestTier
+        _actualTier = highestTier
         print("📱 Current tier: \(currentTier.displayName), purchased: \(purchased)")
     }
 

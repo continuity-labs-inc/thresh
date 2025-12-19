@@ -228,10 +228,10 @@ struct WeeklyReflectionScreen: View {
                 title: "Continue to Write (\(selectedReflections.count))",
                 isEnabled: !selectedReflections.isEmpty,
                 action: {
+                    let selected = recentReflections.filter { selectedReflections.contains($0.id) }
                     Task {
                         isAnalyzing = true
                         withAnimation { currentStep = 2 }
-                        let selected = recentReflections.filter { selectedReflections.contains($0.id) }
                         suggestedConnections = await AIService.shared.detectConnections(in: selected)
                         isAnalyzing = false
                     }
@@ -655,8 +655,9 @@ struct WeeklyReflectionScreen: View {
             try modelContext.save()
 
             // Trigger connection regeneration in background
+            let reflectionData = allReflections.map { ReflectionData(from: $0) }
             Task {
-                _ = await ConnectionService.shared.regenerateConnections(for: Array(allReflections))
+                _ = await ConnectionService.shared.regenerateConnections(for: reflectionData)
             }
 
             // Show habit prompt if user has only default habit or habit is expiring

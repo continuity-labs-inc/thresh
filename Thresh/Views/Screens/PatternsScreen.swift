@@ -48,7 +48,8 @@ struct PatternsScreen: View {
         .navigationTitle("Patterns")
         .navigationBarTitleDisplayMode(.large)
         .task {
-            connections = await ConnectionService.shared.getConnections(for: allReflections)
+            let reflectionData = allReflections.map { ReflectionData(from: $0) }
+            connections = await ConnectionService.shared.getConnections(for: reflectionData)
             lastGenerated = await ConnectionService.shared.lastGeneratedDate()
         }
         .onAppear {
@@ -209,12 +210,11 @@ struct PatternsScreen: View {
 
     private func regenerateConnections() {
         isRegenerating = true
+        let reflectionData = allReflections.map { ReflectionData(from: $0) }
         Task {
-            connections = await ConnectionService.shared.regenerateConnections(for: allReflections)
+            connections = await ConnectionService.shared.regenerateConnections(for: reflectionData)
             lastGenerated = await ConnectionService.shared.lastGeneratedDate()
-            await MainActor.run {
-                isRegenerating = false
-            }
+            isRegenerating = false
         }
     }
 
@@ -225,10 +225,10 @@ struct PatternsScreen: View {
         // Use stored numbers if available, fallback to looking them up
         let sourceNum = connection.sourceReflectionNumber > 0
             ? connection.sourceReflectionNumber
-            : (sourceReflection?.reflectionNumber ?? 0) ?? 0
+            : (sourceReflection?.reflectionNumber ?? 0)
         let targetNum = connection.targetReflectionNumber > 0
             ? connection.targetReflectionNumber
-            : (targetReflection?.reflectionNumber ?? 0) ?? 0
+            : (targetReflection?.reflectionNumber ?? 0)
 
         return VStack(alignment: .leading, spacing: 12) {
             // Connection type header with reflection numbers

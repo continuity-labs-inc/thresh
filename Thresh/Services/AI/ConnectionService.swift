@@ -1,5 +1,22 @@
 import Foundation
 
+/// Sendable struct for passing reflection data across actor boundaries
+struct ReflectionData: Sendable {
+    let id: UUID
+    let captureContent: String
+    let reflectionNumber: Int?
+    let createdAt: Date
+    let deletedAt: Date?
+
+    init(from reflection: Reflection) {
+        self.id = reflection.id
+        self.captureContent = reflection.captureContent
+        self.reflectionNumber = reflection.reflectionNumber
+        self.createdAt = reflection.createdAt
+        self.deletedAt = reflection.deletedAt
+    }
+}
+
 /// Service for detecting meaningful connections between reflections using Claude API.
 /// Connections are cached in UserDefaults and regenerated on demand.
 actor ConnectionService {
@@ -17,7 +34,8 @@ actor ConnectionService {
     // MARK: - Public API
 
     /// Get cached connections or generate new ones if none exist
-    func getConnections(for reflections: [Reflection]) async -> [Connection] {
+    /// Call with ReflectionData array for Swift 6 concurrency safety
+    func getConnections(for reflections: [ReflectionData]) async -> [Connection] {
         // Try to load from cache first
         if let cached = loadCachedConnections(), !cached.isEmpty {
             return cached
@@ -28,7 +46,8 @@ actor ConnectionService {
     }
 
     /// Force regeneration of connections (called from Patterns screen)
-    func regenerateConnections(for reflections: [Reflection]) async -> [Connection] {
+    /// Call with ReflectionData array for Swift 6 concurrency safety
+    func regenerateConnections(for reflections: [ReflectionData]) async -> [Connection] {
         guard reflections.count >= 2 else { return [] }
 
         // Filter to non-deleted reflections
@@ -78,7 +97,7 @@ actor ConnectionService {
 
     private func detectConnectionsWithClaude(
         summaries: String,
-        reflections: [Reflection]
+        reflections: [ReflectionData]
     ) async throws -> [Connection] {
         let prompt = """
         You are analyzing personal reflections to find meaningful connections between them.
@@ -148,7 +167,7 @@ actor ConnectionService {
         return try parseConnectionsResponse(textContent, reflections: reflections)
     }
 
-    private func parseConnectionsResponse(_ text: String, reflections: [Reflection]) throws -> [Connection] {
+    private func parseConnectionsResponse(_ text: String, reflections: [ReflectionData]) throws -> [Connection] {
         // Clean up the text - remove any markdown code blocks if present
         var cleanedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if cleanedText.hasPrefix("```json") {
@@ -168,7 +187,7 @@ actor ConnectionService {
         }
 
         // Build a lookup by reflection number
-        var reflectionByNumber: [Int: Reflection] = [:]
+        var reflectionByNumber: [Int: ReflectionData] = [:]
         for reflection in reflections {
             if let number = reflection.reflectionNumber {
                 reflectionByNumber[number] = reflection
