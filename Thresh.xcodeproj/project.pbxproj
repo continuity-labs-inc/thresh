@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -74,17 +74,8 @@
 		M1000001238F5E0000000001 /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = M1000002238F5E0000000001 /* SubscriptionService.swift */; };
 		M1000003238F5E0000000001 /* PaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = M1000004238F5E0000000001 /* PaywallScreen.swift */; };
 		M1000005238F5E0000000001 /* FeatureGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = M1000006238F5E0000000001 /* FeatureGate.swift */; };
+		N1000001238F5E0000000001 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = N1000002238F5E0000000001 /* NotificationService.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		2E9447B52EF51156002E04BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A1000050238F5E0000000001 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A1000040238F5E0000000001;
-			remoteInfo = "Thresh Life";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarterlyReflectionScreen.swift; sourceTree = "<group>"; };
@@ -92,7 +83,6 @@
 		2E5A01562EE0395D00E5A8CB /* SaveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButton.swift; sourceTree = "<group>"; };
 		2E7B672B2EE1755100EEF8B2 /* PatternsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternsScreen.swift; sourceTree = "<group>"; };
 		2E7B672D2EE1758000EEF8B2 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
-		2E9447AF2EF51156002E04BA /* Thresh LifeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Thresh LifeUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EAD3D452EDFE92F004929DF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppState.swift; path = Thresh/Models/AppState.swift; sourceTree = SOURCE_ROOT; };
 		2EAD3D472EDFE93A004929DF /* ThreshApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThreshApp.swift; path = Thresh/ThreshApp.swift; sourceTree = SOURCE_ROOT; };
 		2EAD3D492EDFEB66004929DF /* DevelopmentStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevelopmentStage.swift; sourceTree = "<group>"; };
@@ -158,20 +148,10 @@
 		M1000002238F5E0000000001 /* SubscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
 		M1000004238F5E0000000001 /* PaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreen.swift; sourceTree = "<group>"; };
 		M1000006238F5E0000000001 /* FeatureGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureGate.swift; sourceTree = "<group>"; };
+		N1000002238F5E0000000001 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		2E9447B02EF51156002E04BA /* Thresh LifeUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Thresh LifeUITests"; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
-		2E9447AC2EF51156002E04BA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A1000010238F5E0000000001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -202,7 +182,6 @@
 			isa = PBXGroup;
 			children = (
 				A1000021238F5E0000000001 /* Thresh */,
-				2E9447B02EF51156002E04BA /* Thresh LifeUITests */,
 				A1000022238F5E0000000001 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -230,7 +209,6 @@
 			isa = PBXGroup;
 			children = (
 				A100000B238F5E0000000001 /* Thresh Life.app */,
-				2E9447AF2EF51156002E04BA /* Thresh LifeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -284,6 +262,7 @@
 			children = (
 				A100002E238F5E0000000001 /* AI */,
 				H1000005238F5E0000000001 /* Export */,
+				N1000003238F5E0000000001 /* Notifications */,
 				A100002F238F5E0000000001 /* Prompts */,
 				A1000030238F5E0000000001 /* Storage */,
 				M1000002238F5E0000000001 /* SubscriptionService.swift */,
@@ -412,32 +391,17 @@
 			path = Export;
 			sourceTree = "<group>";
 		};
+		N1000003238F5E0000000001 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				N1000002238F5E0000000001 /* NotificationService.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2E9447AE2EF51156002E04BA /* Thresh LifeUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2E9447B92EF51156002E04BA /* Build configuration list for PBXNativeTarget "Thresh LifeUITests" */;
-			buildPhases = (
-				2E9447AB2EF51156002E04BA /* Sources */,
-				2E9447AC2EF51156002E04BA /* Frameworks */,
-				2E9447AD2EF51156002E04BA /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2E9447B62EF51156002E04BA /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				2E9447B02EF51156002E04BA /* Thresh LifeUITests */,
-			);
-			name = "Thresh LifeUITests";
-			packageProductDependencies = (
-			);
-			productName = "Thresh LifeUITests";
-			productReference = 2E9447AF2EF51156002E04BA /* Thresh LifeUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		A1000040238F5E0000000001 /* Thresh Life */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "Thresh Life" */;
@@ -465,11 +429,6 @@
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2610;
 				TargetAttributes = {
-					2E9447AE2EF51156002E04BA = {
-						CreatedOnToolsVersion = 26.2;
-						LastSwiftMigration = 2620;
-						TestTargetID = A1000040238F5E0000000001;
-					};
 					A1000040238F5E0000000001 = {
 						CreatedOnToolsVersion = 15.0;
 					};
@@ -489,19 +448,11 @@
 			projectRoot = "";
 			targets = (
 				A1000040238F5E0000000001 /* Thresh Life */,
-				2E9447AE2EF51156002E04BA /* Thresh LifeUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2E9447AD2EF51156002E04BA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A1000043238F5E0000000001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -514,13 +465,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2E9447AB2EF51156002E04BA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A1000042238F5E0000000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -590,65 +534,13 @@
 				M1000001238F5E0000000001 /* SubscriptionService.swift in Sources */,
 				M1000003238F5E0000000001 /* PaywallScreen.swift in Sources */,
 				M1000005238F5E0000000001 /* FeatureGate.swift in Sources */,
+				N1000001238F5E0000000001 /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		2E9447B62EF51156002E04BA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A1000040238F5E0000000001 /* Thresh Life */;
-			targetProxy = 2E9447B52EF51156002E04BA /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
-		2E9447B72EF51156002E04BA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4KNT4UJ5H8;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "continuitylabs.Thresh-LifeUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Thresh Life";
-			};
-			name = Debug;
-		};
-		2E9447B82EF51156002E04BA /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4KNT4UJ5H8;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "continuitylabs.Thresh-LifeUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Thresh Life";
-			};
-			name = Release;
-		};
 		A1000060238F5E0000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -841,15 +733,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2E9447B92EF51156002E04BA /* Build configuration list for PBXNativeTarget "Thresh LifeUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2E9447B72EF51156002E04BA /* Debug */,
-				2E9447B82EF51156002E04BA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		A1000041238F5E0000000001 /* Build configuration list for PBXNativeTarget "Thresh Life" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

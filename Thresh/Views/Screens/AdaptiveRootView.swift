@@ -72,15 +72,23 @@ struct AdaptiveRootView: View {
 
         // Explore
         case .patterns:
-            PatternsScreen()
+            NavigationStack {
+                PatternsScreen()
+            }
 
         // Manage
         case .archive:
-            ArchiveScreen()
+            NavigationStack {
+                ArchiveScreen()
+            }
         case .recentlyDeleted:
-            RecentlyDeletedScreen()
+            NavigationStack {
+                RecentlyDeletedScreen()
+            }
         case .settings:
-            SettingsScreen()
+            NavigationStack {
+                SettingsScreen()
+            }
 
         case .none:
             ContentUnavailableView(
