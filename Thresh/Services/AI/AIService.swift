@@ -58,10 +58,14 @@ actor AIService {
 
     /// Extract stories, ideas, and questions from reflection text using Claude API
     func extractFromReflection(_ text: String) async throws -> ExtractionResult {
-        // Skip short texts to avoid wasting tokens
-        guard text.count >= 50 else {
+        // Skip short texts to avoid wasting tokens (lowered to 20 chars)
+        guard text.count >= 20 else {
+            print("⚠️ AIService: Text too short (\(text.count) chars), skipping extraction")
             return ExtractionResult(stories: [], ideas: [], questions: [])
         }
+
+        print("🤖 AIService.extractFromReflection: Starting extraction for \(text.count) chars")
+        print("🔑 AIService: Using API key: \(String(apiKey.prefix(15)))...")
 
         let prompt = """
         Analyze the following personal reflection and extract any embedded stories, ideas, or questions.
@@ -106,15 +110,22 @@ actor AIService {
         request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
         request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
 
+        print("📡 AIService: Calling Claude API at \(apiURL)...")
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
-            print("❌ Claude API error: HTTP \(statusCode)")
+        guard let httpResponse = response as? HTTPURLResponse else {
+            print("❌ AIService: No HTTP response received")
+            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "No HTTP response"])
+        }
+
+        print("📡 AIService: Claude API response status: \(httpResponse.statusCode)")
+
+        guard httpResponse.statusCode == 200 else {
+            print("❌ AIService: Claude API error: HTTP \(httpResponse.statusCode)")
             if let errorText = String(data: data, encoding: .utf8) {
-                print("❌ Error body: \(errorText)")
+                print("❌ AIService: Error body: \(errorText)")
             }
-            throw NSError(domain: "AIService", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "API request failed"])
+            throw NSError(domain: "AIService", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "API request failed with status \(httpResponse.statusCode)"])
         }
 
         // Parse Claude's response
@@ -122,11 +133,19 @@ actor AIService {
               let content = json["content"] as? [[String: Any]],
               let firstContent = content.first,
               let textContent = firstContent["text"] as? String else {
+            print("❌ AIService: Failed to parse Claude response JSON")
+            if let responseText = String(data: data, encoding: .utf8) {
+                print("❌ AIService: Raw response: \(responseText.prefix(500))")
+            }
             throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
         }
 
+        print("✅ AIService: Claude response received, parsing extraction...")
+
         // Parse the JSON from Claude's text response
-        return try parseExtractionResponse(textContent)
+        let result = try parseExtractionResponse(textContent)
+        print("✅ AIService: Extracted \(result.stories.count) stories, \(result.ideas.count) ideas, \(result.questions.count) questions")
+        return result
     }
 
     private func parseExtractionResponse(_ text: String) throws -> ExtractionResult {

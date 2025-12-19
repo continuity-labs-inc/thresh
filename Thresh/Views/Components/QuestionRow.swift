@@ -2,6 +2,7 @@ import SwiftUI
 
 struct QuestionRow: View {
     @Bindable var question: Question
+    @State private var showExtractedTooltip = false
 
     var body: some View {
         NavigationLink(destination: QuestionDetailScreen(question: question)) {
@@ -17,12 +18,7 @@ struct QuestionRow: View {
                     .foregroundStyle(Color.thresh.question)
 
                     if question.source == .extractedFromReflection {
-                        HStack(spacing: 2) {
-                            Image(systemName: "arrow.up.right")
-                            Text("Extracted")
-                        }
-                        .font(.caption2)
-                        .foregroundStyle(Color.thresh.textSecondary)
+                        ExtractedBadge(showTooltip: $showExtractedTooltip)
                     }
 
                     if question.isAnswered {
@@ -70,6 +66,12 @@ struct QuestionRow: View {
                 Label("Delete", systemImage: "trash")
             }
         }
+        .featureTooltip(
+            title: "↗ Extracted",
+            message: "This came from one of your reflections. We noticed it embedded in your writing and pulled it out so you could track it separately.\n\nTap to see the source reflection.",
+            featureKey: "hasSeenExtractedIntro",
+            isPresented: $showExtractedTooltip
+        )
     }
 }
 

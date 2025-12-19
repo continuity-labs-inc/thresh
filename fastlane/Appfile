@@ -1,0 +1,16 @@
+# Appfile - Fastlane app configuration for Thresh
+
+# App identifier (bundle ID)
+app_identifier("com.continuitylabs.thresh")
+
+# Apple ID (email) - uncomment and set if needed
+# apple_id("your-email@example.com")
+
+# Team ID for App Store Connect
+# team_id("YOUR_TEAM_ID")
+
+# For App Store Connect API key authentication
+# The key file path is specified in Fastfile lanes
+
+# For a]]personal team, you can also use:
+# itc_team_id("YOUR_ITC_TEAM_ID")

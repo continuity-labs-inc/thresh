@@ -119,6 +119,38 @@ extension View {
     }
 }
 
+// MARK: - Extracted Badge
+
+/// A tappable badge that shows the "Extracted" indicator and triggers a tooltip on first view
+struct ExtractedBadge: View {
+    @Binding var showTooltip: Bool
+    @AppStorage("hasSeenExtractedIntro") private var hasSeenExtractedIntro = false
+
+    var body: some View {
+        Button {
+            if !hasSeenExtractedIntro {
+                showTooltip = true
+            }
+        } label: {
+            HStack(spacing: 2) {
+                Image(systemName: "arrow.up.right")
+                Text("Extracted")
+            }
+            .font(.caption2)
+            .foregroundStyle(Color.thresh.synthesis)
+        }
+        .buttonStyle(.plain)
+        .onAppear {
+            // Show tooltip on first view of any extracted item
+            if !hasSeenExtractedIntro {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    showTooltip = true
+                }
+            }
+        }
+    }
+}
+
 #Preview("Tooltip") {
     VStack {
         Spacer()
@@ -136,4 +168,9 @@ extension View {
         )
         .padding()
     }
+}
+
+#Preview("Extracted Badge") {
+    ExtractedBadge(showTooltip: .constant(false))
+        .padding()
 }

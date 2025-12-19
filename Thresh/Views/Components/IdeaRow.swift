@@ -2,6 +2,7 @@ import SwiftUI
 
 struct IdeaRow: View {
     @Bindable var idea: Idea
+    @State private var showExtractedTooltip = false
 
     var body: some View {
         NavigationLink(destination: IdeaDetailScreen(idea: idea)) {
@@ -17,9 +18,7 @@ struct IdeaRow: View {
                     .foregroundStyle(Color.thresh.idea)
 
                     if idea.source == .extractedFromReflection {
-                        Text("↗")
-                            .font(.caption)
-                            .foregroundStyle(Color.thresh.synthesis)
+                        ExtractedBadge(showTooltip: $showExtractedTooltip)
                     }
 
                     if let category = idea.category {
@@ -64,6 +63,12 @@ struct IdeaRow: View {
                 Label("Delete", systemImage: "trash")
             }
         }
+        .featureTooltip(
+            title: "↗ Extracted",
+            message: "This came from one of your reflections. We noticed it embedded in your writing and pulled it out so you could track it separately.\n\nTap to see the source reflection.",
+            featureKey: "hasSeenExtractedIntro",
+            isPresented: $showExtractedTooltip
+        )
     }
 
     private var previewText: String {

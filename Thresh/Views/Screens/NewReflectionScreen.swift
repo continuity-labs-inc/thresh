@@ -17,6 +17,10 @@ struct NewReflectionScreen: View {
     @State private var showObservationPrompts = false
     @State private var observationQuestions: [String] = []
     @State private var isAnalyzingObservation = false
+    @State private var showTooShortMessage = false
+    @State private var extractionError: String?
+    @State private var showPaywall = false
+    @State private var subscriptionService = SubscriptionService.shared
 
     var body: some View {
         VStack(spacing: 0) {
@@ -63,6 +67,9 @@ struct NewReflectionScreen: View {
                 Text("Capture Mode")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(Color.thresh.capture)
+
+                // Show extraction counter for free tier
+                ExtractionCounterBadge()
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
@@ -163,14 +170,35 @@ struct NewReflectionScreen: View {
                         reflection.captureContent += "\n\n" + additionalContent
                         reflection.updatedAt = Date()
                         showObservationPrompts = false
-                        runExtraction(on: reflection.captureContent)
+                        // Extraction already ran before showing prompts, no need to run again
                     },
                     onSkip: {
                         showObservationPrompts = false
-                        runExtraction(on: reflection.captureContent)
+                        // Extraction already ran before showing prompts, no need to run again
                     }
                 )
             }
+        }
+        .alert("Reflection Too Short", isPresented: $showTooShortMessage) {
+            Button("OK") {
+                dismiss()
+            }
+        } message: {
+            Text("Add at least 20 characters for AI analysis to find stories, ideas, and questions.")
+        }
+        .alert("Extraction Error", isPresented: .init(
+            get: { extractionError != nil },
+            set: { if !$0 { extractionError = nil } }
+        )) {
+            Button("OK") {
+                extractionError = nil
+                dismiss()
+            }
+        } message: {
+            Text(extractionError ?? "Unknown error")
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallScreen()
         }
     }
     
@@ -199,7 +227,9 @@ struct NewReflectionScreen: View {
         // SAVE TO DATABASE
         do {
             try modelContext.save()
+            print("✅ Reflection saved: \(trimmedText.prefix(50))...")
         } catch {
+            print("❌ Failed to save reflection: \(error)")
             dismiss()
             return
         }
@@ -207,62 +237,75 @@ struct NewReflectionScreen: View {
         // Store the reflection for linking extracted items
         savedReflection = newReflection
 
-        // Run observation analysis if text is long enough
-        if trimmedText.count >= 50 {
-            isAnalyzingObservation = true
-            isExtracting = true
-            Task {
-                do {
-                    let analysis = try await AIService.shared.analyzeForObservationGaps(trimmedText)
-                    await MainActor.run {
-                        isAnalyzingObservation = false
-                        if !analysis.isObservational && !analysis.followUpQuestions.isEmpty {
-                            isExtracting = false
-                            observationQuestions = analysis.followUpQuestions
-                            showObservationPrompts = true
-                        } else {
-                            runExtraction(on: trimmedText)
-                        }
-                    }
-                } catch {
-                    await MainActor.run {
-                        isAnalyzingObservation = false
-                        runExtraction(on: trimmedText)
-                    }
-                }
-            }
-        } else {
-            dismiss()
-        }
-    }
-
-    private func runExtraction(on text: String) {
-        guard text.count >= 50 else {
-            dismiss()
+        // Check minimum length for AI analysis (lowered to 20 chars)
+        guard trimmedText.count >= 20 else {
+            print("⚠️ Reflection too short (\(trimmedText.count) chars) for AI analysis")
+            showTooShortMessage = true
             return
         }
 
+        // Check if user can extract (free tier limit)
+        guard subscriptionService.canExtract else {
+            print("⚠️ Free tier extraction limit reached")
+            showPaywall = true
+            return
+        }
+
+        // ALWAYS run extraction for text >= 20 chars
+        // Run observation analysis in parallel but don't block extraction
         isExtracting = true
         Task {
-            do {
-                let result = try await AIService.shared.extractFromReflection(text)
-                await MainActor.run {
-                    isExtracting = false
-                    if !result.isEmpty {
-                        extractionResult = result
-                        showExtractionModal = true
-                    } else {
-                        dismiss()
+            // Start extraction immediately
+            async let extractionTask: Void = runExtractionAsync(on: trimmedText)
+
+            // Run observation analysis in parallel (for follow-up prompts)
+            if trimmedText.count >= 50 {
+                do {
+                    let analysis = try await AIService.shared.analyzeForObservationGaps(trimmedText)
+                    if !analysis.isObservational && !analysis.followUpQuestions.isEmpty {
+                        await MainActor.run {
+                            observationQuestions = analysis.followUpQuestions
+                            // Will show after extraction modal is dismissed
+                        }
                     }
+                } catch {
+                    print("⚠️ Observation analysis failed: \(error)")
                 }
-            } catch {
-                await MainActor.run {
-                    isExtracting = false
-                    dismiss()
+            }
+
+            // Wait for extraction to complete
+            await extractionTask
+        }
+    }
+
+    private func runExtractionAsync(on text: String) async {
+        print("🔍 Starting extraction for text: \(text.prefix(50))...")
+        do {
+            let result = try await AIService.shared.extractFromReflection(text)
+
+            // Record extraction usage for free tier tracking
+            subscriptionService.recordExtraction()
+
+            await MainActor.run {
+                isExtracting = false
+                extractionResult = result
+                if result.isEmpty {
+                    print("ℹ️ Extraction complete but found nothing")
+                } else {
+                    print("✅ Extraction found: \(result.stories.count) stories, \(result.ideas.count) ideas, \(result.questions.count) questions")
                 }
+                // Always show the modal so user knows extraction ran
+                showExtractionModal = true
+            }
+        } catch {
+            print("❌ Extraction failed: \(error)")
+            await MainActor.run {
+                isExtracting = false
+                extractionError = "AI extraction failed: \(error.localizedDescription)"
             }
         }
     }
+
 }
 
 #Preview {

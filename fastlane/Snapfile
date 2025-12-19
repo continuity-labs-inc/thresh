@@ -1,0 +1,60 @@
+# Snapfile - Fastlane screenshot configuration for Thresh
+
+# Device list for App Store Connect screenshots
+devices([
+  # iPhone - Required sizes
+  "iPhone 16 Pro Max",      # 6.9" display (required)
+  "iPhone 15 Pro Max",      # 6.7" display (required for 6.5" slot)
+  "iPhone 8 Plus",          # 5.5" display (if supporting older devices)
+
+  # iPad - Required sizes
+  "iPad Pro (12.9-inch) (6th generation)",  # Latest 12.9" (required)
+  "iPad Pro (12.9-inch) (2nd generation)",  # Older 12.9" (if supporting older iPads)
+])
+
+# Languages to capture
+languages([
+  "en-US"
+])
+
+# Xcode scheme to use
+scheme("Thresh Life")
+
+# Output directory for screenshots
+output_directory("./fastlane/screenshots")
+
+# Clear previous screenshots before capturing new ones
+clear_previous_screenshots(true)
+
+# Override status bar for clean screenshots (iOS 13+)
+override_status_bar(true)
+
+# Use dark mode for some screenshots (optional - set to false for light mode)
+dark_mode(false)
+
+# Launch arguments to pass to the app
+launch_arguments(["-uitesting"])
+
+# Test target containing snapshot tests
+test_target_name("ThreshUITests")
+
+# Concurrent simulators for faster screenshot generation
+concurrent_simulators(true)
+
+# Number of retries if a screenshot fails
+number_of_retries(1)
+
+# Stop after first error (set to false to continue capturing other screenshots)
+stop_after_first_error(false)
+
+# Erase simulator before running (clean state)
+erase_simulator(true)
+
+# Localize simulator (set locale)
+localize_simulator(true)
+
+# Skip open summary after completion
+skip_open_summary(false)
+
+# Clean status bar arguments
+override_status_bar_arguments("--time '9:41' --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4")

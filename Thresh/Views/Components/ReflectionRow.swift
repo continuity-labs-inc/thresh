@@ -48,14 +48,14 @@ struct ReflectionRow: View {
             Button {
                 let wasMarinating = reflection.marinating
                 reflection.marinating.toggle()
-                // Show tooltip when user first marinates something
+                // Show tooltip when user first holds something
                 if !wasMarinating && reflection.marinating {
                     showMarinatingTooltip = true
                 }
             } label: {
                 Label(
-                    reflection.marinating ? "Stop Marinating" : "Marinate This",
-                    systemImage: reflection.marinating ? "flame.fill" : "flame"
+                    reflection.marinating ? "Release" : "Hold This",
+                    systemImage: reflection.marinating ? "hand.raised.slash.fill" : "hand.raised.fill"
                 )
             }
 
@@ -69,9 +69,9 @@ struct ReflectionRow: View {
             }
         }
         .featureTooltip(
-            title: "Marinating",
-            message: "You've flagged this to sit with. It's not a to-do — it means 'this feels important but I don't know why yet.' Find marinating items in Patterns (sparkles button).",
-            featureKey: "marinating",
+            title: "Holding",
+            message: "You're marking this as worth sitting with. Not a to-do—just a signal that something here matters, even if you don't know why yet.\n\nFind it later in Patterns → Holding.",
+            featureKey: "hasSeenMarinatingIntro",
             isPresented: $showMarinatingTooltip
         )
     }

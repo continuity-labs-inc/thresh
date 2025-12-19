@@ -25,6 +25,10 @@ struct SettingsScreen: View {
     @State private var importResult: ImportResult?
     @State private var importError: String?
 
+    // Subscription state
+    @State private var subscriptionService = SubscriptionService.shared
+    @State private var showPaywall = false
+
     private var activeReflectionsCount: Int {
         reflections.filter { $0.deletedAt == nil }.count
     }
@@ -41,24 +45,115 @@ struct SettingsScreen: View {
         questions.filter { $0.deletedAt == nil }.count
     }
 
+    private var isPlusOrAbove: Bool {
+        subscriptionService.currentTier == .plus || subscriptionService.currentTier == .pro
+    }
+
     var body: some View {
         List {
+            // MARK: - Subscription Section
             Section {
                 Button {
-                    exportData()
+                    showPaywall = true
                 } label: {
                     HStack {
-                        Image(systemName: "square.and.arrow.up")
-                            .foregroundStyle(Color.thresh.capture)
-                        Text("Export All Data")
-                            .foregroundStyle(Color.thresh.textPrimary)
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text("Thresh \(subscriptionService.currentTier.displayName)")
+                                    .font(.headline)
+                                    .foregroundStyle(Color.thresh.textPrimary)
+
+                                if subscriptionService.currentTier == .pro {
+                                    ProFeatureBadge()
+                                } else if subscriptionService.currentTier == .plus {
+                                    PlusFeatureBadge()
+                                }
+                            }
+
+                            if subscriptionService.currentTier == .free {
+                                if let remaining = subscriptionService.remainingExtractions {
+                                    Text("\(remaining) AI extractions remaining this month")
+                                        .font(.caption)
+                                        .foregroundStyle(Color.thresh.textSecondary)
+                                }
+                            } else {
+                                Text("Unlimited AI extractions")
+                                    .font(.caption)
+                                    .foregroundStyle(Color.thresh.textSecondary)
+                            }
+                        }
+
                         Spacer()
-                        if isExporting {
-                            ProgressView()
+
+                        if subscriptionService.currentTier == .free {
+                            Text("Upgrade")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundStyle(Color.thresh.synthesis)
+                        } else {
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(Color.thresh.textTertiary)
                         }
                     }
                 }
-                .disabled(isExporting)
+
+                if subscriptionService.currentTier == .free {
+                    Button {
+                        Task {
+                            await subscriptionService.restorePurchases()
+                        }
+                    } label: {
+                        HStack {
+                            Image(systemName: "arrow.clockwise")
+                                .foregroundStyle(Color.thresh.textSecondary)
+                            Text("Restore Purchases")
+                                .foregroundStyle(Color.thresh.textPrimary)
+
+                            Spacer()
+
+                            if subscriptionService.isLoading {
+                                ProgressView()
+                            }
+                        }
+                    }
+                    .disabled(subscriptionService.isLoading)
+                }
+            } header: {
+                Text("Subscription")
+            }
+
+            Section {
+                if isPlusOrAbove {
+                    Button {
+                        exportData()
+                    } label: {
+                        HStack {
+                            Image(systemName: "square.and.arrow.up")
+                                .foregroundStyle(Color.thresh.capture)
+                            Text("Export All Data (JSON)")
+                                .foregroundStyle(Color.thresh.textPrimary)
+                            Spacer()
+                            if isExporting {
+                                ProgressView()
+                            }
+                        }
+                    }
+                    .disabled(isExporting)
+                } else {
+                    Button {
+                        showPaywall = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "square.and.arrow.up")
+                                .foregroundStyle(Color.thresh.textSecondary)
+                            Text("Export All Data (JSON)")
+                                .foregroundStyle(Color.thresh.textSecondary)
+                            Spacer()
+                            PlusFeatureBadge()
+                        }
+                    }
+                }
 
                 Button {
                     showingImportPicker = true
@@ -228,6 +323,9 @@ struct SettingsScreen: View {
                     habit: habit
                 )
             }
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallScreen()
         }
     }
 

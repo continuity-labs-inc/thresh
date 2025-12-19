@@ -109,15 +109,17 @@ struct ExtractionReviewModal: View {
 
     private var headerSection: some View {
         VStack(spacing: 12) {
-            Image(systemName: "sparkles")
+            Image(systemName: extractionResult.isEmpty ? "magnifyingglass" : "sparkles")
                 .font(.largeTitle)
-                .foregroundStyle(Color.thresh.synthesis)
+                .foregroundStyle(extractionResult.isEmpty ? Color.thresh.textSecondary : Color.thresh.synthesis)
 
-            Text("These emerged from your reflection")
+            Text(extractionResult.isEmpty ? "Nothing Found" : "These emerged from your reflection")
                 .font(.headline)
                 .foregroundStyle(Color.thresh.textPrimary)
 
-            Text("Keep what resonates. Extracted items link back to this reflection.")
+            Text(extractionResult.isEmpty
+                 ? "We analyzed your reflection but didn't find distinct stories, ideas, or questions to extract. That's okay - not every reflection has extractable items."
+                 : "Keep what resonates. Extracted items link back to this reflection.")
                 .font(.subheadline)
                 .foregroundStyle(Color.thresh.textSecondary)
                 .multilineTextAlignment(.center)

@@ -3,6 +3,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.horizontalSizeClass) private var sizeClass
     @Query(sort: \Reflection.createdAt) private var allReflections: [Reflection]
     @State private var appState = AppState()
     @State private var designNotesService: DesignNotesService?
@@ -11,7 +12,8 @@ struct ContentView: View {
         Group {
             if let service = designNotesService {
                 if appState.hasCompletedOnboarding {
-                    HomeScreen()
+                    // Use adaptive layout - iPad gets sidebar, iPhone gets standard navigation
+                    AdaptiveRootView()
                         .environment(service)
                         .environment(appState)
                 } else {

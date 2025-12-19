@@ -6,9 +6,12 @@ struct PatternsScreen: View {
     @Query(sort: \Reflection.createdAt, order: .reverse) private var allReflections: [Reflection]
     @Query(sort: \Question.createdAt, order: .reverse) private var questions: [Question]
     @State private var connections: [Connection] = []
-    @State private var showPatternsTooltip = true
+    @AppStorage("hasSeenPatternsIntro") private var hasSeenPatternsIntro = false
+    @State private var showPatternsIntroSheet = false
     @State private var isRegenerating = false
     @State private var lastGenerated: Date?
+    @State private var subscriptionService = SubscriptionService.shared
+    @State private var showPaywall = false
 
     private var marinatingReflections: [Reflection] {
         allReflections.filter { $0.marinating && !$0.isArchived }
@@ -48,12 +51,21 @@ struct PatternsScreen: View {
             connections = await ConnectionService.shared.getConnections(for: allReflections)
             lastGenerated = await ConnectionService.shared.lastGeneratedDate()
         }
-        .featureTooltip(
-            title: "Patterns",
-            message: "This is where things connect. Items you're marinating, questions that emerged from your writing, and thematic connections between entries.",
-            featureKey: "patterns_screen",
-            isPresented: $showPatternsTooltip
-        )
+        .onAppear {
+            if !hasSeenPatternsIntro {
+                showPatternsIntroSheet = true
+            }
+        }
+        .sheet(isPresented: $showPatternsIntroSheet) {
+            PatternsIntroSheet(
+                isPresented: $showPatternsIntroSheet,
+                onDismiss: {
+                    hasSeenPatternsIntro = true
+                }
+            )
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+        }
     }
 
     // MARK: - Holding Section
@@ -103,6 +115,10 @@ struct PatternsScreen: View {
 
     // MARK: - Connections Section
 
+    private var isProUser: Bool {
+        subscriptionService.currentTier == .pro
+    }
+
     private var connectionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
@@ -110,49 +126,84 @@ struct PatternsScreen: View {
                     .font(.headline)
                     .foregroundStyle(Color.thresh.synthesis)
 
+                ProFeatureBadge()
+
                 Spacer()
 
-                Button {
-                    regenerateConnections()
-                } label: {
-                    HStack(spacing: 4) {
-                        if isRegenerating {
-                            ProgressView()
-                                .scaleEffect(0.7)
-                        } else {
-                            Image(systemName: "arrow.clockwise")
+                if isProUser {
+                    Button {
+                        regenerateConnections()
+                    } label: {
+                        HStack(spacing: 4) {
+                            if isRegenerating {
+                                ProgressView()
+                                    .scaleEffect(0.7)
+                            } else {
+                                Image(systemName: "arrow.clockwise")
+                            }
+                            Text("Refresh")
                         }
-                        Text("Refresh")
+                        .font(.caption)
+                        .foregroundStyle(Color.thresh.synthesis)
                     }
-                    .font(.caption)
-                    .foregroundStyle(Color.thresh.synthesis)
+                    .disabled(isRegenerating)
                 }
-                .disabled(isRegenerating)
             }
 
-            if let lastGen = lastGenerated {
-                Text("Last updated: \(lastGen.relativeFormatted)")
-                    .font(.caption)
-                    .foregroundStyle(Color.thresh.textTertiary)
+            if isProUser {
+                if let lastGen = lastGenerated {
+                    Text("Last updated: \(lastGen.relativeFormatted)")
+                        .font(.caption)
+                        .foregroundStyle(Color.thresh.textTertiary)
+                } else {
+                    Text("Patterns across your captures")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.thresh.textSecondary)
+                }
+
+                if uniqueConnections.isEmpty {
+                    Text("Connections will appear as you add more captures.")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.thresh.textTertiary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                        .background(Color.thresh.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                } else {
+                    ForEach(uniqueConnections) { connection in
+                        connectionCard(for: connection)
+                    }
+                }
             } else {
-                Text("Patterns across your captures")
-                    .font(.subheadline)
-                    .foregroundStyle(Color.thresh.textSecondary)
-            }
+                // Locked state for non-Pro users
+                Button {
+                    showPaywall = true
+                } label: {
+                    VStack(spacing: 12) {
+                        Image(systemName: "lock.fill")
+                            .font(.title2)
+                            .foregroundStyle(Color.thresh.textSecondary)
 
-            if uniqueConnections.isEmpty {
-                Text("Connections will appear as you add more captures.")
-                    .font(.subheadline)
-                    .foregroundStyle(Color.thresh.textTertiary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                        Text("AI-powered connections reveal patterns across your reflections")
+                            .font(.subheadline)
+                            .foregroundStyle(Color.thresh.textSecondary)
+                            .multilineTextAlignment(.center)
+
+                        Text("Upgrade to Pro")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                            .foregroundStyle(Color.thresh.synthesis)
+                    }
+                    .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.thresh.surface)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
-            } else {
-                ForEach(uniqueConnections) { connection in
-                    connectionCard(for: connection)
                 }
+                .buttonStyle(.plain)
             }
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallScreen()
         }
     }
 
@@ -277,9 +328,73 @@ struct PatternsScreen: View {
     }
 }
 
+// MARK: - Patterns Intro Sheet
+
+struct PatternsIntroSheet: View {
+    @Binding var isPresented: Bool
+    let onDismiss: () -> Void
+
+    var body: some View {
+        VStack(spacing: 24) {
+            // Icon
+            Image(systemName: "sparkles")
+                .font(.system(size: 48))
+                .foregroundStyle(Color.thresh.synthesis)
+                .padding(.top, 24)
+
+            // Title
+            Text("Patterns")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundStyle(Color.thresh.textPrimary)
+
+            // Body
+            Text("This is where things accumulate. Reflections you're holding onto, questions that emerged from your writing, and connections we noticed across entries.\n\nNothing here requires action. It's a space for what's still forming.")
+                .font(.body)
+                .foregroundStyle(Color.thresh.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 24)
+
+            Spacer()
+
+            // Buttons
+            VStack(spacing: 12) {
+                Button {
+                    onDismiss()
+                    isPresented = false
+                } label: {
+                    Text("Got it")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.thresh.synthesis)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+
+                Button {
+                    onDismiss()
+                    isPresented = false
+                } label: {
+                    Text("Don't show again")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.thresh.textSecondary)
+                }
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 24)
+        }
+        .background(Color.thresh.background)
+    }
+}
+
 #Preview {
     NavigationStack {
         PatternsScreen()
             .modelContainer(for: [Reflection.self, Question.self], inMemory: true)
     }
+}
+
+#Preview("Patterns Intro") {
+    PatternsIntroSheet(isPresented: .constant(true), onDismiss: {})
 }
