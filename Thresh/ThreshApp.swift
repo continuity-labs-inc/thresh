@@ -56,8 +56,69 @@ struct ThreshApp: App {
                         seedDemoData()
                     }
                 }
+                .task {
+                    await setupNotifications()
+                }
         }
         .modelContainer(sharedModelContainer)
+    }
+
+    /// Setup notifications after onboarding is complete
+    private func setupNotifications() async {
+        // Skip notification setup for UI testing
+        guard !isUITesting else { return }
+
+        // Check if onboarding is complete
+        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+        guard hasCompletedOnboarding else { return }
+
+        // Check if we've already requested permission
+        let hasRequestedPermission = UserDefaults.standard.bool(forKey: "hasRequestedNotificationPermission")
+
+        if !hasRequestedPermission {
+            // Request permission on first launch after onboarding
+            let granted = await NotificationService.shared.requestPermission()
+            UserDefaults.standard.set(true, forKey: "hasRequestedNotificationPermission")
+
+            if granted {
+                // Schedule default notifications
+                scheduleDefaultNotifications()
+            }
+        } else {
+            // Check if notifications are enabled and reschedule if needed
+            let status = await NotificationService.shared.checkPermissionStatus()
+            if status == .authorized {
+                scheduleDefaultNotifications()
+            }
+        }
+    }
+
+    /// Schedule default notifications based on user preferences
+    private func scheduleDefaultNotifications() {
+        let dailyPromptEnabled = UserDefaults.standard.object(forKey: "notifications_dailyPrompt") as? Bool ?? true
+        let weeklySynthesisEnabled = UserDefaults.standard.object(forKey: "notifications_weeklySynthesis") as? Bool ?? true
+        let inactivityEnabled = UserDefaults.standard.object(forKey: "notifications_inactivity") as? Bool ?? true
+
+        if dailyPromptEnabled {
+            let hour = UserDefaults.standard.object(forKey: "notifications_dailyPromptHour") as? Int ?? 20
+            let minute = UserDefaults.standard.object(forKey: "notifications_dailyPromptMinute") as? Int ?? 0
+            NotificationService.shared.scheduleDailyPrompt(at: hour, minute: minute)
+        }
+
+        if weeklySynthesisEnabled {
+            // Get this week's reflection count
+            let context = sharedModelContainer.mainContext
+            let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
+            let descriptor = FetchDescriptor<Reflection>(
+                predicate: #Predicate { $0.deletedAt == nil && $0.createdAt > weekAgo }
+            )
+            let count = (try? context.fetchCount(descriptor)) ?? 0
+            NotificationService.shared.scheduleWeeklySynthesisReminder(captureCount: count)
+        }
+
+        if inactivityEnabled {
+            NotificationService.shared.scheduleInactivityReminder(afterDays: 7)
+        }
     }
 
     /// Seeds the database with attractive demo data for App Store screenshots

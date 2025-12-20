@@ -161,6 +161,85 @@ final class SnapshotTests: XCTestCase {
         }
     }
 
+    /// Screen 9: Settings screen
+    func test09_Settings() throws {
+        navigateToHome()
+
+        // Find and tap Settings button (gear icon)
+        let settingsButton = app.buttons["gearshape"]
+        if settingsButton.waitForExistence(timeout: 3) {
+            settingsButton.tap()
+        } else {
+            // Try by accessibility identifier or label
+            let gearButton = app.buttons.matching(NSPredicate(format: "identifier CONTAINS 'settings' OR identifier CONTAINS 'gear' OR label CONTAINS 'Settings'")).firstMatch
+            if gearButton.exists {
+                gearButton.tap()
+            }
+        }
+
+        sleep(1)
+        snapshot("09_Settings")
+    }
+
+    /// Screen 10: Paywall screen (required for IAP review)
+    func test10_Paywall() throws {
+        navigateToHome()
+
+        // Navigate to Settings first
+        let settingsButton = app.buttons["gearshape"]
+        if settingsButton.waitForExistence(timeout: 3) {
+            settingsButton.tap()
+            sleep(1)
+        } else {
+            let gearButton = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Settings'")).firstMatch
+            if gearButton.exists {
+                gearButton.tap()
+                sleep(1)
+            }
+        }
+
+        // Find and tap the subscription/upgrade row
+        let upgradeButton = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Upgrade' OR label CONTAINS 'Thresh Free'")).firstMatch
+        if upgradeButton.waitForExistence(timeout: 3) {
+            upgradeButton.tap()
+            sleep(1)
+            snapshot("10_Paywall")
+        } else {
+            // Try scrolling to find subscription section
+            let list = app.tables.firstMatch
+            if list.exists {
+                list.swipeUp()
+            }
+
+            let subscriptionCell = app.cells.matching(NSPredicate(format: "label CONTAINS 'Subscription' OR label CONTAINS 'extractions'")).firstMatch
+            if subscriptionCell.waitForExistence(timeout: 2) {
+                subscriptionCell.tap()
+                sleep(1)
+                snapshot("10_Paywall")
+            }
+        }
+    }
+
+    /// Screen 11: iPad Sidebar view (iPad only)
+    func test11_iPadSidebar() throws {
+        // This test is specifically for iPad to capture the sidebar layout
+        // On iPhone, this will capture home screen instead
+
+        // Wait for the app to settle
+        sleep(1)
+
+        // Check if we're on iPad by looking for sidebar/split view elements
+        let sidebarList = app.tables.matching(NSPredicate(format: "identifier CONTAINS 'sidebar'")).firstMatch
+        if sidebarList.waitForExistence(timeout: 2) {
+            // We're on iPad with sidebar visible
+            snapshot("11_iPadSidebar")
+        } else {
+            // On iPhone, capture an alternate home view
+            navigateToHome()
+            snapshot("11_HomeAlternate")
+        }
+    }
+
     // MARK: - Helper Methods
 
     /// Navigate back to the home screen

@@ -2,14 +2,9 @@
 
 # Device list for App Store Connect screenshots
 devices([
-  # iPhone - Required sizes
-  "iPhone 16 Pro Max",      # 6.9" display (required)
-  "iPhone 15 Pro Max",      # 6.7" display (required for 6.5" slot)
-  "iPhone 8 Plus",          # 5.5" display (if supporting older devices)
-
-  # iPad - Required sizes
-  "iPad Pro (12.9-inch) (6th generation)",  # Latest 12.9" (required)
-  "iPad Pro (12.9-inch) (2nd generation)",  # Older 12.9" (if supporting older iPads)
+  "6.9\"",
+  "6.7\"",
+  "iPad Pro 13-inch (M5)"
 ])
 
 # Languages to capture
@@ -36,7 +31,7 @@ dark_mode(false)
 launch_arguments(["-uitesting"])
 
 # Test target containing snapshot tests
-test_target_name("ThreshUITests")
+test_target_name("Thresh LifeUITests")
 
 # Concurrent simulators for faster screenshot generation
 concurrent_simulators(true)

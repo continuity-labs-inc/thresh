@@ -3,6 +3,7 @@ import SwiftUI
 struct ReflectionRow: View {
     @Bindable var reflection: Reflection
     @State private var showMarinatingTooltip = false
+    @AppStorage("notifications_marinating") private var marinatingRemindersEnabled = true
 
     var body: some View {
         NavigationLink(destination: ReflectionDetailScreen(reflection: reflection)) {
@@ -51,6 +52,13 @@ struct ReflectionRow: View {
                 // Show tooltip when user first holds something
                 if !wasMarinating && reflection.marinating {
                     showMarinatingTooltip = true
+                    // Schedule marinating reminder if enabled
+                    if marinatingRemindersEnabled {
+                        NotificationService.shared.scheduleMarinatingReminder(for: reflection.id, afterDays: 14)
+                    }
+                } else if wasMarinating && !reflection.marinating {
+                    // Cancel reminder when releasing
+                    NotificationService.shared.cancelMarinatingReminder(for: reflection.id)
                 }
             } label: {
                 Label(
