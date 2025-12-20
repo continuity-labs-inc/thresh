@@ -228,6 +228,9 @@ struct NewReflectionScreen: View {
         do {
             try modelContext.save()
             print("✅ Reflection saved: \(trimmedText.prefix(50))...")
+
+            // Save to ContinuityCore for cross-app visibility
+            newReflection.saveToContinuityStore()
         } catch {
             print("❌ Failed to save reflection: \(error)")
             dismiss()

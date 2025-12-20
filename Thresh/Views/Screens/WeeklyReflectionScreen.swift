@@ -654,6 +654,9 @@ struct WeeklyReflectionScreen: View {
         do {
             try modelContext.save()
 
+            // Save to ContinuityCore for cross-app visibility
+            weeklySynthesis.saveToContinuityStore()
+
             // Trigger connection regeneration in background
             let reflectionData = allReflections.map { ReflectionData(from: $0) }
             Task {

@@ -75,6 +75,9 @@
 		M1000003238F5E0000000001 /* PaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = M1000004238F5E0000000001 /* PaywallScreen.swift */; };
 		M1000005238F5E0000000001 /* FeatureGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = M1000006238F5E0000000001 /* FeatureGate.swift */; };
 		N1000001238F5E0000000001 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = N1000002238F5E0000000001 /* NotificationService.swift */; };
+		O1000001238F5E0000000001 /* ContinuityCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = O1000002238F5E0000000001 /* ContinuityCore.swift */; };
+		O1000003238F5E0000000001 /* Reflection+ContinuityCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = O1000004238F5E0000000001 /* Reflection+ContinuityCore.swift */; };
+		O1000005238F5E0000000001 /* EntityExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = O1000006238F5E0000000001 /* EntityExtractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -149,6 +152,9 @@
 		M1000004238F5E0000000001 /* PaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreen.swift; sourceTree = "<group>"; };
 		M1000006238F5E0000000001 /* FeatureGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureGate.swift; sourceTree = "<group>"; };
 		N1000002238F5E0000000001 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		O1000002238F5E0000000001 /* ContinuityCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuityCore.swift; sourceTree = "<group>"; };
+		O1000004238F5E0000000001 /* Reflection+ContinuityCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reflection+ContinuityCore.swift"; sourceTree = "<group>"; };
+		O1000006238F5E0000000001 /* EntityExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityExtractor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				A100002E238F5E0000000001 /* AI */,
+				O1000007238F5E0000000001 /* ContinuityCore */,
 				H1000005238F5E0000000001 /* Export */,
 				N1000003238F5E0000000001 /* Notifications */,
 				A100002F238F5E0000000001 /* Prompts */,
@@ -399,6 +406,16 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
+		O1000007238F5E0000000001 /* ContinuityCore */ = {
+			isa = PBXGroup;
+			children = (
+				O1000002238F5E0000000001 /* ContinuityCore.swift */,
+				O1000004238F5E0000000001 /* Reflection+ContinuityCore.swift */,
+				O1000006238F5E0000000001 /* EntityExtractor.swift */,
+			);
+			path = ContinuityCore;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -535,6 +552,9 @@
 				M1000003238F5E0000000001 /* PaywallScreen.swift in Sources */,
 				M1000005238F5E0000000001 /* FeatureGate.swift in Sources */,
 				N1000001238F5E0000000001 /* NotificationService.swift in Sources */,
+				O1000001238F5E0000000001 /* ContinuityCore.swift in Sources */,
+				O1000003238F5E0000000001 /* Reflection+ContinuityCore.swift in Sources */,
+				O1000005238F5E0000000001 /* EntityExtractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
