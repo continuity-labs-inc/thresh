@@ -87,7 +87,6 @@ struct ExtractionReviewModal: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Skip All") {
-                        dismiss()
                         onComplete()
                     }
                     .foregroundStyle(Color.thresh.textSecondary)
@@ -319,7 +318,6 @@ struct ExtractionReviewModal: View {
         }
 
         isSaving = false
-        dismiss()
         onComplete()
     }
 }
