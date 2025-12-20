@@ -33,6 +33,7 @@ struct NewReflectionScreen: View {
     @State private var captureAnalysis: CaptureAnalysis?
     @State private var isAnalyzingPhase1 = false
     @State private var showTwoPhaseTooltip = true
+    @State private var isLoadingPhase1Prompt = false
 
     // Open prompt (no category selected - AI will detect)
     private let openPrompt = "What moment from today is still with you? Describe what happened—who was there, what was said, what you noticed."
@@ -221,11 +222,13 @@ struct NewReflectionScreen: View {
                             .padding(.horizontal, 20)
                     }
 
-                    // Prompt Card
+                    // Prompt Card with refresh button for AI prompts
                     PromptCard(
                         phase: 1,
                         prompt: currentPrompt,
-                        category: selectedCategory
+                        category: selectedCategory,
+                        isLoading: isLoadingPhase1Prompt,
+                        onRefresh: refreshPhase1Prompt
                     )
                     .padding(.horizontal, 20)
 
@@ -303,17 +306,33 @@ struct NewReflectionScreen: View {
     }
 
     private func selectCategory(_ category: PromptCategory?) {
+        // Don't allow switching while loading
+        guard !isLoadingPhase1Prompt else { return }
+
         withAnimation(.easeInOut(duration: 0.2)) {
             selectedCategory = category
+        }
 
-            if let category = category {
-                // Use category-specific prompt
-                currentPrompt = category.phase1Prompts.randomElement() ?? category.phase1Prompts[0]
-            } else {
-                // Use open prompt
-                currentPrompt = openPrompt
+        // Generate AI prompt for the selected category
+        generatePhase1Prompt(for: category)
+    }
+
+    private func generatePhase1Prompt(for category: PromptCategory?) {
+        isLoadingPhase1Prompt = true
+
+        Task {
+            let prompt = await AIService.shared.generatePhase1Prompt(category: category)
+            await MainActor.run {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    currentPrompt = prompt
+                    isLoadingPhase1Prompt = false
+                }
             }
         }
+    }
+
+    private func refreshPhase1Prompt() {
+        generatePhase1Prompt(for: selectedCategory)
     }
 
     // MARK: - Phase 2 View

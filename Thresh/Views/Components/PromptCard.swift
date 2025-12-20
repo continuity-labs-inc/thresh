@@ -4,18 +4,23 @@ struct PromptCard: View {
     let phase: Int
     let prompt: String
     let category: PromptCategory?
+    var isLoading: Bool = false
     var onRefresh: (() -> Void)? = nil
+
+    private var phaseColor: Color {
+        phase == 1 ? Color.thresh.capture : Color.thresh.synthesis
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: phase == 1 ? "eye" : "sparkles")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(phase == 1 ? Color.thresh.capture : Color.thresh.synthesis)
+                    .foregroundColor(phaseColor)
 
                 Text(phase == 1 ? "DESCRIBE" : "REFLECT")
                     .font(.system(size: 12, weight: .bold))
-                    .foregroundColor(phase == 1 ? Color.thresh.capture : Color.thresh.synthesis)
+                    .foregroundColor(phaseColor)
 
                 if let category = category {
                     Text("• \(category.displayName)")
@@ -25,24 +30,43 @@ struct PromptCard: View {
 
                 Spacer()
 
-                // Refresh button for Phase 2 only
-                if phase == 2, let onRefresh = onRefresh {
+                // Refresh button - available for both phases when onRefresh provided
+                if let onRefresh = onRefresh {
                     Button(action: onRefresh) {
-                        Image(systemName: "arrow.clockwise")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(Color.thresh.synthesis)
-                            .frame(width: 28, height: 28)
-                            .background(
-                                Circle()
-                                    .fill(Color.thresh.synthesis.opacity(0.15))
-                            )
+                        if isLoading {
+                            ProgressView()
+                                .scaleEffect(0.7)
+                                .frame(width: 28, height: 28)
+                        } else {
+                            Image(systemName: "arrow.clockwise")
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(phaseColor)
+                                .frame(width: 28, height: 28)
+                                .background(
+                                    Circle()
+                                        .fill(phaseColor.opacity(0.15))
+                                )
+                        }
                     }
+                    .disabled(isLoading)
                 }
             }
 
-            Text(prompt)
-                .font(.system(size: 16))
-                .foregroundColor(Color.thresh.textPrimary)
+            if isLoading {
+                HStack(spacing: 8) {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                    Text("Generating prompt...")
+                        .font(.system(size: 14))
+                        .foregroundColor(Color.thresh.textTertiary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 4)
+            } else {
+                Text(prompt)
+                    .font(.system(size: 16))
+                    .foregroundColor(Color.thresh.textPrimary)
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)

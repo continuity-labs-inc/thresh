@@ -135,4 +135,86 @@ extension AIService {
         }
         return cleanedText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
+
+    /// Generate a fresh, evocative Phase 1 prompt for a given category
+    func generatePhase1Prompt(category: PromptCategory?) async -> String {
+        let categoryName = category?.displayName ?? "Open"
+        let categoryExamples: String
+
+        switch category {
+        case .person:
+            categoryExamples = """
+            - "Think of someone you saw today but didn't speak to. What were they doing with their hands?"
+            - "Who surprised you today? Describe how they entered the room."
+            - "Picture someone's face from today. What expression were they holding?"
+            """
+        case .place:
+            categoryExamples = """
+            - "Where did you feel most awake today? Describe the light."
+            - "What room did you linger in? What sounds were there?"
+            - "Describe a doorway you passed through. What changed on the other side?"
+            """
+        case .conversation:
+            categoryExamples = """
+            - "What phrase did someone say that you're still turning over? Quote it exactly."
+            - "When did silence fall in a conversation today? What filled it?"
+            - "What did someone say that you didn't expect? Write their words."
+            """
+        case .object:
+            categoryExamples = """
+            - "What did you pick up today without thinking? Describe its weight."
+            - "What object has been in the same spot for too long? Look at it now."
+            - "Describe something you touched repeatedly today. What does it feel like?"
+            """
+        case .moment:
+            categoryExamples = """
+            - "When did time slow down today, even for a second?"
+            - "What moment had a before and after? Describe the hinge."
+            - "When did you hold your breath today? What were you waiting for?"
+            """
+        case .routine:
+            categoryExamples = """
+            - "What's one thing you did on autopilot? Walk through it in slow motion."
+            - "Describe your morning as if you were watching yourself from above."
+            - "What habit have you stopped seeing? Describe it like a ritual."
+            """
+        case nil:
+            categoryExamples = """
+            - "What moment from today is still with you? Describe what happened."
+            - "What did you notice today that you almost didn't? Describe it."
+            - "What's still unfinished from today? Describe where you left it."
+            """
+        }
+
+        let prompt = """
+        Generate a single reflection prompt for the category: \(categoryName).
+
+        The prompt should invite concrete, sensory observation—not feelings or interpretations.
+        It should feel fresh and specific, not generic.
+        It should be 1-2 sentences, conversational, and directly inviting action.
+
+        Examples of good \(categoryName) prompts:
+        \(categoryExamples)
+
+        Generate a NEW prompt in this style. Be creative and specific.
+        Return only the prompt text, nothing else. No quotes around it.
+        """
+
+        do {
+            let response = try await callClaude(prompt: prompt, maxTokens: 100)
+            let cleanedResponse = response
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .trimmingCharacters(in: CharacterSet(charactersIn: "\""))
+
+            // Validate we got a reasonable response
+            if cleanedResponse.count > 10 && cleanedResponse.count < 300 {
+                return cleanedResponse
+            }
+        } catch {
+            print("⚠️ AI prompt generation failed: \(error)")
+        }
+
+        // Fallback to static prompt
+        return category?.phase1Prompts.randomElement() ?? "What moment from today is still with you? Describe what happened."
+    }
 }
