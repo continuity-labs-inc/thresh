@@ -337,7 +337,10 @@ struct WeeklyReflectionScreen: View {
                                 .padding(.horizontal, 20)
                         }
 
-                        // Patterns We Noticed section - only show if real patterns exist
+                        // MARK: Patterns We Noticed - HIDDEN for v1.0
+                        // TODO: Re-enable when real AI pattern detection is working
+                        // Currently shows placeholder text - hiding until we have meaningful patterns
+                        /*
                         if !isAnalyzing && !suggestedConnections.isEmpty && !isTextEditorFocused {
                             let realConnections = suggestedConnections.filter { !$0.description.isEmpty }
                             if !realConnections.isEmpty {
@@ -365,6 +368,7 @@ struct WeeklyReflectionScreen: View {
                                 .padding(.horizontal, 20)
                             }
                         }
+                        */
 
                         // Synthesis Prompt - CLEAR and PROMINENT
                         if !isTextEditorFocused {

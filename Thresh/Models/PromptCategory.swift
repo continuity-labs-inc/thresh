@@ -54,19 +54,47 @@ enum PromptCategory: String, Codable, CaseIterable {
     }
 
     var phase2Prompt: String {
+        phase2Prompts[0]
+    }
+
+    var phase2Prompts: [String] {
         switch self {
         case .person:
-            return "What did you leave out about them? What would they say you got wrong?"
+            return [
+                "What did you leave out about them? What would they say you got wrong?",
+                "Why did this person catch your attention today?",
+                "What do you think they were feeling that you couldn't see?"
+            ]
         case .place:
-            return "What's the relationship between this place and how you moved through it?"
+            return [
+                "What's the relationship between this place and how you moved through it?",
+                "Why did you choose those details? What did you leave out?",
+                "What would this place say about you if it could speak?"
+            ]
         case .conversation:
-            return "What wasn't said? What was the subtext?"
+            return [
+                "What wasn't said? What was the subtext?",
+                "Why did these words stick with you?",
+                "What were you hoping they would say instead?"
+            ]
         case .object:
-            return "Why does this object have weight for you? What does it stand for?"
+            return [
+                "Why does this object have weight for you? What does it stand for?",
+                "What memory or feeling does this object carry?",
+                "Why did you choose those details? What did you leave out?"
+            ]
         case .moment:
-            return "Where was the tension? What was at stake?"
+            return [
+                "Where was the tension? What was at stake?",
+                "What did this moment reveal that you didn't expect?",
+                "Why did you choose those details? What did you leave out?"
+            ]
         case .routine:
-            return "What does this routine protect you from—or give you?"
+            return [
+                "What does this routine protect you from—or give you?",
+                "What would happen if you stopped doing this?",
+                "Why did you choose those details? What did you leave out?"
+            ]
         }
     }
 }

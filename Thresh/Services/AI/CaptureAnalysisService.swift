@@ -7,6 +7,7 @@ struct CaptureAnalysis: Codable, Sendable {
     let observationDepth: String
     let suggestedPhase2Focus: String
     let keyElement: String?
+    let suggestedPhase2Prompt: String?
 
     struct ConcreteElements: Codable, Sendable {
         let people: Bool
@@ -40,13 +41,29 @@ extension AIService {
           },
           "observationDepth": "surface|grounded|rich",
           "suggestedPhase2Focus": "brief suggestion for what to explore",
-          "keyElement": "the main subject/object/person mentioned, or null"
+          "keyElement": "the main subject/object/person mentioned, or null",
+          "suggestedPhase2Prompt": "A specific reflection question for this capture"
         }
 
         Definitions:
         - surface: mostly summary, few concrete details
         - grounded: some specific details present
         - rich: vivid sensory/dialogue/physical details
+
+        For suggestedPhase2Prompt:
+        Generate a specific Phase 2 reflection question that directly references what they wrote.
+        The question should ask them to examine:
+        - WHY they noticed what they noticed, OR
+        - What they left out of their description, OR
+        - What assumption is embedded in how they described it, OR
+        - What the other person/object might say about this moment
+
+        Examples of good Phase 2 prompts:
+        - "You described her pause before saying goodbye. What do you think she's waiting for?"
+        - "You mentioned the light was dim. What were you looking for in that darkness?"
+        - "You said he 'always' does this. When did you first notice that pattern?"
+
+        Keep the question to 1-2 sentences, conversational, and directly tied to their specific details.
 
         Return ONLY valid JSON, no other text.
         """
@@ -64,7 +81,8 @@ extension AIService {
                 concreteElements: .init(people: false, place: false, dialogue: false, sensory: false, time: false),
                 observationDepth: "surface",
                 suggestedPhase2Focus: "What details did you leave out?",
-                keyElement: nil
+                keyElement: nil,
+                suggestedPhase2Prompt: nil
             )
         }
 

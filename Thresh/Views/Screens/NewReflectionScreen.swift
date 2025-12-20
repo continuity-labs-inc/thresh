@@ -125,18 +125,25 @@ struct NewReflectionScreen: View {
 
     private var headerView: some View {
         HStack {
-            Button(action: {
-                if currentPhase == 2 {
+            // Left side: Back button in Phase 2, spacer in Phase 1
+            if currentPhase == 2 {
+                Button(action: {
                     withAnimation { currentPhase = 1 }
-                } else {
-                    dismiss()
+                }) {
+                    Text("Back")
+                        .font(.system(size: 16, weight: .regular))
+                        .foregroundColor(Color.thresh.textPrimary)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 1)
+                        )
                 }
-            }) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color.thresh.textPrimary)
-                    .frame(width: 44, height: 44)
-                    .background(Circle().fill(Color.thresh.surface))
+            } else {
+                // Spacer to balance Cancel button
+                Color.clear
+                    .frame(width: 60, height: 44)
             }
 
             Spacer()
@@ -269,11 +276,12 @@ struct NewReflectionScreen: View {
                     CollapsedCaptureCard(content: phase1Content)
                         .padding(.horizontal, 20)
 
-                    // Phase 2 prompt card
+                    // Phase 2 prompt card with refresh
                     PromptCard(
                         phase: 2,
                         prompt: phase2Prompt,
-                        category: selectedCategory
+                        category: selectedCategory,
+                        onRefresh: refreshPhase2Prompt
                     )
                     .padding(.horizontal, 20)
 
@@ -403,11 +411,19 @@ struct NewReflectionScreen: View {
                 let analysis = try await AIService.shared.analyzeCapture(phase1Content)
                 await MainActor.run {
                     captureAnalysis = analysis
-                    phase2Prompt = TwoPhasePromptService.shared.getPhase2Prompt(
-                        category: selectedCategory ?? .moment,
-                        keyElement: analysis.keyElement,
-                        stage: userProgress?.currentStage ?? 1
-                    )
+
+                    // Use AI-generated contextual prompt if available, otherwise fall back to static
+                    if let aiPrompt = analysis.suggestedPhase2Prompt, !aiPrompt.isEmpty {
+                        phase2Prompt = aiPrompt
+                    } else {
+                        // Fallback to service-generated prompt with key element
+                        phase2Prompt = TwoPhasePromptService.shared.getPhase2Prompt(
+                            category: selectedCategory ?? .moment,
+                            keyElement: analysis.keyElement,
+                            stage: userProgress?.currentStage ?? 1
+                        )
+                    }
+
                     isAnalyzingPhase1 = false
                     withAnimation { currentPhase = 2 }
                 }
@@ -418,6 +434,25 @@ struct NewReflectionScreen: View {
                     isAnalyzingPhase1 = false
                     withAnimation { currentPhase = 2 }
                 }
+            }
+        }
+    }
+
+    private func refreshPhase2Prompt() {
+        guard let category = selectedCategory else { return }
+
+        // Get all prompts for this category, excluding the current one
+        let allPrompts = category.phase2Prompts
+        let otherPrompts = allPrompts.filter { $0 != phase2Prompt }
+
+        if let newPrompt = otherPrompts.randomElement() {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                phase2Prompt = newPrompt
+            }
+        } else {
+            // Fallback if somehow we only have one prompt
+            withAnimation(.easeInOut(duration: 0.2)) {
+                phase2Prompt = "Why did you choose those details? What did you leave out?"
             }
         }
     }

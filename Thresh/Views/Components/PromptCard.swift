@@ -4,6 +4,7 @@ struct PromptCard: View {
     let phase: Int
     let prompt: String
     let category: PromptCategory?
+    var onRefresh: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -20,6 +21,22 @@ struct PromptCard: View {
                     Text("• \(category.displayName)")
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(Color.thresh.textTertiary)
+                }
+
+                Spacer()
+
+                // Refresh button for Phase 2 only
+                if phase == 2, let onRefresh = onRefresh {
+                    Button(action: onRefresh) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(Color.thresh.synthesis)
+                            .frame(width: 28, height: 28)
+                            .background(
+                                Circle()
+                                    .fill(Color.thresh.synthesis.opacity(0.15))
+                            )
+                    }
                 }
             }
 
