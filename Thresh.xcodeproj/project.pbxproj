@@ -27,6 +27,7 @@
 		A2000003238F5E0000000001 /* RevisionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000004238F5E0000000001 /* RevisionLayer.swift */; };
 		A2000005238F5E0000000001 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000006238F5E0000000001 /* Connection.swift */; };
 		A2000007238F5E0000000001 /* PromptLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000008238F5E0000000001 /* PromptLibrary.swift */; };
+		PC000001238F5E0000000001 /* PromptCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = PC000002238F5E0000000001 /* PromptCacheService.swift */; };
 		A2000009238F5E0000000001 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000A238F5E0000000001 /* AIService.swift */; };
 		A200000B238F5E0000000001 /* ModeIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000C238F5E0000000001 /* ModeIndicator.swift */; };
 		A200000D238F5E0000000001 /* StepIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000E238F5E0000000001 /* StepIndicator.swift */; };
@@ -111,6 +112,7 @@
 		A2000004238F5E0000000001 /* RevisionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionLayer.swift; sourceTree = "<group>"; };
 		A2000006238F5E0000000001 /* Connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connection.swift; sourceTree = "<group>"; };
 		A2000008238F5E0000000001 /* PromptLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptLibrary.swift; sourceTree = "<group>"; };
+		PC000002238F5E0000000001 /* PromptCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptCacheService.swift; sourceTree = "<group>"; };
 		A200000A238F5E0000000001 /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
 		A200000C238F5E0000000001 /* ModeIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeIndicator.swift; sourceTree = "<group>"; };
 		A200000E238F5E0000000001 /* StepIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepIndicator.swift; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 			isa = PBXGroup;
 			children = (
 				A2000008238F5E0000000001 /* PromptLibrary.swift */,
+				PC000002238F5E0000000001 /* PromptCacheService.swift */,
 				P1000006238F5E0000000001 /* TwoPhasePromptService.swift */,
 			);
 			path = Prompts;
@@ -515,6 +518,7 @@
 				B3000003238F5E0000000001 /* Story.swift in Sources */,
 				B3000005238F5E0000000001 /* Idea.swift in Sources */,
 				A2000007238F5E0000000001 /* PromptLibrary.swift in Sources */,
+				PC000001238F5E0000000001 /* PromptCacheService.swift in Sources */,
 				A2000009238F5E0000000001 /* AIService.swift in Sources */,
 				B3000027238F5E0000000001 /* DesignNotesService.swift in Sources */,
 				A200000B238F5E0000000001 /* ModeIndicator.swift in Sources */,

@@ -136,8 +136,28 @@ extension AIService {
         return cleanedText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    /// Generate a fresh, evocative Phase 1 prompt for a given category
+    /// Generate a fresh, evocative Phase 1 prompt for a given category.
+    /// Uses cached prompts when available to reduce API calls.
     func generatePhase1Prompt(category: PromptCategory?) async -> String {
+        let cache = PromptCacheService.shared
+
+        // Check cache first - if we have enough variety, use cached prompt
+        if let cachedPrompt = cache.getCachedPrompt(for: category) {
+            print("📚 Using cached prompt for \(category?.displayName ?? "Open")")
+            return cachedPrompt
+        }
+
+        // Generate new prompt via AI
+        let generatedPrompt = await generatePhase1PromptFromAI(category: category)
+
+        // Cache the new prompt for future use
+        cache.savePrompt(generatedPrompt, for: category)
+
+        return generatedPrompt
+    }
+
+    /// Internal method that calls Claude to generate a prompt
+    private func generatePhase1PromptFromAI(category: PromptCategory?) async -> String {
         let categoryName = category?.displayName ?? "Open"
         let categoryExamples: String
 
