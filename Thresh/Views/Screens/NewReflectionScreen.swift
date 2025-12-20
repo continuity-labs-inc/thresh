@@ -34,6 +34,9 @@ struct NewReflectionScreen: View {
     @State private var isAnalyzingPhase1 = false
     @State private var showTwoPhaseTooltip = true
 
+    // Open prompt (no category selected - AI will detect)
+    private let openPrompt = "What moment from today is still with you? Describe what happened—who was there, what was said, what you noticed."
+
     private var userProgress: UserProgress? {
         allUserProgress.first
     }
@@ -226,6 +229,10 @@ struct NewReflectionScreen: View {
                     )
                     .padding(.horizontal, 20)
 
+                    // Category Pills (horizontal scroll)
+                    categoryPillsView
+                        .padding(.horizontal, 20)
+
                     // Text Input
                     ZStack(alignment: .topLeading) {
                         if phase1Content.isEmpty {
@@ -263,6 +270,49 @@ struct NewReflectionScreen: View {
                 action: transitionToPhase2,
                 theme: .blue
             )
+        }
+    }
+
+    // MARK: - Category Pills
+
+    private var categoryPillsView: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Or try a specific lens:")
+                .font(.system(size: 13, weight: .medium))
+                .foregroundColor(Color.thresh.textTertiary)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    // "Open" pill to reset to no category
+                    CategoryPill(
+                        title: "Open",
+                        isSelected: selectedCategory == nil,
+                        action: { selectCategory(nil) }
+                    )
+
+                    ForEach(PromptCategory.allCases, id: \.self) { category in
+                        CategoryPill(
+                            title: category.displayName,
+                            isSelected: selectedCategory == category,
+                            action: { selectCategory(category) }
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private func selectCategory(_ category: PromptCategory?) {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            selectedCategory = category
+
+            if let category = category {
+                // Use category-specific prompt
+                currentPrompt = category.phase1Prompts.randomElement() ?? category.phase1Prompts[0]
+            } else {
+                // Use open prompt
+                currentPrompt = openPrompt
+            }
         }
     }
 
@@ -386,15 +436,10 @@ struct NewReflectionScreen: View {
     // MARK: - Actions
 
     private func loadPhase1Prompt() {
-        // Get or create UserProgress
-        let progress = userProgress ?? createUserProgress()
-
-        let result = TwoPhasePromptService.shared.selectPhase1Prompt(
-            userProgress: progress,
-            stage: progress.currentStage
-        )
-        selectedCategory = result.category
-        currentPrompt = result.prompt
+        // Start with open prompt by default (no category selected)
+        // AI will detect category during analysis
+        selectedCategory = nil
+        currentPrompt = openPrompt
     }
 
     private func createUserProgress() -> UserProgress {
@@ -557,6 +602,36 @@ struct NewReflectionScreen: View {
                 extractionError = "AI extraction failed: \(error.localizedDescription)"
             }
         }
+    }
+}
+
+// MARK: - Category Pill Component
+
+private struct CategoryPill: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 14, weight: isSelected ? .semibold : .medium))
+                .foregroundColor(isSelected ? .white : Color.thresh.textSecondary)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(
+                    Capsule()
+                        .fill(isSelected ? Color.thresh.capture : Color.thresh.surface)
+                )
+                .overlay(
+                    Capsule()
+                        .strokeBorder(
+                            isSelected ? Color.clear : Color.thresh.textTertiary.opacity(0.3),
+                            lineWidth: 1
+                        )
+                )
+        }
+        .buttonStyle(.plain)
     }
 }
 

@@ -51,36 +51,31 @@ enum SubscriptionProduct: String, CaseIterable {
 final class SubscriptionService {
     static let shared = SubscriptionService()
 
-    // MARK: - Debug Override (for testing Pro features in simulator)
-    #if DEBUG
+    // MARK: - Debug Pro Mode Toggle (persisted)
     @ObservationIgnored
-    private let debugOverrideKey = "debug_subscription_tier_override"
+    private let debugProModeKey = "debug_pro_mode_enabled"
 
-    /// Debug override tier - set via Settings to test Pro/Plus features in simulator
-    var debugTierOverride: SubscriptionTier? {
-        get {
-            guard let rawValue = UserDefaults.standard.string(forKey: debugOverrideKey) else { return nil }
-            return SubscriptionTier(rawValue: rawValue)
-        }
-        set {
-            if let tier = newValue {
-                UserDefaults.standard.set(tier.rawValue, forKey: debugOverrideKey)
-            } else {
-                UserDefaults.standard.removeObject(forKey: debugOverrideKey)
-            }
-        }
+    /// Simple Pro mode toggle for development/testing - persisted across launches
+    var debugProModeEnabled: Bool {
+        get { UserDefaults.standard.bool(forKey: debugProModeKey) }
+        set { UserDefaults.standard.set(newValue, forKey: debugProModeKey) }
     }
-    #endif
+
+    /// Toggle debug Pro mode on/off
+    func toggleDebugProMode() {
+        debugProModeEnabled.toggle()
+        print("🔧 Debug Pro Mode: \(debugProModeEnabled ? "ENABLED" : "DISABLED")")
+    }
 
     // MARK: - Published State
     private(set) var _actualTier: SubscriptionTier = .free
 
     var currentTier: SubscriptionTier {
-        #if DEBUG
-        return debugTierOverride ?? _actualTier
-        #else
+        // Debug Pro mode overrides actual subscription status
+        if debugProModeEnabled {
+            return .pro
+        }
         return _actualTier
-        #endif
     }
 
     private(set) var products: [Product] = []

@@ -354,39 +354,39 @@ struct SettingsScreen: View {
                 }
             }
 
-            #if DEBUG
+            // Developer section - always visible during development
             Section {
-                Picker("Debug Tier Override", selection: Binding(
-                    get: { subscriptionService.debugTierOverride ?? .free },
-                    set: { newTier in
-                        if newTier == .free {
-                            subscriptionService.debugTierOverride = nil
-                        } else {
-                            subscriptionService.debugTierOverride = newTier
+                Toggle(isOn: Binding(
+                    get: { subscriptionService.debugProModeEnabled },
+                    set: { subscriptionService.debugProModeEnabled = $0 }
+                )) {
+                    HStack {
+                        Image(systemName: "hammer.fill")
+                            .foregroundStyle(Color.thresh.synthesis)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Pro Mode (Debug)")
+                                .foregroundStyle(Color.thresh.textPrimary)
+                            Text("Unlocks all Pro features")
+                                .font(.caption)
+                                .foregroundStyle(Color.thresh.textSecondary)
                         }
                     }
-                )) {
-                    Text("None (Use Real)").tag(SubscriptionTier.free)
-                    Text("Plus").tag(SubscriptionTier.plus)
-                    Text("Pro").tag(SubscriptionTier.pro)
                 }
-                .pickerStyle(.menu)
 
-                if subscriptionService.debugTierOverride != nil {
+                if subscriptionService.debugProModeEnabled {
                     HStack {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(.green)
-                        Text("Debug override active: \(subscriptionService.currentTier.displayName)")
+                        Text("Pro features unlocked")
                             .font(.caption)
                             .foregroundStyle(Color.thresh.textSecondary)
                     }
                 }
             } header: {
-                Text("Debug Options")
+                Text("Developer")
             } footer: {
-                Text("Override subscription tier for testing. Only visible in DEBUG builds.")
+                Text("Toggle Pro mode for testing. Persists across app launches.")
             }
-            #endif
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Settings")
