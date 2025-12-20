@@ -30,7 +30,15 @@ struct WeeklyReflectionScreen: View {
         let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
         return filteredReflections.filter { $0.createdAt >= sevenDaysAgo }
     }
-    
+
+    // Phase 2 skip rate for nudge display
+    private var phase2SkipRate: Double {
+        let total = recentReflections.count
+        guard total > 0 else { return 0 }
+        let skipped = recentReflections.filter { !$0.phase2Completed }.count
+        return Double(skipped) / Double(total)
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // Header - always visible
@@ -96,32 +104,32 @@ struct WeeklyReflectionScreen: View {
     
     private var headerView: some View {
         HStack {
-            Button(action: { dismiss() }) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color.thresh.textPrimary)
-                    .frame(width: 44, height: 44)
-                    .background(Circle().fill(Color.thresh.surface))
-            }
-            
+            // Spacer to balance layout (NavigationStack provides back if needed)
+            Color.clear.frame(width: 60, height: 44)
+
             Spacer()
-            
+
             Text("Weekly Reflection")
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundColor(Color.thresh.textPrimary)
-            
+
             Spacer()
-            
-            // Done button when keyboard is up
+
+            // Done button when keyboard is up, Cancel otherwise
             if isTextEditorFocused {
                 Button(action: { isTextEditorFocused = false }) {
                     Text("Done")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(Color.thresh.synthesis)
                 }
-                .frame(width: 44, height: 44)
+                .frame(width: 60, height: 44)
             } else {
-                Color.clear.frame(width: 44, height: 44)
+                Button(action: { dismiss() }) {
+                    Text("Cancel")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(Color.thresh.textSecondary)
+                }
+                .frame(width: 60, height: 44)
             }
         }
         .padding(.horizontal, 20)
@@ -144,21 +152,20 @@ struct WeeklyReflectionScreen: View {
     }
     
     private func stepDot(number: Int, label: String, isActive: Bool) -> some View {
-        HStack(spacing: 8) {
+        VStack(spacing: 4) {
             Circle()
                 .fill(isActive ? Color.thresh.synthesis : Color.thresh.surfaceSecondary)
-                .frame(width: 40, height: 40)
+                .frame(width: 36, height: 36)
                 .overlay(
                     Text("\(number)")
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(isActive ? .white : Color.thresh.textTertiary)
                 )
-            
-            if currentStep == number {
-                Text(label)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.thresh.synthesis)
-            }
+
+            // ALWAYS show label, just dim inactive ones
+            Text(label)
+                .font(.system(size: 12, weight: currentStep == number ? .semibold : .regular))
+                .foregroundColor(currentStep == number ? Color.thresh.synthesis : Color.thresh.textTertiary)
         }
     }
     
@@ -206,6 +213,22 @@ struct WeeklyReflectionScreen: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 20)
                         .padding(.top, 8)
+
+                        // Phase 2 skip rate nudge
+                        if phase2SkipRate > 0.5 && recentReflections.count >= 3 {
+                            HStack(alignment: .top, spacing: 10) {
+                                Image(systemName: "lightbulb")
+                                    .foregroundColor(.orange)
+                                    .font(.system(size: 16))
+                                Text("Most of your captures this week skipped the reflection phase. The second phase builds analytical depth—try it more next week.")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(Color.thresh.textSecondary)
+                            }
+                            .padding(12)
+                            .background(Color.orange.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .padding(.horizontal, 20)
+                        }
 
                         // Reflection List
                         ForEach(recentReflections) { reflection in
@@ -279,6 +302,11 @@ struct WeeklyReflectionScreen: View {
     
     // MARK: - Step 2: Write
     
+    // Computed property for Continue button state
+    private var canContinueToRefine: Bool {
+        !synthesisText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
     private var writeStep: some View {
         VStack(spacing: 0) {
             ScrollViewReader { proxy in
@@ -297,126 +325,58 @@ struct WeeklyReflectionScreen: View {
                             .padding()
                         }
 
-                        // Patterns We Noticed section
-                        if !isAnalyzing && !suggestedConnections.isEmpty && !isTextEditorFocused {
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text("Patterns We Noticed")
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(Color.thresh.synthesis)
+                        // Selected Captures Summary - show at top for context
+                        if !isTextEditorFocused && !selectedReflections.isEmpty {
+                            selectedCapturesSummary
+                                .padding(.horizontal, 20)
+                        }
 
-                                ForEach(suggestedConnections) { connection in
-                                    HStack(alignment: .top, spacing: 8) {
-                                        Image(systemName: "link")
-                                            .font(.caption)
-                                            .foregroundStyle(Color.thresh.synthesis)
-                                        Text(connection.description)
-                                            .font(.callout)
-                                            .foregroundStyle(Color.thresh.textSecondary)
+                        // Habit Check-In Card (SEPARATE from synthesis prompt)
+                        if !isTextEditorFocused, let habit = habits.first, !habit.isDefault {
+                            habitCheckInCard(habit: habit)
+                                .padding(.horizontal, 20)
+                        }
+
+                        // Patterns We Noticed section - only show if real patterns exist
+                        if !isAnalyzing && !suggestedConnections.isEmpty && !isTextEditorFocused {
+                            let realConnections = suggestedConnections.filter { !$0.description.isEmpty }
+                            if !realConnections.isEmpty {
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text("Patterns We Noticed")
+                                        .font(.system(size: 14, weight: .semibold))
+                                        .foregroundStyle(Color.thresh.synthesis)
+
+                                    ForEach(realConnections.prefix(3)) { connection in
+                                        HStack(alignment: .top, spacing: 8) {
+                                            Image(systemName: "link")
+                                                .font(.system(size: 12))
+                                                .foregroundStyle(Color.thresh.synthesis)
+                                            Text(connection.description)
+                                                .font(.system(size: 14))
+                                                .foregroundStyle(Color.thresh.textSecondary)
+                                        }
                                     }
                                 }
+                                .padding(12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.thresh.synthesis.opacity(0.08))
+                                )
+                                .padding(.horizontal, 20)
                             }
-                            .padding()
-                            .background(Color.thresh.synthesis.opacity(0.1))
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                            .padding(.horizontal, 20)
                         }
 
-                        // Synthesis Prompt - only show when keyboard not focused
+                        // Synthesis Prompt - CLEAR and PROMINENT
                         if !isTextEditorFocused {
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    Image(systemName: "sparkles")
-                                        .font(.system(size: 14, weight: .semibold))
-                                        .foregroundColor(Color.thresh.synthesis)
-                                    
-                                    Text("SYNTHESIS PROMPT")
-                                        .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(Color.thresh.synthesis)
-                                }
-                                
-                                Text("What thread connects these moments? What patterns or meaning emerge when you see them together?")
-                                    .font(.system(size: 16))
-                                    .foregroundColor(Color.thresh.textSecondary)
-                                    .italic()
-
-                                // Habit prompt if exists
-                                if let habit = habits.first {
-                                    Text("How did '\(habit.intention)' go this week? What helped? What got in the way?")
-                                        .font(.system(size: 15))
-                                        .foregroundColor(Color.thresh.textSecondary)
-                                        .italic()
-                                        .padding(.top, 4)
-                                }
-                            }
-                            .padding(16)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.thresh.synthesis.opacity(0.1))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .strokeBorder(Color.thresh.synthesis.opacity(0.3), lineWidth: 1)
-                                    )
-                            )
-                            .padding(.horizontal, 20)
+                            synthesisPromptCard
+                                .padding(.horizontal, 20)
                         }
 
-                        // Synthesis Text Editor
-                        VStack(alignment: .leading, spacing: 8) {
-                            if isTextEditorFocused {
-                                Text("Write your synthesis:")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(Color.thresh.textSecondary)
-                                    .padding(.horizontal, 20)
-                            }
-                            
-                            ZStack(alignment: .topLeading) {
-                                if synthesisText.isEmpty {
-                                    Text("Write your synthesis in complete sentences...")
-                                        .foregroundColor(Color.thresh.textTertiary)
-                                        .font(.system(size: 16))
-                                        .padding(.top, 12)
-                                        .padding(.leading, 16)
-                                }
-                                
-                                TextEditor(text: $synthesisText)
-                                    .foregroundColor(Color.thresh.textPrimary)
-                                    .font(.system(size: 16))
-                                    .scrollContentBackground(.hidden)
-                                    .focused($isTextEditorFocused)
-                                    .frame(minHeight: isTextEditorFocused ? 250 : 200)
-                                    .padding(12)
-                            }
-                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.thresh.surface))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .strokeBorder(isTextEditorFocused ? Color.thresh.synthesis : Color.clear, lineWidth: 2)
-                            )
+                        // Synthesis Text Editor - LARGER
+                        synthesisTextEditor
                             .padding(.horizontal, 20)
                             .id("textEditor")
-                        }
-                        
-                        // Selected Captures Preview - hide when keyboard up
-                        if !isTextEditorFocused {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Selected Captures (\(selectedReflections.count))")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(Color.thresh.textSecondary)
-                                
-                                ForEach(recentReflections.filter { selectedReflections.contains($0.id) }) { reflection in
-                                    Text("• \(reflection.captureContent)")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(Color.thresh.textTertiary)
-                                        .lineLimit(1)
-                                }
-                            }
-                            .padding(16)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(RoundedRectangle(cornerRadius: 12).fill(Color.thresh.surfaceSecondary))
-                            .padding(.horizontal, 20)
-                        }
-                        
+
                         Color.clear.frame(height: isTextEditorFocused ? 20 : 100)
                     }
                     .padding(.top, 8)
@@ -429,8 +389,160 @@ struct WeeklyReflectionScreen: View {
                     }
                 }
             }
-            
-            // Navigation Buttons - always visible
+
+            // Bottom Navigation with helper text
+            writeStepBottomButtons
+        }
+    }
+
+    // MARK: - Write Step Components
+
+    private var selectedCapturesSummary: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("SELECTED CAPTURES")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(Color.thresh.textTertiary)
+
+                Spacer()
+
+                Text("\(selectedReflections.count) selected")
+                    .font(.system(size: 12))
+                    .foregroundColor(Color.thresh.textTertiary)
+            }
+
+            // Show first 2-3 captures as collapsed previews
+            let selected = recentReflections.filter { selectedReflections.contains($0.id) }
+            ForEach(selected.prefix(3)) { reflection in
+                Text(reflection.captureContent)
+                    .font(.system(size: 13))
+                    .foregroundColor(Color.thresh.textSecondary)
+                    .lineLimit(2)
+                    .padding(8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(Color.thresh.surface)
+                    )
+            }
+
+            if selected.count > 3 {
+                Text("+ \(selected.count - 3) more")
+                    .font(.system(size: 12))
+                    .foregroundColor(Color.thresh.textTertiary)
+            }
+        }
+    }
+
+    private func habitCheckInCard(habit: ActiveHabit) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Image(systemName: "flame")
+                    .font(.system(size: 14))
+                    .foregroundColor(.orange)
+                Text("HABIT CHECK-IN")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.orange)
+            }
+
+            Text("How did \"\(habit.intention)\" go this week?")
+                .font(.system(size: 14))
+                .foregroundColor(Color.thresh.textSecondary)
+
+            Text("Checked in \(habit.checkInCountThisWeek) times")
+                .font(.system(size: 12))
+                .foregroundColor(Color.thresh.textTertiary)
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.orange.opacity(0.08))
+        )
+    }
+
+    private var synthesisPromptCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Color.thresh.synthesis)
+
+                Text("SYNTHESIS PROMPT")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(Color.thresh.synthesis)
+            }
+
+            Text("What thread connects these moments? What patterns or meaning emerge when you see them together?")
+                .font(.system(size: 16))
+                .foregroundColor(Color.thresh.textPrimary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.thresh.synthesis.opacity(0.1))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(Color.thresh.synthesis.opacity(0.2), lineWidth: 1)
+                )
+        )
+    }
+
+    private var synthesisTextEditor: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if isTextEditorFocused {
+                Text("Write your synthesis:")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Color.thresh.textSecondary)
+            }
+
+            ZStack(alignment: .topLeading) {
+                if synthesisText.isEmpty {
+                    Text("Write your synthesis here. What do these moments mean together?")
+                        .foregroundColor(Color.thresh.textTertiary)
+                        .font(.system(size: 16))
+                        .padding(.top, 12)
+                        .padding(.leading, 12)
+                }
+
+                TextEditor(text: $synthesisText)
+                    .foregroundColor(Color.thresh.textPrimary)
+                    .font(.system(size: 16))
+                    .scrollContentBackground(.hidden)
+                    .focused($isTextEditorFocused)
+                    .frame(minHeight: 200) // LARGER text area
+            }
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.thresh.surface)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(isTextEditorFocused ? Color.thresh.synthesis : Color.clear, lineWidth: 2)
+            )
+
+            // Word count hint
+            HStack {
+                Spacer()
+                Text("\(synthesisText.split(separator: " ").count) words")
+                    .font(.system(size: 12))
+                    .foregroundColor(Color.thresh.textTertiary)
+            }
+        }
+    }
+
+    private var writeStepBottomButtons: some View {
+        VStack(spacing: 8) {
+            // Helper text when button is disabled
+            if !canContinueToRefine {
+                Text("Write your synthesis to continue")
+                    .font(.system(size: 12))
+                    .foregroundColor(Color.thresh.textTertiary)
+            }
+
             HStack(spacing: 12) {
                 Button(action: {
                     isTextEditorFocused = false
@@ -440,28 +552,33 @@ struct WeeklyReflectionScreen: View {
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(Color.thresh.textPrimary)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 56)
+                        .frame(height: 52)
                         .background(
-                            RoundedRectangle(cornerRadius: 28)
-                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 2)
+                            RoundedRectangle(cornerRadius: 26)
+                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 1.5)
                         )
                 }
-                
-                SaveButton(
-                    title: "Continue",
-                    isEnabled: !synthesisText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
-                    action: {
-                        isTextEditorFocused = false
-                        withAnimation { currentStep = 3 }
-                    },
-                    theme: .blue
-                )
+
+                Button(action: {
+                    isTextEditorFocused = false
+                    withAnimation { currentStep = 3 }
+                }) {
+                    Text("Continue")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 52)
+                        .background(
+                            RoundedRectangle(cornerRadius: 26)
+                                .fill(canContinueToRefine ? Color.thresh.synthesis : Color.thresh.surfaceSecondary)
+                        )
+                }
+                .disabled(!canContinueToRefine)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 20)
-            .padding(.top, 12)
-            .background(Color.thresh.background)
         }
+        .background(Color.thresh.background)
     }
     
     // MARK: - Step 3: Refine (Bakhtinian)

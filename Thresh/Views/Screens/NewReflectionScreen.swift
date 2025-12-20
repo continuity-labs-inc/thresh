@@ -7,8 +7,9 @@ struct NewReflectionScreen: View {
 
     @Query(sort: \ActiveHabit.order) private var habits: [ActiveHabit]
     @Query private var allReflections: [Reflection]
+    @Query private var allUserProgress: [UserProgress]
 
-    @State private var captureText = ""
+    // Original state
     @State private var showingCamera = false
     @State private var isExtracting = false
     @State private var showExtractionModal = false
@@ -22,132 +23,43 @@ struct NewReflectionScreen: View {
     @State private var showPaywall = false
     @State private var subscriptionService = SubscriptionService.shared
 
+    // Two-phase state
+    @State private var currentPhase = 1
+    @State private var phase1Content = ""
+    @State private var phase2Content = ""
+    @State private var selectedCategory: PromptCategory?
+    @State private var currentPrompt = ""
+    @State private var phase2Prompt = ""
+    @State private var captureAnalysis: CaptureAnalysis?
+    @State private var isAnalyzingPhase1 = false
+    @State private var showTwoPhaseTooltip = true
+
+    private var userProgress: UserProgress? {
+        allUserProgress.first
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            HStack {
-                Button(action: { dismiss() }) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(Color.thresh.textPrimary)
-                        .frame(width: 44, height: 44)
-                        .background(Circle().fill(Color.thresh.surface))
-                }
-                
-                Spacer()
-                
-                Text("New Reflection")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(Color.thresh.textSecondary)
-                
-                Spacer()
-                
-                Button(action: { dismiss() }) {
-                    Text("Cancel")
-                        .font(.system(size: 16, weight: .regular))
-                        .foregroundColor(Color.thresh.textPrimary)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .strokeBorder(Color.thresh.textPrimary, lineWidth: 1)
-                        )
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 12)
-            .padding(.bottom, 16)
-            
-            // Mode Badge
-            HStack {
-                Image(systemName: "camera.fill")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color.thresh.capture)
-                
-                Text("Capture Mode")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.thresh.capture)
+            headerView
 
-                // Show extraction counter for free tier
-                ExtractionCounterBadge()
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(
-                Capsule()
-                    .fill(Color.thresh.capture.opacity(0.1))
-            )
-            .padding(.bottom, 24)
-            
-            // WRAP CONTENT IN SCROLLVIEW TO FIX KEYBOARD BLOCKING
-            ScrollView {
-                VStack(spacing: 16) {
-                    // Habit Pill
-                    if let habit = habits.first {
-                        HabitPillView(habit: habit)
-                            .padding(.horizontal, 20)
-                    }
+            // Mode Badge with phase indicator
+            modeBadge
 
-                    // Text Input
-                    ZStack(alignment: .topLeading) {
-                        if captureText.isEmpty {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("What happened? Describe a specific moment - who was there, what was said, what you noticed.")
-                                    .foregroundColor(Color.thresh.textTertiary)
-                                    .font(.system(size: 16))
-                            }
-                            .padding(.top, 8)
-                            .padding(.leading, 5)
-                        }
-                        
-                        TextEditor(text: $captureText)
-                            .foregroundColor(Color.thresh.textPrimary)
-                            .font(.system(size: 16))
-                            .scrollContentBackground(.hidden)
-                            .frame(minHeight: 300)
-                    }
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.thresh.surface)
-                    )
-                    .padding(.horizontal, 20)
-                    
-                    // Padding for keyboard
-                    Color.clear.frame(height: 100)
-                }
+            // Content based on phase
+            if currentPhase == 1 {
+                phase1View
+            } else {
+                phase2View
             }
-            
-            Spacer()
-            
-            // Save Button - STAYS VISIBLE WHEN KEYBOARD IS OPEN
-            SaveButton(
-                title: isExtracting ? "Analyzing..." : "Save Capture",
-                isEnabled: !captureText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !isExtracting,
-                action: saveCapture,
-                theme: .blue
-            )
         }
         .background(Color.thresh.background)
         .overlay {
             if isExtracting {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .overlay {
-                        VStack(spacing: 16) {
-                            ProgressView()
-                                .scaleEffect(1.5)
-                                .tint(Color.thresh.synthesis)
-                            Text("Finding stories, ideas & questions...")
-                                .font(.subheadline)
-                                .foregroundStyle(Color.thresh.textPrimary)
-                        }
-                        .padding(24)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.thresh.surface)
-                        )
-                    }
+                extractingOverlay
+            }
+            if isAnalyzingPhase1 {
+                analyzingPhase1Overlay
             }
         }
         .sheet(isPresented: $showExtractionModal) {
@@ -170,11 +82,9 @@ struct NewReflectionScreen: View {
                         reflection.captureContent += "\n\n" + additionalContent
                         reflection.updatedAt = Date()
                         showObservationPrompts = false
-                        // Extraction already ran before showing prompts, no need to run again
                     },
                     onSkip: {
                         showObservationPrompts = false
-                        // Extraction already ran before showing prompts, no need to run again
                     }
                 )
             }
@@ -200,26 +110,342 @@ struct NewReflectionScreen: View {
         .sheet(isPresented: $showPaywall) {
             PaywallScreen()
         }
-    }
-    
-    private func saveCapture() {
-        let trimmedText = captureText.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        guard !trimmedText.isEmpty else {
-            return
+        .featureTooltip(
+            title: "Two-Phase Reflection",
+            message: "First describe what happened concretely, then reflect on why you noticed it. This builds observation skills over time.",
+            featureKey: "two_phase_intro",
+            isPresented: $showTwoPhaseTooltip
+        )
+        .onAppear {
+            loadPhase1Prompt()
         }
+    }
+
+    // MARK: - Header
+
+    private var headerView: some View {
+        HStack {
+            Button(action: {
+                if currentPhase == 2 {
+                    withAnimation { currentPhase = 1 }
+                } else {
+                    dismiss()
+                }
+            }) {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(Color.thresh.textPrimary)
+                    .frame(width: 44, height: 44)
+                    .background(Circle().fill(Color.thresh.surface))
+            }
+
+            Spacer()
+
+            Text(currentPhase == 1 ? "Describe" : "Reflect")
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundColor(Color.thresh.textSecondary)
+
+            Spacer()
+
+            Button(action: { dismiss() }) {
+                Text("Cancel")
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundColor(Color.thresh.textPrimary)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .strokeBorder(Color.thresh.textPrimary, lineWidth: 1)
+                    )
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
+        .padding(.bottom, 16)
+    }
+
+    // MARK: - Mode Badge
+
+    private var modeBadge: some View {
+        HStack {
+            Image(systemName: currentPhase == 1 ? "eye" : "sparkles")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(currentPhase == 1 ? Color.thresh.capture : Color.thresh.synthesis)
+
+            Text(currentPhase == 1 ? "Phase 1: Describe" : "Phase 2: Reflect")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(currentPhase == 1 ? Color.thresh.capture : Color.thresh.synthesis)
+
+            // Phase indicator dots
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(Color.thresh.capture)
+                    .frame(width: 8, height: 8)
+                Circle()
+                    .fill(currentPhase == 2 ? Color.thresh.synthesis : Color.thresh.textTertiary.opacity(0.3))
+                    .frame(width: 8, height: 8)
+            }
+            .padding(.leading, 8)
+
+            // Show extraction counter for free tier
+            ExtractionCounterBadge()
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .background(
+            Capsule()
+                .fill((currentPhase == 1 ? Color.thresh.capture : Color.thresh.synthesis).opacity(0.1))
+        )
+        .padding(.bottom, 24)
+    }
+
+    // MARK: - Phase 1 View
+
+    private var phase1View: some View {
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: 16) {
+                    // Habit Pill
+                    if let habit = habits.first {
+                        HabitPillView(habit: habit)
+                            .padding(.horizontal, 20)
+                    }
+
+                    // Prompt Card
+                    PromptCard(
+                        phase: 1,
+                        prompt: currentPrompt,
+                        category: selectedCategory
+                    )
+                    .padding(.horizontal, 20)
+
+                    // Text Input
+                    ZStack(alignment: .topLeading) {
+                        if phase1Content.isEmpty {
+                            Text("Start writing...")
+                                .foregroundColor(Color.thresh.textTertiary)
+                                .font(.system(size: 16))
+                                .padding(.top, 8)
+                                .padding(.leading, 5)
+                        }
+
+                        TextEditor(text: $phase1Content)
+                            .foregroundColor(Color.thresh.textPrimary)
+                            .font(.system(size: 16))
+                            .scrollContentBackground(.hidden)
+                            .frame(minHeight: 250)
+                    }
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.thresh.surface)
+                    )
+                    .padding(.horizontal, 20)
+
+                    // Padding for keyboard
+                    Color.clear.frame(height: 100)
+                }
+            }
+
+            Spacer()
+
+            // Continue Button (appears after 50+ chars)
+            SaveButton(
+                title: "Continue →",
+                isEnabled: phase1Content.trimmingCharacters(in: .whitespacesAndNewlines).count >= 50,
+                action: transitionToPhase2,
+                theme: .blue
+            )
+        }
+    }
+
+    // MARK: - Phase 2 View
+
+    private var phase2View: some View {
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: 16) {
+                    // Collapsed Phase 1 content
+                    CollapsedCaptureCard(content: phase1Content)
+                        .padding(.horizontal, 20)
+
+                    // Phase 2 prompt card
+                    PromptCard(
+                        phase: 2,
+                        prompt: phase2Prompt,
+                        category: selectedCategory
+                    )
+                    .padding(.horizontal, 20)
+
+                    // Text Editor for Phase 2
+                    ZStack(alignment: .topLeading) {
+                        if phase2Content.isEmpty {
+                            Text("Reflect on what you described...")
+                                .foregroundColor(Color.thresh.textTertiary)
+                                .font(.system(size: 16))
+                                .padding(.top, 8)
+                                .padding(.leading, 5)
+                        }
+
+                        TextEditor(text: $phase2Content)
+                            .foregroundColor(Color.thresh.textPrimary)
+                            .font(.system(size: 16))
+                            .scrollContentBackground(.hidden)
+                            .frame(minHeight: 200)
+                    }
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.thresh.surface)
+                    )
+                    .padding(.horizontal, 20)
+
+                    // Padding for keyboard
+                    Color.clear.frame(height: 100)
+                }
+            }
+
+            Spacer()
+
+            // Buttons
+            HStack(spacing: 12) {
+                Button(action: { saveCapture(phase2Skipped: true) }) {
+                    Text("Skip")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(Color.thresh.textSecondary)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 56)
+                        .background(
+                            RoundedRectangle(cornerRadius: 28)
+                                .strokeBorder(Color.thresh.textTertiary, lineWidth: 1)
+                        )
+                }
+
+                SaveButton(
+                    title: isExtracting ? "Analyzing..." : "Save Capture",
+                    isEnabled: !isExtracting,
+                    action: { saveCapture(phase2Skipped: false) },
+                    theme: .blue
+                )
+            }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 20)
+        }
+    }
+
+    // MARK: - Overlays
+
+    private var extractingOverlay: some View {
+        Color.black.opacity(0.3)
+            .ignoresSafeArea()
+            .overlay {
+                VStack(spacing: 16) {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                        .tint(Color.thresh.synthesis)
+                    Text("Finding stories, ideas & questions...")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.thresh.textPrimary)
+                }
+                .padding(24)
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color.thresh.surface)
+                )
+            }
+    }
+
+    private var analyzingPhase1Overlay: some View {
+        Color.black.opacity(0.3)
+            .ignoresSafeArea()
+            .overlay {
+                VStack(spacing: 16) {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                        .tint(Color.thresh.capture)
+                    Text("Analyzing your capture...")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.thresh.textPrimary)
+                }
+                .padding(24)
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color.thresh.surface)
+                )
+            }
+    }
+
+    // MARK: - Actions
+
+    private func loadPhase1Prompt() {
+        // Get or create UserProgress
+        let progress = userProgress ?? createUserProgress()
+
+        let result = TwoPhasePromptService.shared.selectPhase1Prompt(
+            userProgress: progress,
+            stage: progress.currentStage
+        )
+        selectedCategory = result.category
+        currentPrompt = result.prompt
+    }
+
+    private func createUserProgress() -> UserProgress {
+        let newProgress = UserProgress()
+        modelContext.insert(newProgress)
+        try? modelContext.save()
+        return newProgress
+    }
+
+    private func transitionToPhase2() {
+        isAnalyzingPhase1 = true
+        Task {
+            do {
+                let analysis = try await AIService.shared.analyzeCapture(phase1Content)
+                await MainActor.run {
+                    captureAnalysis = analysis
+                    phase2Prompt = TwoPhasePromptService.shared.getPhase2Prompt(
+                        category: selectedCategory ?? .moment,
+                        keyElement: analysis.keyElement,
+                        stage: userProgress?.currentStage ?? 1
+                    )
+                    isAnalyzingPhase1 = false
+                    withAnimation { currentPhase = 2 }
+                }
+            } catch {
+                // Fallback: use category-based Phase 2 prompt without AI analysis
+                await MainActor.run {
+                    phase2Prompt = selectedCategory?.phase2Prompt ?? "Why did you choose those details?"
+                    isAnalyzingPhase1 = false
+                    withAnimation { currentPhase = 2 }
+                }
+            }
+        }
+    }
+
+    private func saveCapture(phase2Skipped: Bool) {
+        let trimmedPhase1 = phase1Content.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedPhase2 = phase2Content.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmedPhase1.isEmpty else { return }
 
         // ASSIGN NEXT REFLECTION NUMBER
         let maxNumber = allReflections.compactMap { $0.reflectionNumber }.max() ?? 0
 
         // CREATE NEW REFLECTION
         let newReflection = Reflection(
-            captureContent: trimmedText,
-            entryType: .pureCapture,
+            captureContent: trimmedPhase1,
+            reflectionContent: phase2Skipped ? nil : (trimmedPhase2.isEmpty ? nil : trimmedPhase2),
+            entryType: phase2Skipped ? .pureCapture : .groundedReflection,
             tier: .active,
-            modeBalance: .captureOnly,
+            modeBalance: phase2Skipped ? .captureOnly : .captureWithReflection,
             reflectionNumber: maxNumber + 1
         )
+
+        // Set prompt metadata
+        newReflection.promptCategory = selectedCategory?.rawValue
+        newReflection.promptDomain = captureAnalysis?.domain
+        newReflection.phase2Completed = !phase2Skipped && !trimmedPhase2.isEmpty
+        newReflection.observationDepth = captureAnalysis?.observationDepth
 
         // INSERT INTO SWIFTDATA
         modelContext.insert(newReflection)
@@ -227,10 +453,19 @@ struct NewReflectionScreen: View {
         // SAVE TO DATABASE
         do {
             try modelContext.save()
-            print("✅ Reflection saved: \(trimmedText.prefix(50))...")
+            print("✅ Reflection saved: \(trimmedPhase1.prefix(50))...")
 
             // Save to ContinuityCore for cross-app visibility
             newReflection.saveToContinuityStore()
+
+            // Record progress
+            if let progress = userProgress {
+                StageProgressionService.shared.recordCapture(
+                    userProgress: progress,
+                    reflection: newReflection,
+                    modelContext: modelContext
+                )
+            }
         } catch {
             print("❌ Failed to save reflection: \(error)")
             dismiss()
@@ -240,9 +475,9 @@ struct NewReflectionScreen: View {
         // Store the reflection for linking extracted items
         savedReflection = newReflection
 
-        // Check minimum length for AI analysis (lowered to 20 chars)
-        guard trimmedText.count >= 20 else {
-            print("⚠️ Reflection too short (\(trimmedText.count) chars) for AI analysis")
+        // Check minimum length for AI analysis
+        guard trimmedPhase1.count >= 20 else {
+            print("⚠️ Reflection too short (\(trimmedPhase1.count) chars) for AI analysis")
             showTooShortMessage = true
             return
         }
@@ -254,30 +489,10 @@ struct NewReflectionScreen: View {
             return
         }
 
-        // ALWAYS run extraction for text >= 20 chars
-        // Run observation analysis in parallel but don't block extraction
+        // Run extraction
         isExtracting = true
         Task {
-            // Start extraction immediately
-            async let extractionTask: Void = runExtractionAsync(on: trimmedText)
-
-            // Run observation analysis in parallel (for follow-up prompts)
-            if trimmedText.count >= 50 {
-                do {
-                    let analysis = try await AIService.shared.analyzeForObservationGaps(trimmedText)
-                    if !analysis.isObservational && !analysis.followUpQuestions.isEmpty {
-                        await MainActor.run {
-                            observationQuestions = analysis.followUpQuestions
-                            // Will show after extraction modal is dismissed
-                        }
-                    }
-                } catch {
-                    print("⚠️ Observation analysis failed: \(error)")
-                }
-            }
-
-            // Wait for extraction to complete
-            await extractionTask
+            await runExtractionAsync(on: trimmedPhase1)
         }
     }
 
@@ -308,10 +523,9 @@ struct NewReflectionScreen: View {
             }
         }
     }
-
 }
 
 #Preview {
     NewReflectionScreen()
-        .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self, ActiveHabit.self])
+        .modelContainer(for: [Reflection.self, Story.self, Idea.self, Question.self, ActiveHabit.self, UserProgress.self])
 }

@@ -79,6 +79,12 @@ final class Reflection {
     // Linked reflections for synthesis entries
     var linkedReflections: [Reflection]
 
+    // Phase 2 / Prompt tracking (Two-Phase Capture System)
+    var promptCategory: String?        // "person", "place", "conversation", "object", "moment", "routine"
+    var promptDomain: String?          // "interpersonal", "professional", "internal", "environmental"
+    var phase2Completed: Bool = false  // Did user write Phase 2 content?
+    var observationDepth: String?      // AI-assessed: "surface", "grounded", "rich"
+
     init(
         id: UUID = UUID(),
         captureContent: String,

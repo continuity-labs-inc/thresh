@@ -78,6 +78,13 @@
 		O1000001238F5E0000000001 /* ContinuityCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = O1000002238F5E0000000001 /* ContinuityCore.swift */; };
 		O1000003238F5E0000000001 /* Reflection+ContinuityCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = O1000004238F5E0000000001 /* Reflection+ContinuityCore.swift */; };
 		O1000005238F5E0000000001 /* EntityExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = O1000006238F5E0000000001 /* EntityExtractor.swift */; };
+		P1000001238F5E0000000001 /* UserProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = P1000002238F5E0000000001 /* UserProgress.swift */; };
+		P1000003238F5E0000000001 /* PromptCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = P1000004238F5E0000000001 /* PromptCategory.swift */; };
+		P1000005238F5E0000000001 /* TwoPhasePromptService.swift in Sources */ = {isa = PBXBuildFile; fileRef = P1000006238F5E0000000001 /* TwoPhasePromptService.swift */; };
+		P1000007238F5E0000000001 /* CaptureAnalysisService.swift in Sources */ = {isa = PBXBuildFile; fileRef = P1000008238F5E0000000001 /* CaptureAnalysisService.swift */; };
+		P1000009238F5E0000000001 /* StageProgressionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = P100000A238F5E0000000001 /* StageProgressionService.swift */; };
+		P100000B238F5E0000000001 /* PromptCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = P100000C238F5E0000000001 /* PromptCard.swift */; };
+		P100000D238F5E0000000001 /* CollapsedCaptureCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = P100000E238F5E0000000001 /* CollapsedCaptureCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -155,6 +162,13 @@
 		O1000002238F5E0000000001 /* ContinuityCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuityCore.swift; sourceTree = "<group>"; };
 		O1000004238F5E0000000001 /* Reflection+ContinuityCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reflection+ContinuityCore.swift"; sourceTree = "<group>"; };
 		O1000006238F5E0000000001 /* EntityExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityExtractor.swift; sourceTree = "<group>"; };
+		P1000002238F5E0000000001 /* UserProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProgress.swift; sourceTree = "<group>"; };
+		P1000004238F5E0000000001 /* PromptCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptCategory.swift; sourceTree = "<group>"; };
+		P1000006238F5E0000000001 /* TwoPhasePromptService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPhasePromptService.swift; sourceTree = "<group>"; };
+		P1000008238F5E0000000001 /* CaptureAnalysisService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureAnalysisService.swift; sourceTree = "<group>"; };
+		P100000A238F5E0000000001 /* StageProgressionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageProgressionService.swift; sourceTree = "<group>"; };
+		P100000C238F5E0000000001 /* PromptCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptCard.swift; sourceTree = "<group>"; };
+		P100000E238F5E0000000001 /* CollapsedCaptureCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsedCaptureCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +255,8 @@
 				B3000004238F5E0000000001 /* Story.swift */,
 				B3000006238F5E0000000001 /* Idea.swift */,
 				J1000002238F5E0000000001 /* ActiveHabit.swift */,
+				P1000002238F5E0000000001 /* UserProgress.swift */,
+				P1000004238F5E0000000001 /* PromptCategory.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -273,6 +289,7 @@
 				A100002F238F5E0000000001 /* Prompts */,
 				A1000030238F5E0000000001 /* Storage */,
 				M1000002238F5E0000000001 /* SubscriptionService.swift */,
+				P100000A238F5E0000000001 /* StageProgressionService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -347,6 +364,8 @@
 				J100000A238F5E0000000001 /* HabitExpirationSheet.swift */,
 				J100000C238F5E0000000001 /* EditHabitSheet.swift */,
 				M1000006238F5E0000000001 /* FeatureGate.swift */,
+				P100000C238F5E0000000001 /* PromptCard.swift */,
+				P100000E238F5E0000000001 /* CollapsedCaptureCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -370,6 +389,7 @@
 			children = (
 				A200000A238F5E0000000001 /* AIService.swift */,
 				K1000002238F5E0000000001 /* ConnectionService.swift */,
+				P1000008238F5E0000000001 /* CaptureAnalysisService.swift */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -378,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				A2000008238F5E0000000001 /* PromptLibrary.swift */,
+				P1000006238F5E0000000001 /* TwoPhasePromptService.swift */,
 			);
 			path = Prompts;
 			sourceTree = "<group>";
@@ -555,6 +576,13 @@
 				O1000001238F5E0000000001 /* ContinuityCore.swift in Sources */,
 				O1000003238F5E0000000001 /* Reflection+ContinuityCore.swift in Sources */,
 				O1000005238F5E0000000001 /* EntityExtractor.swift in Sources */,
+				P1000001238F5E0000000001 /* UserProgress.swift in Sources */,
+				P1000003238F5E0000000001 /* PromptCategory.swift in Sources */,
+				P1000005238F5E0000000001 /* TwoPhasePromptService.swift in Sources */,
+				P1000007238F5E0000000001 /* CaptureAnalysisService.swift in Sources */,
+				P1000009238F5E0000000001 /* StageProgressionService.swift in Sources */,
+				P100000B238F5E0000000001 /* PromptCard.swift in Sources */,
+				P100000D238F5E0000000001 /* CollapsedCaptureCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

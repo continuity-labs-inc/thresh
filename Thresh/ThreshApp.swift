@@ -13,6 +13,7 @@ struct ThreshApp: App {
             Idea.self,
             Question.self,
             ActiveHabit.self,
+            UserProgress.self,
         ])
 
         // Use in-memory storage for UI testing to ensure clean state with demo data
