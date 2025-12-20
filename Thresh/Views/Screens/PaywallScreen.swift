@@ -416,10 +416,19 @@ struct PaywallScreen: View {
 
     // MARK: - Legal Text
     private var legalText: some View {
-        Text("Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period. Manage subscriptions in Settings.")
-            .font(.caption2)
+        VStack(spacing: 8) {
+            Text("Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period. Manage subscriptions in Settings.")
+                .font(.caption2)
+                .foregroundStyle(Color.thresh.textSecondary)
+                .multilineTextAlignment(.center)
+
+            HStack(spacing: 16) {
+                Link("Privacy Policy", destination: URL(string: "https://continuitylabs.ai/thresh/privacy/")!)
+                Link("Terms of Use", destination: URL(string: "https://continuitylabs.ai/thresh/terms/")!)
+            }
+            .font(.caption)
             .foregroundStyle(Color.thresh.textSecondary)
-            .multilineTextAlignment(.center)
+        }
     }
 
     // MARK: - Purchase Action

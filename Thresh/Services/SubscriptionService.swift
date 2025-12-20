@@ -192,28 +192,50 @@ final class SubscriptionService {
     // MARK: - Purchase
     func purchase(_ product: Product) async throws -> StoreKit.Transaction? {
         print("💳 Attempting purchase: \(product.id)")
+        errorMessage = nil
 
-        let result = try await product.purchase()
+        do {
+            let result = try await product.purchase()
 
-        switch result {
-        case .success(let verification):
-            let transaction = try checkVerified(verification)
-            await updatePurchasedProducts()
-            await transaction.finish()
-            print("✅ Purchase successful: \(product.id)")
-            return transaction
+            switch result {
+            case .success(let verification):
+                let transaction = try checkVerified(verification)
+                await updatePurchasedProducts()
+                await transaction.finish()
+                print("✅ Purchase successful: \(product.id)")
+                return transaction
 
-        case .userCancelled:
-            print("⚠️ User cancelled purchase")
-            return nil
+            case .userCancelled:
+                print("⚠️ User cancelled purchase")
+                return nil
 
-        case .pending:
-            print("⏳ Purchase pending")
-            return nil
+            case .pending:
+                print("⏳ Purchase pending")
+                errorMessage = "Purchase is pending approval"
+                return nil
 
-        @unknown default:
-            print("❓ Unknown purchase result")
-            return nil
+            @unknown default:
+                print("❓ Unknown purchase result")
+                return nil
+            }
+        } catch {
+            // Check for specific StoreKit error types
+            let errorString = String(describing: error)
+
+            if errorString.contains("userCancelled") {
+                print("⚠️ User cancelled purchase")
+                return nil
+            } else if errorString.contains("networkError") {
+                print("❌ Network error during purchase")
+                errorMessage = "Network error. Please check your connection and try again."
+            } else if errorString.contains("notAvailable") || errorString.contains("notEntitled") {
+                print("❌ In-App Purchases not available")
+                errorMessage = "In-App Purchases are not available on this device"
+            } else {
+                print("❌ Purchase failed: \(error)")
+                errorMessage = "Purchase failed: \(error.localizedDescription)"
+            }
+            throw error
         }
     }
 
