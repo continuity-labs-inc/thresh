@@ -254,4 +254,107 @@ extension AIService {
         // Fallback to static prompt
         return category?.phase1Prompts.randomElement() ?? "What moment from today is still with you? Describe what happened."
     }
+
+    // MARK: - Weekly Synthesis Prompts
+
+    /// Generate a contextual synthesis prompt based on selected captures
+    func generateSynthesisPrompt(captures: [Reflection]) async -> String {
+        guard !captures.isEmpty else {
+            return defaultSynthesisPrompt
+        }
+
+        // Create summaries of each capture (first 150 chars)
+        let captureSummaries = captures.prefix(7).enumerated().map { index, capture in
+            let preview = String(capture.captureContent.prefix(150))
+            let ellipsis = capture.captureContent.count > 150 ? "..." : ""
+            return "\(index + 1). \(preview)\(ellipsis)"
+        }.joined(separator: "\n")
+
+        let prompt = """
+        The user has selected these captures from their week for synthesis:
+
+        \(captureSummaries)
+
+        Generate a single synthesis prompt that:
+        - References specific themes, people, places, or tensions you notice across these captures
+        - Asks what connects them or what pattern emerges
+        - Is specific to THEIR content, not generic
+        - Is 1-2 sentences, conversational, and thought-provoking
+
+        Examples of good synthesis prompts:
+        - "You wrote about visibility at work, your mom's phone calls, and the bodega guy's nod. What are you looking for that you're not asking for directly?"
+        - "Lisa, your roommate, and your morning scroll all appeared this week. What do these have in common about how you spend your attention?"
+        - "The meeting, the gym, and dinner with Sarah—each had a moment of hesitation. What were you weighing?"
+
+        Return only the prompt text, nothing else. No quotes around it.
+        """
+
+        do {
+            let response = try await callClaude(prompt: prompt, maxTokens: 150)
+            let cleanedResponse = response
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .trimmingCharacters(in: CharacterSet(charactersIn: "\""))
+
+            if cleanedResponse.count > 20 && cleanedResponse.count < 400 {
+                return cleanedResponse
+            }
+        } catch {
+            print("⚠️ AI synthesis prompt generation failed: \(error)")
+        }
+
+        return defaultSynthesisPrompt
+    }
+
+    /// Generate a perspective prompt based on the synthesis and captures
+    func generatePerspectivePrompt(synthesis: String, captures: [Reflection]) async -> String {
+        guard !synthesis.isEmpty else {
+            return defaultPerspectivePrompt
+        }
+
+        // Extract people mentioned in captures
+        let captureTexts = captures.prefix(5).map { $0.captureContent }.joined(separator: " ")
+        let synthesisSummary = String(synthesis.prefix(300))
+
+        let prompt = """
+        The user wrote this weekly synthesis:
+        "\(synthesisSummary)"
+
+        Based on their captures from the week, they mentioned various people, places, or situations.
+
+        Generate a perspective prompt that:
+        - Asks them to retell their week from a specific person's perspective mentioned in their writing
+        - If no specific person is obvious, suggest retelling from the perspective of "someone watching" or a place/object that appeared
+        - Is 1-2 sentences, inviting and specific
+
+        Examples of good perspective prompts:
+        - "How would your mom describe this week from her side of those phone calls?"
+        - "If your office desk could speak, what would it say about what it witnessed this week?"
+        - "Retell Monday's conversation from Sarah's perspective. What was she noticing that you weren't?"
+
+        Return only the prompt text, nothing else. No quotes around it.
+        """
+
+        do {
+            let response = try await callClaude(prompt: prompt, maxTokens: 150)
+            let cleanedResponse = response
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .trimmingCharacters(in: CharacterSet(charactersIn: "\""))
+
+            if cleanedResponse.count > 20 && cleanedResponse.count < 400 {
+                return cleanedResponse
+            }
+        } catch {
+            print("⚠️ AI perspective prompt generation failed: \(error)")
+        }
+
+        return defaultPerspectivePrompt
+    }
+
+    private var defaultSynthesisPrompt: String {
+        "What thread connects these moments? What patterns or meaning emerge when you see them together?"
+    }
+
+    private var defaultPerspectivePrompt: String {
+        "Retell this week from someone else's perspective—a person who appears in your reflections. How might they describe these same days?"
+    }
 }

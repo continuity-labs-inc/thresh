@@ -23,6 +23,10 @@ struct WeeklyReflectionScreen: View {
     @State private var suggestedConnections: [Connection] = []
     @State private var isAnalyzing = false
     @State private var showHabitPrompt = false
+    @State private var synthesisPrompt = ""
+    @State private var perspectivePrompt = ""
+    @State private var isLoadingSynthesisPrompt = false
+    @State private var isLoadingPerspectivePrompt = false
     @FocusState private var isTextEditorFocused: Bool
     
     // Get reflections from last 7 days
@@ -254,8 +258,17 @@ struct WeeklyReflectionScreen: View {
                     let selected = recentReflections.filter { selectedReflections.contains($0.id) }
                     Task {
                         isAnalyzing = true
+                        isLoadingSynthesisPrompt = true
                         withAnimation { currentStep = 2 }
-                        suggestedConnections = await AIService.shared.detectConnections(in: selected)
+
+                        // Generate synthesis prompt and detect connections in parallel
+                        async let promptTask = AIService.shared.generateSynthesisPrompt(captures: selected)
+                        async let connectionsTask = AIService.shared.detectConnections(in: selected)
+
+                        synthesisPrompt = await promptTask
+                        suggestedConnections = await connectionsTask
+
+                        isLoadingSynthesisPrompt = false
                         isAnalyzing = false
                     }
                 },
@@ -475,12 +488,45 @@ struct WeeklyReflectionScreen: View {
                 Text("SYNTHESIS PROMPT")
                     .font(.system(size: 12, weight: .bold))
                     .foregroundColor(Color.thresh.synthesis)
+
+                Spacer()
+
+                // Refresh button
+                Button(action: refreshSynthesisPrompt) {
+                    if isLoadingSynthesisPrompt {
+                        ProgressView()
+                            .scaleEffect(0.7)
+                            .frame(width: 28, height: 28)
+                    } else {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(Color.thresh.synthesis)
+                            .frame(width: 28, height: 28)
+                            .background(
+                                Circle()
+                                    .fill(Color.thresh.synthesis.opacity(0.15))
+                            )
+                    }
+                }
+                .disabled(isLoadingSynthesisPrompt)
             }
 
-            Text("What thread connects these moments? What patterns or meaning emerge when you see them together?")
-                .font(.system(size: 16))
-                .foregroundColor(Color.thresh.textPrimary)
-                .fixedSize(horizontal: false, vertical: true)
+            if isLoadingSynthesisPrompt {
+                HStack(spacing: 8) {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                    Text("Finding patterns in your captures...")
+                        .font(.system(size: 14))
+                        .foregroundColor(Color.thresh.textTertiary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 4)
+            } else {
+                Text(synthesisPrompt.isEmpty ? "What thread connects these moments? What patterns or meaning emerge when you see them together?" : synthesisPrompt)
+                    .font(.system(size: 16))
+                    .foregroundColor(Color.thresh.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -492,6 +538,98 @@ struct WeeklyReflectionScreen: View {
                         .strokeBorder(Color.thresh.synthesis.opacity(0.2), lineWidth: 1)
                 )
         )
+    }
+
+    private func refreshSynthesisPrompt() {
+        let selected = recentReflections.filter { selectedReflections.contains($0.id) }
+        isLoadingSynthesisPrompt = true
+        Task {
+            synthesisPrompt = await AIService.shared.generateSynthesisPrompt(captures: selected)
+            await MainActor.run {
+                isLoadingSynthesisPrompt = false
+            }
+        }
+    }
+
+    private var perspectivePromptCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: "person.2")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Color.thresh.reflect)
+
+                Text("PERSPECTIVE PROMPT")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(Color.thresh.reflect)
+
+                Spacer()
+
+                // Refresh button
+                Button(action: refreshPerspectivePrompt) {
+                    if isLoadingPerspectivePrompt {
+                        ProgressView()
+                            .scaleEffect(0.7)
+                            .frame(width: 28, height: 28)
+                    } else {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(Color.thresh.reflect)
+                            .frame(width: 28, height: 28)
+                            .background(
+                                Circle()
+                                    .fill(Color.thresh.reflect.opacity(0.15))
+                            )
+                    }
+                }
+                .disabled(isLoadingPerspectivePrompt)
+
+                Text("Optional")
+                    .font(.system(size: 12))
+                    .foregroundColor(Color.thresh.textTertiary)
+            }
+
+            if isLoadingPerspectivePrompt {
+                HStack(spacing: 8) {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                    Text("Finding a perspective...")
+                        .font(.system(size: 14))
+                        .foregroundColor(Color.thresh.textTertiary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 4)
+            } else {
+                let defaultPrompt = "Retell this week from someone else's perspective—a person who appears in your reflections. How might they describe these same days?"
+                Text(perspectivePrompt.isEmpty ? defaultPrompt : perspectivePrompt)
+                    .font(.system(size: 16))
+                    .foregroundColor(Color.thresh.textSecondary)
+                    .italic()
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.thresh.reflect.opacity(0.1))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(Color.thresh.reflect.opacity(0.3), lineWidth: 1)
+                )
+        )
+    }
+
+    private func refreshPerspectivePrompt() {
+        let selected = recentReflections.filter { selectedReflections.contains($0.id) }
+        isLoadingPerspectivePrompt = true
+        Task {
+            perspectivePrompt = await AIService.shared.generatePerspectivePrompt(
+                synthesis: synthesisText,
+                captures: selected
+            )
+            await MainActor.run {
+                isLoadingPerspectivePrompt = false
+            }
+        }
     }
 
     private var synthesisTextEditor: some View {
@@ -565,7 +703,20 @@ struct WeeklyReflectionScreen: View {
 
                 Button(action: {
                     isTextEditorFocused = false
+                    let selected = recentReflections.filter { selectedReflections.contains($0.id) }
+                    isLoadingPerspectivePrompt = true
                     withAnimation { currentStep = 3 }
+
+                    // Generate perspective prompt in background
+                    Task {
+                        perspectivePrompt = await AIService.shared.generatePerspectivePrompt(
+                            synthesis: synthesisText,
+                            captures: selected
+                        )
+                        await MainActor.run {
+                            isLoadingPerspectivePrompt = false
+                        }
+                    }
                 }) {
                     Text("Continue")
                         .font(.system(size: 16, weight: .semibold))
@@ -594,39 +745,8 @@ struct WeeklyReflectionScreen: View {
                     VStack(spacing: 16) {
                         // Optional Bakhtinian Prompt - hide when keyboard up
                         if !isTextEditorFocused {
-                            VStack(alignment: .leading, spacing: 12) {
-                                HStack {
-                                    Image(systemName: "person.2")
-                                        .font(.system(size: 14, weight: .semibold))
-                                        .foregroundColor(Color.thresh.reflect)
-                                    
-                                    Text("PERSPECTIVE PROMPT")
-                                        .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(Color.thresh.reflect)
-                                    
-                                    Spacer()
-                                    
-                                    Text("Optional")
-                                        .font(.system(size: 12))
-                                        .foregroundColor(Color.thresh.textTertiary)
-                                }
-                                
-                                Text("Retell this week from someone else's perspective—a person who appears in your reflections. How might they describe these same days?")
-                                    .font(.system(size: 16))
-                                    .foregroundColor(Color.thresh.textSecondary)
-                                    .italic()
-                            }
-                            .padding(16)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color.thresh.reflect.opacity(0.1))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .strokeBorder(Color.thresh.reflect.opacity(0.3), lineWidth: 1)
-                                    )
-                            )
-                            .padding(.horizontal, 20)
+                            perspectivePromptCard
+                                .padding(.horizontal, 20)
                         }
                         
                         // Bakhtinian Text Editor
