@@ -194,9 +194,10 @@ extension AIService {
             """
         case .routine:
             categoryExamples = """
-            - "What's one thing you did on autopilot? Walk through it in slow motion."
-            - "Describe your morning as if you were watching yourself from above."
-            - "What habit have you stopped seeing? Describe it like a ritual."
+            - "Walk through your morning routine as you intend it vs. how it actually went today. Where did it diverge?"
+            - "What's one routine you're trying to build? Describe the last time you actually did it, step by step."
+            - "Think of a routine that used to work but doesn't anymore. What changed?"
+            - "Describe the first 15 minutes after you wake up. What's intentional vs. what just happens?"
             """
         case nil:
             categoryExamples = """
@@ -206,10 +207,26 @@ extension AIService {
             """
         }
 
+        // Category-specific instructions
+        let categoryInstructions: String
+        if category == .routine {
+            categoryInstructions = """
+            For the ROUTINE category, generate prompts that help users examine their INTENTIONAL routines, rituals, or habits they're trying to build, maintain, or examine. Focus on:
+            - The sequence of actions in a routine they're cultivating
+            - What triggers the routine and what follows it
+            - How it feels when the routine works vs. when it breaks
+            - The gap between intended routine and actual behavior
+
+            Do NOT focus on unconscious micro-movements or body habits.
+            """
+        } else {
+            categoryInstructions = "The prompt should invite concrete, sensory observation—not feelings or interpretations."
+        }
+
         let prompt = """
         Generate a single reflection prompt for the category: \(categoryName).
 
-        The prompt should invite concrete, sensory observation—not feelings or interpretations.
+        \(categoryInstructions)
         It should feel fresh and specific, not generic.
         It should be 1-2 sentences, conversational, and directly inviting action.
 

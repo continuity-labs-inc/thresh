@@ -46,9 +46,9 @@ enum PromptCategory: String, Codable, CaseIterable {
             ]
         case .routine:
             return [
-                "Describe something you do every day as if seeing it for the first time.",
-                "Pick a routine from today. What details have you stopped noticing?",
-                "What did you do on autopilot? Describe it with fresh eyes."
+                "Walk through your morning routine as you intend it vs. how it actually went today. Where did it diverge?",
+                "What's one routine you're trying to build? Describe the last time you actually did it, step by step.",
+                "Think of a routine that used to work but doesn't anymore. What changed?"
             ]
         }
     }
