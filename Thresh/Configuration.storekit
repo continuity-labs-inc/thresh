@@ -4,7 +4,21 @@
 
   ],
   "products" : [
-
+    {
+      "displayPrice" : "79.99",
+      "familyShareable" : false,
+      "internalID" : "6739000005",
+      "localizations" : [
+        {
+          "description" : "Join the first 500 founders. All Pro features forever.",
+          "displayName" : "Founder's Edition (Lifetime)",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.continuitylabs.thresh.founder.lifetime",
+      "referenceName" : "Founder Lifetime",
+      "type" : "NonConsumable"
+    }
   ],
   "settings" : {
     "_applicationInternalID" : "6450000000",

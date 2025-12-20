@@ -6,20 +6,27 @@ enum SubscriptionTier: String, Codable {
     case free = "free"
     case plus = "plus"
     case pro = "pro"
+    case founder = "founder"
 
     var displayName: String {
         switch self {
         case .free: return "Free"
         case .plus: return "Plus"
         case .pro: return "Pro"
+        case .founder: return "Founder"
         }
     }
 
     var monthlyExtractionLimit: Int? {
         switch self {
         case .free: return 3
-        case .plus, .pro: return nil // Unlimited
+        case .plus, .pro, .founder: return nil // Unlimited
         }
+    }
+
+    /// Whether this tier includes Pro-level features (connections, PDF export, observation gaps)
+    var hasProFeatures: Bool {
+        self == .pro || self == .founder
     }
 }
 
@@ -29,19 +36,26 @@ enum SubscriptionProduct: String, CaseIterable {
     case plusYearly = "com.continuitylabs.thresh.plus.yearly"
     case proMonthly = "com.continuitylabs.thresh.pro.monthly"
     case proYearly = "com.continuitylabs.thresh.pro.yearly"
+    case founderLifetime = "com.continuitylabs.thresh.founder.lifetime"
 
     var tier: SubscriptionTier {
         switch self {
         case .plusMonthly, .plusYearly: return .plus
         case .proMonthly, .proYearly: return .pro
+        case .founderLifetime: return .founder
         }
     }
 
     var isYearly: Bool {
         switch self {
         case .plusYearly, .proYearly: return true
-        case .plusMonthly, .proMonthly: return false
+        case .plusMonthly, .proMonthly, .founderLifetime: return false
         }
+    }
+
+    /// Whether this is a recurring subscription (vs one-time purchase)
+    var isSubscription: Bool {
+        self != .founderLifetime
     }
 }
 
@@ -234,9 +248,12 @@ final class SubscriptionService {
 
                     // Determine tier from product ID
                     if let product = SubscriptionProduct(rawValue: transaction.productID) {
-                        if product.tier == .pro {
+                        // Founder trumps everything - lifetime purchase
+                        if product.tier == .founder {
+                            highestTier = .founder
+                        } else if product.tier == .pro && highestTier != .founder {
                             highestTier = .pro
-                        } else if product.tier == .plus && highestTier != .pro {
+                        } else if product.tier == .plus && highestTier != .pro && highestTier != .founder {
                             highestTier = .plus
                         }
                     }

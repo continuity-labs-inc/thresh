@@ -25,9 +25,9 @@ struct FeatureGate<Content: View>: View {
         case .free:
             return true
         case .plus:
-            return subscriptionService.currentTier == .plus || subscriptionService.currentTier == .pro
-        case .pro:
-            return subscriptionService.currentTier == .pro
+            return subscriptionService.currentTier == .plus || subscriptionService.currentTier.hasProFeatures
+        case .pro, .founder:
+            return subscriptionService.currentTier.hasProFeatures
         }
     }
 
@@ -87,9 +87,9 @@ struct FeatureGateButton<Label: View>: View {
         case .free:
             return true
         case .plus:
-            return subscriptionService.currentTier == .plus || subscriptionService.currentTier == .pro
-        case .pro:
-            return subscriptionService.currentTier == .pro
+            return subscriptionService.currentTier == .plus || subscriptionService.currentTier.hasProFeatures
+        case .pro, .founder:
+            return subscriptionService.currentTier.hasProFeatures
         }
     }
 

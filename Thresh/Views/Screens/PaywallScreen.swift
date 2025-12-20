@@ -10,12 +10,31 @@ struct PaywallScreen: View {
     @State private var showError = false
     @State private var errorMessage = ""
 
+    /// Control Founder availability - flip to false when 500 sold
+    /// TODO: Replace with Firebase Remote Config for instant control
+    private var founderAvailable: Bool {
+        true // Set to false or use RemoteConfig.remoteConfig().configValue(forKey: "founder_available").boolValue
+    }
+
+    /// Founder product from StoreKit
+    private var founderProduct: Product? {
+        subscriptionService.products.first { $0.id == SubscriptionProduct.founderLifetime.rawValue }
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
                     // Header
                     headerSection
+
+                    // Founder Card (prominent, at top) - only show if available
+                    if founderAvailable {
+                        founderCard
+
+                        // Divider with "or subscribe" text
+                        orSubscribeDivider
+                    }
 
                     // Tier Toggle
                     tierToggle
@@ -52,6 +71,139 @@ struct PaywallScreen: View {
             } message: {
                 Text(errorMessage)
             }
+        }
+    }
+
+    // MARK: - Founder Card
+    private var founderCard: some View {
+        Button {
+            Task {
+                await purchaseFounder()
+            }
+        } label: {
+            VStack(spacing: 12) {
+                // Scarcity Badge
+                HStack(spacing: 6) {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 10))
+                    Text("FIRST 500 ONLY")
+                        .font(.system(size: 11, weight: .bold))
+                        .tracking(0.5)
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(
+                    Capsule()
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.orange, Color.red],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                )
+
+                // Title
+                Text("Founder's Edition")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Color.thresh.textPrimary)
+
+                // Price
+                HStack(spacing: 4) {
+                    if let product = founderProduct {
+                        Text(product.displayPrice)
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                    } else {
+                        Text("$79.99")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                    }
+                    Text("one-time")
+                        .font(.subheadline)
+                        .foregroundStyle(Color.thresh.textSecondary)
+                }
+                .foregroundStyle(Color.thresh.textPrimary)
+
+                // Features
+                VStack(alignment: .leading, spacing: 6) {
+                    founderFeature("All Pro features forever")
+                    founderFeature("No recurring payments")
+                    founderFeature("Lifetime updates included")
+                    founderFeature("Support independent development")
+                }
+                .padding(.top, 4)
+
+                // CTA
+                HStack {
+                    if isPurchasing {
+                        ProgressView()
+                            .tint(.white)
+                    } else {
+                        Text("Become a Founder")
+                            .fontWeight(.semibold)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    LinearGradient(
+                        colors: [Color.orange, Color.thresh.synthesis],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .foregroundStyle(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding(.top, 8)
+            }
+            .padding(20)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.thresh.cardBackground)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .strokeBorder(
+                                LinearGradient(
+                                    colors: [Color.orange.opacity(0.6), Color.thresh.synthesis.opacity(0.6)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 2
+                            )
+                    )
+            )
+        }
+        .buttonStyle(.plain)
+        .disabled(isPurchasing || subscriptionService.isLoading)
+    }
+
+    private func founderFeature(_ text: String) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 14))
+                .foregroundStyle(.green)
+            Text(text)
+                .font(.subheadline)
+                .foregroundStyle(Color.thresh.textPrimary)
+        }
+    }
+
+    // MARK: - Or Subscribe Divider
+    private var orSubscribeDivider: some View {
+        HStack {
+            Rectangle()
+                .fill(Color.thresh.textSecondary.opacity(0.3))
+                .frame(height: 1)
+            Text("or subscribe")
+                .font(.caption)
+                .foregroundStyle(Color.thresh.textSecondary)
+                .padding(.horizontal, 12)
+            Rectangle()
+                .fill(Color.thresh.textSecondary.opacity(0.3))
+                .frame(height: 1)
         }
     }
 
@@ -116,10 +268,16 @@ struct PaywallScreen: View {
         case .free: return Color.thresh.textSecondary
         case .plus: return Color.thresh.capture
         case .pro: return Color.thresh.synthesis
+        case .founder: return Color.orange
         }
     }
 
     private func priceText(for tier: SubscriptionTier) -> String {
+        // Founder is handled separately in founderCard
+        guard tier == .plus || tier == .pro else {
+            return tier == .free ? "Free" : ""
+        }
+
         let product: SubscriptionProduct = tier == .plus
             ? (isYearly ? .plusYearly : .plusMonthly)
             : (isYearly ? .proYearly : .proMonthly)
@@ -133,6 +291,7 @@ struct PaywallScreen: View {
         case .free: return "Free"
         case .plus: return isYearly ? "$29.99/year" : "$2.99/mo"
         case .pro: return isYearly ? "$49.99/year" : "$4.99/mo"
+        case .founder: return "$79.99"
         }
     }
 
@@ -271,6 +430,28 @@ struct PaywallScreen: View {
 
         guard let storeProduct = subscriptionService.product(for: product) else {
             errorMessage = "Product not available. Please try again later."
+            showError = true
+            return
+        }
+
+        isPurchasing = true
+
+        do {
+            if let _ = try await subscriptionService.purchase(storeProduct) {
+                dismiss()
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+            showError = true
+        }
+
+        isPurchasing = false
+    }
+
+    // MARK: - Purchase Founder Action
+    private func purchaseFounder() async {
+        guard let storeProduct = founderProduct else {
+            errorMessage = "Founder's Edition not available. Please try again later."
             showError = true
             return
         }
