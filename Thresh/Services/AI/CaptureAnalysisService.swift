@@ -199,7 +199,7 @@ extension AIService {
             - "Think of a routine that used to work but doesn't anymore. What changed?"
             - "Describe the first 15 minutes after you wake up. What's intentional vs. what just happens?"
             """
-        case nil:
+        case .open, nil:
             categoryExamples = """
             - "What moment from today is still with you? Describe what happened."
             - "What did you notice today that you almost didn't? Describe it."
@@ -252,7 +252,7 @@ extension AIService {
         }
 
         // Fallback to static prompt
-        return category?.phase1Prompts.randomElement() ?? "What moment from today is still with you? Describe what happened."
+        return category?.phase1Prompts.randomElement()?.text ?? "What moment from today is still with you? Describe what happened."
     }
 
     // MARK: - Weekly Synthesis Prompts

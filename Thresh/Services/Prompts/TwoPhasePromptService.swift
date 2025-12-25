@@ -15,14 +15,15 @@ final class TwoPhasePromptService {
 
         let category = selectCategory(lastUsed: userProgress.categoryLastUsed)
         let prompts = category.phase1Prompts
-        let prompt = prompts.randomElement() ?? prompts[0]
+        let leveledPrompt = prompts.randomElement() ?? prompts[0]
+        let promptText = leveledPrompt.text
 
         // Stage 1: Add example scaffolding
         if stage == 1 {
-            return (category, prompt + "\n\nExample: \"My mom called and said 'I just wanted to hear your voice.' She always pauses before saying goodbye, like she's waiting for something.\"")
+            return (category, promptText + "\n\nExample: \"My mom called and said 'I just wanted to hear your voice.' She always pauses before saying goodbye, like she's waiting for something.\"")
         }
 
-        return (category, prompt)
+        return (category, promptText)
     }
 
     /// Get Phase 2 prompt based on category and stage
@@ -36,11 +37,11 @@ final class TwoPhasePromptService {
         case 1:
             // Scaffolded, references their writing
             if let element = keyElement {
-                return "You described \(element). \(category.phase2Prompt)"
+                return "You described \(element). \(category.randomPhase2Prompt())"
             }
-            return category.phase2Prompt
+            return category.randomPhase2Prompt()
         case 2:
-            return category.phase2Prompt
+            return category.randomPhase2Prompt()
         case 3:
             return "What's the question here?"
         default:

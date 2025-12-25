@@ -494,7 +494,7 @@ struct NewReflectionScreen: View {
             } catch {
                 // Fallback: use category-based Phase 2 prompt without AI analysis
                 await MainActor.run {
-                    phase2Prompt = selectedCategory?.phase2Prompt ?? "Why did you choose those details?"
+                    phase2Prompt = selectedCategory?.randomPhase2Prompt() ?? "Why did you choose those details?"
                     isAnalyzingPhase1 = false
                     withAnimation { currentPhase = 2 }
                 }
