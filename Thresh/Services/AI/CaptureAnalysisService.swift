@@ -89,42 +89,13 @@ extension AIService {
         return analysis
     }
 
-    /// Helper method to call Claude API and return text response
+    /// Helper method to call Claude API via proxy and return text response
     func callClaude(prompt: String, maxTokens: Int) async throws -> String {
-        let apiURL = URL(string: "https://api.anthropic.com/v1/messages")!
-
-        let requestBody: [String: Any] = [
-            "model": "claude-sonnet-4-20250514",
-            "max_tokens": maxTokens,
-            "messages": [
-                ["role": "user", "content": prompt]
-            ]
-        ]
-
-        var request = URLRequest(url: apiURL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(Secrets.anthropicAPIKey, forHTTPHeaderField: "x-api-key")
-        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
-            throw NSError(domain: "AIService", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "API request failed with status \(statusCode)"])
-        }
-
-        // Parse Claude's response
-        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let content = json["content"] as? [[String: Any]],
-              let firstContent = content.first,
-              let textContent = firstContent["text"] as? String else {
-            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
-        }
+        // Route through proxy server
+        let response: String = try await ClaudeProxyService.shared.sendPrompt(prompt, maxTokens: maxTokens)
 
         // Clean up markdown code blocks if present
-        var cleanedText = textContent.trimmingCharacters(in: .whitespacesAndNewlines)
+        var cleanedText: String = response.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if cleanedText.hasPrefix("```json") {
             cleanedText = String(cleanedText.dropFirst(7))
         } else if cleanedText.hasPrefix("```") {
@@ -133,7 +104,7 @@ extension AIService {
         if cleanedText.hasSuffix("```") {
             cleanedText = String(cleanedText.dropLast(3))
         }
-        return cleanedText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return cleanedText.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
 
     /// Generate a fresh, evocative Phase 1 prompt for a given category.

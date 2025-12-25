@@ -29,6 +29,7 @@
 		A2000007238F5E0000000001 /* PromptLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000008238F5E0000000001 /* PromptLibrary.swift */; };
 		PC000001238F5E0000000001 /* PromptCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = PC000002238F5E0000000001 /* PromptCacheService.swift */; };
 		A2000009238F5E0000000001 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000A238F5E0000000001 /* AIService.swift */; };
+		CP000001238F5E0000000001 /* ClaudeProxyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CP000002238F5E0000000001 /* ClaudeProxyService.swift */; };
 		A200000B238F5E0000000001 /* ModeIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000C238F5E0000000001 /* ModeIndicator.swift */; };
 		A200000D238F5E0000000001 /* StepIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000E238F5E0000000001 /* StepIndicator.swift */; };
 		A200000F238F5E0000000001 /* PromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010238F5E0000000001 /* PromptView.swift */; };
@@ -114,6 +115,7 @@
 		A2000008238F5E0000000001 /* PromptLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptLibrary.swift; sourceTree = "<group>"; };
 		PC000002238F5E0000000001 /* PromptCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptCacheService.swift; sourceTree = "<group>"; };
 		A200000A238F5E0000000001 /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
+		CP000002238F5E0000000001 /* ClaudeProxyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeProxyService.swift; sourceTree = "<group>"; };
 		A200000C238F5E0000000001 /* ModeIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeIndicator.swift; sourceTree = "<group>"; };
 		A200000E238F5E0000000001 /* StepIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepIndicator.swift; sourceTree = "<group>"; };
 		A2000010238F5E0000000001 /* PromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptView.swift; sourceTree = "<group>"; };
@@ -390,6 +392,7 @@
 			isa = PBXGroup;
 			children = (
 				A200000A238F5E0000000001 /* AIService.swift */,
+				CP000002238F5E0000000001 /* ClaudeProxyService.swift */,
 				K1000002238F5E0000000001 /* ConnectionService.swift */,
 				P1000008238F5E0000000001 /* CaptureAnalysisService.swift */,
 			);
@@ -520,6 +523,7 @@
 				A2000007238F5E0000000001 /* PromptLibrary.swift in Sources */,
 				PC000001238F5E0000000001 /* PromptCacheService.swift in Sources */,
 				A2000009238F5E0000000001 /* AIService.swift in Sources */,
+				CP000001238F5E0000000001 /* ClaudeProxyService.swift in Sources */,
 				B3000027238F5E0000000001 /* DesignNotesService.swift in Sources */,
 				A200000B238F5E0000000001 /* ModeIndicator.swift in Sources */,
 				A200000D238F5E0000000001 /* StepIndicator.swift in Sources */,

@@ -48,11 +48,59 @@ actor AIService {
     /// Shared instance for app-wide access
     static let shared = AIService()
 
-    private let apiKey = Secrets.anthropicAPIKey
     private let model = "claude-sonnet-4-20250514"
-    private let apiURL = URL(string: "https://api.anthropic.com/v1/messages")!
 
     private init() {}
+
+    // MARK: - Proxy Integration
+
+    /// Send a prompt to Claude via proxy (preferred) or direct API (fallback)
+    private func callClaudeAPI(prompt: String, maxTokens: Int = 1024) async throws -> String {
+        if Secrets.useProxy {
+            return try await ClaudeProxyService.shared.sendPrompt(prompt, maxTokens: maxTokens)
+        } else {
+            // Fallback to direct API for local debugging only
+            return try await callClaudeDirectly(prompt: prompt, maxTokens: maxTokens)
+        }
+    }
+
+    /// Direct API call - only for local debugging when useProxy is false
+    private func callClaudeDirectly(prompt: String, maxTokens: Int) async throws -> String {
+        let apiKey = Secrets.anthropicAPIKey
+        guard !apiKey.isEmpty else {
+            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "No API key configured"])
+        }
+
+        let apiURL = URL(string: "https://api.anthropic.com/v1/messages")!
+        let requestBody: [String: Any] = [
+            "model": model,
+            "max_tokens": maxTokens,
+            "messages": [["role": "user", "content": prompt]]
+        ]
+
+        var request = URLRequest(url: apiURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            throw NSError(domain: "AIService", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "API request failed"])
+        }
+
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let content = json["content"] as? [[String: Any]],
+              let firstContent = content.first,
+              let textContent = firstContent["text"] as? String else {
+            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
+        }
+
+        return textContent
+    }
 
     // MARK: - Extraction from Reflection
 
@@ -65,7 +113,6 @@ actor AIService {
         }
 
         print("🤖 AIService.extractFromReflection: Starting extraction for \(text.count) chars")
-        print("🔑 AIService: Using API key: \(String(apiKey.prefix(15)))...")
 
         let prompt = """
         Analyze the following personal reflection and extract any embedded stories, ideas, or questions.
@@ -95,50 +142,7 @@ actor AIService {
         \(text)
         """
 
-        let requestBody: [String: Any] = [
-            "model": model,
-            "max_tokens": 1024,
-            "messages": [
-                ["role": "user", "content": prompt]
-            ]
-        ]
-
-        var request = URLRequest(url: apiURL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
-        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
-
-        print("📡 AIService: Calling Claude API at \(apiURL)...")
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            print("❌ AIService: No HTTP response received")
-            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "No HTTP response"])
-        }
-
-        print("📡 AIService: Claude API response status: \(httpResponse.statusCode)")
-
-        guard httpResponse.statusCode == 200 else {
-            print("❌ AIService: Claude API error: HTTP \(httpResponse.statusCode)")
-            if let errorText = String(data: data, encoding: .utf8) {
-                print("❌ AIService: Error body: \(errorText)")
-            }
-            throw NSError(domain: "AIService", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "API request failed with status \(httpResponse.statusCode)"])
-        }
-
-        // Parse Claude's response
-        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let content = json["content"] as? [[String: Any]],
-              let firstContent = content.first,
-              let textContent = firstContent["text"] as? String else {
-            print("❌ AIService: Failed to parse Claude response JSON")
-            if let responseText = String(data: data, encoding: .utf8) {
-                print("❌ AIService: Raw response: \(responseText.prefix(500))")
-            }
-            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
-        }
+        let textContent = try await callClaudeAPI(prompt: prompt, maxTokens: 1024)
 
         print("✅ AIService: Claude response received, parsing extraction...")
 
@@ -233,36 +237,7 @@ actor AIService {
         \(content)
         """
 
-        let requestBody: [String: Any] = [
-            "model": model,
-            "max_tokens": 512,
-            "messages": [
-                ["role": "user", "content": prompt]
-            ]
-        ]
-
-        var request = URLRequest(url: apiURL)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
-        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
-        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
-            throw NSError(domain: "AIService", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "API request failed"])
-        }
-
-        // Parse Claude's response
-        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let content = json["content"] as? [[String: Any]],
-              let firstContent = content.first,
-              let textContent = firstContent["text"] as? String else {
-            throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
-        }
-
+        let textContent = try await callClaudeAPI(prompt: prompt, maxTokens: 512)
         return try parseObservationResponse(textContent)
     }
 
