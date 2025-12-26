@@ -13,13 +13,16 @@ struct AdaptiveRootView: View {
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
 
     var body: some View {
-        if sizeClass == .regular {
-            // iPad: NavigationSplitView with sidebar
-            iPadLayout
-        } else {
-            // iPhone: Standard NavigationStack
-            HomeScreen()
+        Group {
+            if sizeClass == .regular {
+                // iPad: NavigationSplitView with sidebar
+                iPadLayout
+            } else {
+                // iPhone: Standard NavigationStack
+                HomeScreen()
+            }
         }
+        .adaptiveTypography(sizeClass: sizeClass)
     }
 
     // MARK: - iPad Layout
@@ -333,6 +336,7 @@ struct QuestionsListView: View {
 // MARK: - Simplified Row Content (for List style)
 
 struct ReflectionRowContent: View {
+    @Environment(\.typography) private var typography
     let reflection: Reflection
 
     var body: some View {
@@ -340,34 +344,35 @@ struct ReflectionRowContent: View {
             HStack {
                 if let number = reflection.reflectionNumber, number > 0 {
                     Text("#\(number)")
-                        .font(.caption)
+                        .font(typography.caption)
                         .fontWeight(.semibold)
                         .foregroundStyle(Color.thresh.capture)
                 }
 
                 if reflection.marinating {
                     Image(systemName: "hand.raised.fill")
-                        .font(.caption)
+                        .font(typography.caption)
                         .foregroundStyle(.orange)
                 }
 
                 Spacer()
 
                 Text(reflection.createdAt.relativeFormatted)
-                    .font(.caption)
+                    .font(typography.caption)
                     .foregroundStyle(Color.thresh.textSecondary)
             }
 
             Text(reflection.captureContent)
-                .font(.subheadline)
+                .font(typography.subheadline)
                 .lineLimit(2)
                 .foregroundStyle(Color.thresh.textPrimary)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, typography.rowVerticalPadding)
     }
 }
 
 struct StoryRowContent: View {
+    @Environment(\.typography) private var typography
     let story: Story
 
     var body: some View {
@@ -375,29 +380,30 @@ struct StoryRowContent: View {
             HStack {
                 if story.source == .extractedFromReflection {
                     Image(systemName: "arrow.up.right")
-                        .font(.caption2)
+                        .font(typography.caption2)
                         .foregroundStyle(Color.thresh.synthesis)
                 }
                 Spacer()
                 Text(story.createdAt.relativeFormatted)
-                    .font(.caption)
+                    .font(typography.caption)
                     .foregroundStyle(Color.thresh.textSecondary)
             }
 
             Text(story.title)
-                .font(.headline)
+                .font(typography.headline)
                 .lineLimit(1)
 
             Text(story.content)
-                .font(.subheadline)
+                .font(typography.subheadline)
                 .lineLimit(2)
                 .foregroundStyle(Color.thresh.textSecondary)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, typography.rowVerticalPadding)
     }
 }
 
 struct IdeaRowContent: View {
+    @Environment(\.typography) private var typography
     let idea: Idea
 
     var body: some View {
@@ -405,34 +411,35 @@ struct IdeaRowContent: View {
             HStack {
                 if idea.source == .extractedFromReflection {
                     Image(systemName: "arrow.up.right")
-                        .font(.caption2)
+                        .font(typography.caption2)
                         .foregroundStyle(Color.thresh.synthesis)
                 }
                 if let category = idea.category {
                     Text(category)
-                        .font(.caption2)
+                        .font(typography.caption2)
                         .foregroundStyle(Color.thresh.textSecondary)
                 }
                 Spacer()
                 Text(idea.createdAt.relativeFormatted)
-                    .font(.caption)
+                    .font(typography.caption)
                     .foregroundStyle(Color.thresh.textSecondary)
             }
 
             Text(idea.title)
-                .font(.headline)
+                .font(typography.headline)
                 .lineLimit(1)
 
             Text(idea.details)
-                .font(.subheadline)
+                .font(typography.subheadline)
                 .lineLimit(2)
                 .foregroundStyle(Color.thresh.textSecondary)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, typography.rowVerticalPadding)
     }
 }
 
 struct QuestionRowContent: View {
+    @Environment(\.typography) private var typography
     let question: Question
 
     var body: some View {
@@ -440,25 +447,25 @@ struct QuestionRowContent: View {
             HStack {
                 if question.source == .extractedFromReflection {
                     Image(systemName: "arrow.up.right")
-                        .font(.caption2)
+                        .font(typography.caption2)
                         .foregroundStyle(Color.thresh.synthesis)
                 }
                 if question.isAnswered {
                     Text("ANSWERED")
-                        .font(.caption2)
+                        .font(typography.caption2)
                         .foregroundStyle(Color.thresh.questionAnswered)
                 }
                 Spacer()
                 Text(question.createdAt.relativeFormatted)
-                    .font(.caption)
+                    .font(typography.caption)
                     .foregroundStyle(Color.thresh.textSecondary)
             }
 
             Text(question.text)
-                .font(.subheadline)
+                .font(typography.subheadline)
                 .lineLimit(2)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, typography.rowVerticalPadding)
     }
 }
 

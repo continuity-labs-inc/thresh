@@ -3,6 +3,7 @@ import SwiftData
 
 /// Sidebar navigation for iPad
 struct SidebarView: View {
+    @Environment(\.typography) private var typography
     @Binding var selectedSection: SidebarSection?
     @Query(sort: \Reflection.createdAt, order: .reverse) private var allReflections: [Reflection]
     @Query(sort: \Story.createdAt, order: .reverse) private var allStories: [Story]
@@ -38,7 +39,7 @@ struct SidebarView: View {
                 }
             } header: {
                 Label("CAPTURE", systemImage: "camera")
-                    .font(.caption)
+                    .font(typography.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.thresh.capture)
             }
@@ -50,7 +51,7 @@ struct SidebarView: View {
                 }
             } header: {
                 Label("LIBRARY", systemImage: "books.vertical")
-                    .font(.caption)
+                    .font(typography.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.thresh.textSecondary)
             }
@@ -62,7 +63,7 @@ struct SidebarView: View {
                 }
             } header: {
                 Label("SYNTHESIZE", systemImage: "wand.and.stars")
-                    .font(.caption)
+                    .font(typography.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.thresh.synthesis)
             }
@@ -75,10 +76,10 @@ struct SidebarView: View {
                         if marinatingCount > 0 {
                             Spacer()
                             Text("\(marinatingCount)")
-                                .font(.caption)
+                                .font(typography.subheadline)
                                 .foregroundStyle(.white)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 2)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 4)
                                 .background(Color.orange)
                                 .clipShape(Capsule())
                         }
@@ -86,7 +87,7 @@ struct SidebarView: View {
                 }
             } header: {
                 Label("EXPLORE", systemImage: "sparkles")
-                    .font(.caption)
+                    .font(typography.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.thresh.synthesis)
             }
@@ -98,7 +99,7 @@ struct SidebarView: View {
                 }
             } header: {
                 Label("MANAGE", systemImage: "folder")
-                    .font(.caption)
+                    .font(typography.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(Color.thresh.textSecondary)
             }
@@ -111,6 +112,7 @@ struct SidebarView: View {
                     selectedSection = .newReflection
                 } label: {
                     Image(systemName: "plus.circle.fill")
+                        .font(typography.title)
                         .foregroundStyle(Color.thresh.capture)
                 }
             }
@@ -123,18 +125,21 @@ struct SidebarView: View {
         Label {
             HStack {
                 Text(section.title)
+                    .font(typography.headline)
                 if let count = count, count > 0 {
                     Spacer()
                     Text("\(count)")
-                        .font(.caption)
+                        .font(typography.subheadline)
                         .foregroundStyle(Color.thresh.textSecondary)
                 }
             }
         } icon: {
             Image(systemName: section.icon)
+                .font(.system(size: typography.sidebarIconSize))
                 .foregroundStyle(section.color)
         }
         .tag(section)
+        .padding(.vertical, typography.rowVerticalPadding)
     }
 
     private func countFor(_ section: SidebarSection) -> Int? {

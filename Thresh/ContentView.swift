@@ -24,6 +24,7 @@ struct ContentView: View {
                 ProgressView()
             }
         }
+        .adaptiveTypography(sizeClass: sizeClass)
         .onAppear {
             if designNotesService == nil {
                 designNotesService = DesignNotesService(modelContext: modelContext)

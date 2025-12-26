@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E1CD0F12EE048EE003B470E /* QuarterlyReflectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */; };
 		2E5A01552EE02C6B00E5A8CB /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5A01532EE02C6B00E5A8CB /* Colors.swift */; };
+		TY000001238F5E0000000001 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = TY000002238F5E0000000001 /* Typography.swift */; };
 		2E5A01572EE0396800E5A8CB /* SaveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5A01562EE0395D00E5A8CB /* SaveButton.swift */; };
 		2E7B672C2EE1755100EEF8B2 /* PatternsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B672B2EE1755100EEF8B2 /* PatternsScreen.swift */; };
 		2E7B672E2EE1758000EEF8B2 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7B672D2EE1758000EEF8B2 /* HomeScreen.swift */; };
@@ -23,6 +24,7 @@
 		2EAD3D582EDFF697004929DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAD3D572EDFF697004929DF /* ContentView.swift */; };
 		A1000005238F5E0000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000006238F5E0000000001 /* Assets.xcassets */; };
 		A1000009238F5E0000000001 /* PromptLibrary.json in Resources */ = {isa = PBXBuildFile; fileRef = A100000A238F5E0000000001 /* PromptLibrary.json */; };
+		SA000001238F5E0000000001 /* thresh-ios-client-key.json in Resources */ = {isa = PBXBuildFile; fileRef = SA000002238F5E0000000001 /* thresh-ios-client-key.json */; };
 		A2000001238F5E0000000001 /* Reflection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000002238F5E0000000001 /* Reflection.swift */; };
 		A2000003238F5E0000000001 /* RevisionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000004238F5E0000000001 /* RevisionLayer.swift */; };
 		A2000005238F5E0000000001 /* Connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000006238F5E0000000001 /* Connection.swift */; };
@@ -92,6 +94,7 @@
 /* Begin PBXFileReference section */
 		2E1CD0F02EE048D6003B470E /* QuarterlyReflectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarterlyReflectionScreen.swift; sourceTree = "<group>"; };
 		2E5A01532EE02C6B00E5A8CB /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		TY000002238F5E0000000001 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		2E5A01562EE0395D00E5A8CB /* SaveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButton.swift; sourceTree = "<group>"; };
 		2E7B672B2EE1755100EEF8B2 /* PatternsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternsScreen.swift; sourceTree = "<group>"; };
 		2E7B672D2EE1758000EEF8B2 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
@@ -106,6 +109,7 @@
 		2EAD3D572EDFF697004929DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = Thresh/ContentView.swift; sourceTree = SOURCE_ROOT; };
 		A1000006238F5E0000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A100000A238F5E0000000001 /* PromptLibrary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PromptLibrary.json; sourceTree = "<group>"; };
+		SA000002238F5E0000000001 /* thresh-ios-client-key.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "thresh-ios-client-key.json"; sourceTree = "<group>"; };
 		A100000B238F5E0000000001 /* Thresh Life.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Thresh Life.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A100000C238F5E0000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A100000D238F5E0000000001 /* Thresh.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thresh.entitlements; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				2E5A01532EE02C6B00E5A8CB /* Colors.swift */,
+				TY000002238F5E0000000001 /* Typography.swift */,
 			);
 			path = Design;
 			sourceTree = "<group>";
@@ -310,6 +315,7 @@
 			children = (
 				A1000006238F5E0000000001 /* Assets.xcassets */,
 				A100000A238F5E0000000001 /* PromptLibrary.json */,
+				SA000002238F5E0000000001 /* thresh-ios-client-key.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -503,6 +509,7 @@
 			files = (
 				A1000005238F5E0000000001 /* Assets.xcassets in Resources */,
 				A1000009238F5E0000000001 /* PromptLibrary.json in Resources */,
+				SA000001238F5E0000000001 /* thresh-ios-client-key.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,6 +552,7 @@
 				A2000015238F5E0000000001 /* WeeklyReflectionScreen.swift in Sources */,
 				2EAD3D522EDFF22C004929DF /* Date+Extensions.swift in Sources */,
 				2E5A01552EE02C6B00E5A8CB /* Colors.swift in Sources */,
+				TY000001238F5E0000000001 /* Typography.swift in Sources */,
 				A2000017238F5E0000000001 /* NewReflectionScreen.swift in Sources */,
 				2EAD3D542EDFF438004929DF /* IdeaDetailScreen.swift in Sources */,
 				2EAD3D562EDFF499004929DF /* StoryDetailScreen.swift in Sources */,
