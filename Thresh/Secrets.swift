@@ -6,7 +6,7 @@ enum Secrets {
     /// Anthropic API key - DEPRECATED: Use ClaudeProxyService instead
     /// Kept for backwards compatibility during migration
     static var anthropicAPIKey: String {
-        if let envKey = ProcessInfo.processInfo.environment["THRESH_001_ANTHROPIC_251225"], !envKey.isEmpty {
+        if let envKey = ProcessInfo.processInfo.environment["Thresh_001_anthropic_251225"], !envKey.isEmpty {
             return envKey
         }
         return ""
