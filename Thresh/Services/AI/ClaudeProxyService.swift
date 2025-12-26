@@ -268,7 +268,7 @@ actor ClaudeProxyService {
     }
 
     private func createHMACSignature(message: String) -> String {
-        let key = SymmetricKey(data: Data(Secrets.appSecret.utf8))
+        let key = SymmetricKey(data: Data(Thresh_Life.Secrets.appSecret.utf8))
         let signature = HMAC<SHA256>.authenticationCode(
             for: Data(message.utf8),
             using: key

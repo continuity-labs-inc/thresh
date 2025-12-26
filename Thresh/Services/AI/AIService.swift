@@ -56,7 +56,7 @@ actor AIService {
 
     /// Send a prompt to Claude via proxy (preferred) or direct API (fallback)
     private func callClaudeAPI(prompt: String, maxTokens: Int = 1024) async throws -> String {
-        if Secrets.useProxy {
+        if Thresh_Life.Secrets.useProxy {
             return try await ClaudeProxyService.shared.sendPrompt(prompt, maxTokens: maxTokens)
         } else {
             // Fallback to direct API for local debugging only
@@ -66,7 +66,7 @@ actor AIService {
 
     /// Direct API call - only for local debugging when useProxy is false
     private func callClaudeDirectly(prompt: String, maxTokens: Int) async throws -> String {
-        let apiKey = Secrets.anthropicAPIKey
+        let apiKey = Thresh_Life.Secrets.anthropicAPIKey
         guard !apiKey.isEmpty else {
             throw NSError(domain: "AIService", code: -1, userInfo: [NSLocalizedDescriptionKey: "No API key configured"])
         }
