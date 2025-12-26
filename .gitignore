@@ -1,6 +1,11 @@
 # Secrets file tracked for now
 # Thresh/Secrets.swift
 
+# Service account keys and credentials
+*-key.json
+*.pem
+credentials.json
+
 # Xcode
 *.xcuserstate
 *.xcbkptlist
